@@ -1,0 +1,37 @@
+CREATE TABLE `s_table` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `srv_num` varchar(25) NOT NULL,
+  `inter_ip` varchar(100) DEFAULT NULL,
+  `local_ip` varchar(100) DEFAULT NULL,
+  `role` varchar(50) DEFAULT NULL,
+  `admin` varchar(25) DEFAULT NULL,
+  `re_man` varchar(25) DEFAULT NULL,
+  `note` varchar(125) DEFAULT NULL,
+  `ttt` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `srv_num` (`srv_num`),
+  FULLTEXT KEY `srv_num_2` (`srv_num`,`inter_ip`,`local_ip`,`role`,`admin`,`re_man`,`note`)
+) ENGINE=MyISAM AUTO_INCREMENT=84 DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `table_module` (
+  `table_name` varchar(255) NOT NULL,
+  `fields` varchar(255) NOT NULL,
+  `useAdmin` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+srv_table id,srv_num,inter_ip,local_ip,role,admin,re_man,note gg,cc,bb,mm
+
+CREATE TABLE `table_op_reg` (
+  `table_name` varchar(255) DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `srv_num` varchar(100) DEFAULT NULL,
+  `inter_ip` varchar(255) DEFAULT NULL,
+  `local_ip` varchar(255) DEFAULT NULL,
+  `role` varchar(255) DEFAULT NULL,
+  `admin` varchar(255) DEFAULT NULL,
+  `re_man` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  `op_time` datetime DEFAULT NULL,
+  `act` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
