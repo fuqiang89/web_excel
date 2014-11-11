@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>My tornado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/css/myco.css" rel="stylesheet" media="screen">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <!--<h1 class="text-center login-title">Sign in to continue to Bootsnipp</h1>-->
+            <div class="account-wall">
+                <img class="profile-img" src="/static/img/login.png?120"
+                    alt="">
+                <form class="form-signin" action="/login" method="post" id="login_form" >
+                <input type="text" class="form-control"  id="username" name="username"  placeholder="username" required autofocus>
+                <input type="password" class="form-control" id="password" name="password"  placeholder="Password" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    Sign in</button>
+                <label class="checkbox pull-left">
+                    <input type="checkbox" value="remember-me">
+                    Remember me
+                </label>
+                <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                        {% raw xsrf_form_html() %}
+                </form>
+            </div>
+            <!--<a href="#" class="text-center new-account">Create an account </a>-->
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

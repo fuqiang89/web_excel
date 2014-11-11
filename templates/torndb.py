@@ -278,11 +278,11 @@ class Connection(object):
       sql = "REPLACE INTO %s (%s) VALUES (%s)" % (
         tablename, columns, values_template)
     else:
-      sql = "INSERT INTO %s (%s) VALUES (%s)" % (
-        tablename, columns, values_template)
+      sql = "INSERT INTO %s (%s) VALUES (%s)" % (tablename, columns, values_template)
 
     values = tuple(rowdict[key] for key in keys)
-    print sql
+    #print sql
+    #print values
 
     try:
       cursor.execute(sql, values)

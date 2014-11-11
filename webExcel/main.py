@@ -6,14 +6,6 @@ import tornado.escape
 from basehandler import basehandler
 
 
-
-
-
-
-
-
-
-
 class  Socket(tornado.websocket.WebSocketHandler):
     #@tornado.web.authenticated
     def open(self):

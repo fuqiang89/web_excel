@@ -13,6 +13,14 @@ class operate_register():
         item['op_time']=tmptime
         item['table_name']=table_name
         sdb.insert_by_dict('table_op_reg',item)
+    def reg_add(self,obj,table_name,act):
+        tmptime=datetime.datetime.now()
+        obj['table_name']=table_name
+        obj['op_time']=tmptime
+        obj['act']=act
+        if act=='add':
+            obj['id']=0
+        sdb.insert_by_dict("table_op_reg",obj)
 
 if __name__=='__main__':
     table_orm=table_orm()

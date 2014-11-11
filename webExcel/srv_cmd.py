@@ -2,6 +2,7 @@
 __author__ = ''
 import os,sys
 from tornado import template
+import tornado.web
 from Storage import storage
 from utils import *
 from tornado.escape import json_encode
@@ -17,8 +18,10 @@ table_orm=table_orm()
 operate_register=operate_register()
 
 class List(basehandler):
+    @tornado.web.authenticated
     def get(self):
         i=self.input()
+        #print(i.username)
         i.fields=table_orm.get_fields("srv_table")
         t=tl.load("exl_table.html")
         htmlsrc=t.generate(i=i)
@@ -27,10 +30,12 @@ class List(basehandler):
         pass
 
 class Data(basehandler):
+    @tornado.web.authenticated
     def get(self, *args, **kwargs):
         ddata=table_operate.getAll()
         self.write(json_encode(ddata))
 class Fileds(basehandler):
+    @tornado.web.authenticated
     def get(self, *args, **kwargs):
         i=self.input()
         i.fields=table_orm.get_fields('srv_table')
@@ -51,6 +56,7 @@ class Fileds(basehandler):
 
 
 class Update(basehandler):
+    @tornado.web.authenticated
     def get(self):
         fields=table_orm.get_fields("srv_table")['fields']
         i=self.input()
@@ -91,7 +97,13 @@ class Update(basehandler):
                 vv=True
                 if vv==True:
                     table_operate.insert(v)
+                    #try:
+                    #    operate_register.reg_add(v,'s_table','add')
+                    #except Exception, exc:
+                    #    print(sys.exc_info())
+                    #    print(str(exc))
                     self.write(JsonResult("OK"))
+
                 else:
                     self.write(JsonResult("%s       error!!!" % str(vv)))
 
@@ -100,15 +112,20 @@ class Update(basehandler):
                 vv=True
                 if vv==True:
                     table_operate.update(v)
+                    #try:
+                    #    operate_register.reg_add(v,'s_table','update')
+                    #except Exception, exc:
+                    #    print(sys.exc_info())
+                    #    print(str(exc))
                     self.write(JsonResult("OK"))
                 else:
                     self.write(JsonResult("      %s       error!!!" % str(vv)))
             if i.act=="del":
-                try:
-                    operate_register.reg_del(i.id,'s_table',fields)
-                except Exception, exc:
-                    print(sys.exc_info())
-                    print(str(exc))
+                #try:
+                #    operate_register.reg_del(i.id,'s_table',fields)
+                #except Exception, exc:
+                #    print(sys.exc_info())
+                #    print(str(exc))
                 table_operate.delEntityById(i.id)
 
                 self.write(JsonResult("OK"))
