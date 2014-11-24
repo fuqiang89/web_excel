@@ -29,6 +29,14 @@ class table_operate:
             return storage(item)
         else:
             return None
+    def getId(self,id):
+        if id:
+            id=int(id)
+            item=sdb.get("""select * from s_table where id=%s""",id)
+            redata=table_orm.replace(item,type='html')
+            return storage(redata)
+        else:
+            return None
     def getRowsBySqlwhere(self,sqlwhere):
         items=sdb.query("""select * from s_table where id>0 """+sqlwhere)
         if items:

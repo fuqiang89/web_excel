@@ -33,6 +33,10 @@ class Data(basehandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
         ddata=table_operate.getAll()
+        for i  in ddata:
+            for ii in i:
+                if ii in ['Srv_used','local_ip','inter_ip']:
+                    i[ii]= i[ii].replace('\\n','<br>')
         self.write(json_encode(ddata))
 class Fileds(basehandler):
     @tornado.web.authenticated

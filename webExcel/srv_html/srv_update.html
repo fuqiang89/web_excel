@@ -50,12 +50,15 @@
             {% for fd in i.fields.fields %}
                 {% for val in i.recs %}
                     {% if fd == val %}
-                $("#{{fd}}").val('{{i.recs[val]}}');
+                        {% if fd not in ['Srv_used'] %}
+                $("#{{fd}}").val("{{i.recs[val]}}");
+                        {% end %}
                         {% end %}
                     {% end %}
                 {% end %}
 
             $('.selectpicker').selectpicker('val', '{{i.recs.admin}}');
+             document.getElementById('Srv_used').innerText='{{i.recs.Srv_used}}';
             {% end %}
 
     });
@@ -90,7 +93,7 @@
 				</thead>
 				<tbody>
                         {% for ra  in i.fields.fields %}
-                           {%    if ra not in ['id','admin']  %}
+                           {%    if ra not in ['id','admin','Srv_used']  %}
                         <td><input   class="form-control" type="text" rel="v" name="{{ra}}" id="{{ra}}" value=""/></td>
                             {% end %}
                            {% if ra =='admin' %}
@@ -110,6 +113,7 @@
 			</table>
     </div>
    </div>
+    <textarea   id='Srv_used'   rows=20   cols=20></textarea>
   <input class="form-control" type="hidden"  rel="v" name="id" id="id"   value=""/>
 </div>
 
