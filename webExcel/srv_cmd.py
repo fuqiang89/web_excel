@@ -17,46 +17,44 @@ table_operate=table_operate()
 table_orm=table_orm()
 operate_register=operate_register()
 
-class List(basehandler):
-    @tornado.web.authenticated
-    def get(self):
-        i=self.input()
-        #print(i.username)
-        i.fields=table_orm.get_fields("srv_table")
-        t=tl.load("exl_table.html")
-        htmlsrc=t.generate(i=i)
-        self.write(htmlsrc)
-    def post(self):
-        pass
-
 class Data(basehandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
         ddata=table_operate.getAll()
-        for i  in ddata:
-            for ii in i:
-                if ii in ['Srv_used','local_ip','inter_ip']:
-                    i[ii]= i[ii].replace('\\n','<br>')
+        for key  in ddata:
+            for vk in key:
+                if key[vk]:
+                    if vk in ['Srv_used','local_ip','inter_ip','note']:
+                        key[vk]= key[vk].replace('/n','<br>')
         self.write(json_encode(ddata))
+
+
+class  Tg(basehandler):
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        i=self.input()
+        i.username=self.current_user
+        i.fields=table_orm.get_fields("srv_table")
+        self.render("xtable.html",i=i)
+
+
+class List(basehandler):
+    @tornado.web.authenticated
+    def get(self):
+        i=self.input()
+        i.username=self.current_user
+        i.fields=table_orm.get_fields("srv_table")
+        self.render("xtable.html",i=i)
+    def post(self):
+        pass
 class Fileds(basehandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
         i=self.input()
+        i.username=self.current_user
         i.fields=table_orm.get_fields('srv_table')
         self.write(json_encode(i))
 
-#class Search(basehandler):
-#    def get(self):
-#        i=self.input()
-#        if i.s_keys:
-#            i.recs=optobj.search(i.s_keys)
-#        else:
-#            i.recs=optobj.getAll()
-#        t=tl.load("srvlist.html")
-#        #t=tl.load("new.html")
-#        htmlsrc=t.generate(i=i)
-#        self.write(htmlsrc)
-#
 
 
 class Update(basehandler):
@@ -64,17 +62,23 @@ class Update(basehandler):
     def get(self):
         fields=table_orm.get_fields("srv_table")['fields']
         i=self.input()
+        i.username=self.current_user
         i.recs=InitStorage(i,fields)
         i.recs=table_operate.getEntityById(i.id)
+        if i.recs:
+            for keys  in i.recs:
+                if keys in ['Srv_used','local_ip','inter_ip','note']:
+                    #if isinstance(i.recs[keys],str):
+                    i.recs[keys]= i.recs[keys].replace('/n',r'\n')
         i.fields=table_orm.get_fields("srv_table")
         i.useAdmin=table_orm.get_useAdmin("srv_table")
+        self.render("Upload_xtable.html",i=i)
         #i.s_keys=""
-        t=tl.load("srv_update.html")
-        htmlsrc=t.generate(i=i)
-        self.write(htmlsrc)
+        #t=tl.load("srv_update.html")
+        #htmlsrc=t.generate(i=i)
+        #self.write(htmlsrc)
 
     def post(self):
-
         fields=table_orm.get_fields("srv_table")['fields']
         def valid(v):
             if v.inter_ip:
@@ -115,7 +119,8 @@ class Update(basehandler):
                 #vv=valid(v)
                 vv=True
                 if vv==True:
-                    table_operate.update(v)
+                    rv=table_orm.replace(v,fields,type='in')
+                    table_operate.update(rv)
                     #try:
                     #    operate_register.reg_add(v,'s_table','update')
                     #except Exception, exc:
@@ -139,3 +144,15 @@ class Update(basehandler):
 
 
 
+#class Search(basehandler):
+#    def get(self):
+#        i=self.input()
+#        if i.s_keys:
+#            i.recs=optobj.search(i.s_keys)
+#        else:
+#            i.recs=optobj.getAll()
+#        t=tl.load("srvlist.html")
+#        #t=tl.load("new.html")
+#        htmlsrc=t.generate(i=i)
+#        self.write(htmlsrc)
+#
