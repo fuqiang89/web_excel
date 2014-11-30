@@ -1,11 +1,27 @@
 # -*- coding: utf-8 -*-
-#from tempfile import template
+
 import torndb
-#TP="G:\\Srv_Table\\"
-sdb = torndb.Connection('%s:%s' % ('192.168.182.129',3306),'demo', 'root', '123456')
-#sdb = torndb.Connection('%s:%s' % ('127.0.0.1',3306),'srv_table', 'root', '123456')
+
+myHost='192.168.182.129'
+myPort='3306'
+myDb='demo'
+myUser='root'
+myPasswd='123456'
 
 TP="G:\\BaiduYunDownload\\webExcel\\web_excel\\"
+
+class mysqlConn():
+    def __init__(self):
+        self.mysqld = torndb.Connection( '%s:%s'  % (myHost,myPort),myDb,myUser,myPasswd)
+    def mysqld(self):
+        mysqld=self.mysqld
+        return mysqld
+    def __del__(self):
+        self.mysqld.close()
+
+
+sdb=mysqlConn().mysqld
+
 
 
 
