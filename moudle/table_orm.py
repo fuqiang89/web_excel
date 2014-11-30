@@ -13,16 +13,23 @@ class  table_orm():
         item=sdb.get("""select useAdmin from table_module where table_name = '%s' """ % table_name)
         item['useAdmin']=item['useAdmin'].split(',')
         return item
-    def replace(self,item,type=None):
-        if type == 'html':
+    def replace(self,item,fields,type=None):
+        if type == 'out':
             for value in item:
-                if value in ['Srv_used','local_ip','inter_ip']:
-                    item[value]= "\n".join(item[value].split("<br>"))
-                    print item[value]
-        else:
+                if value in fields:
+
+                    if item[value]:
+                        item[value]= item[value].replace('\\n','<br>').replace('\n','<br>')
+        if type == 'in':
             for value in item:
-                if (item[value], basestring):
-                    item[value]=(item[value]).replace('\n','<br>')
+                if value in fields:
+                    if item[value]:
+                        print(item[value])
+                        item[value]=item[value].replace('\n',r'/n')
+                        print(item[value])
+
         return item
+
+
 #if __name__ == "__main__":
 #    t=table_orm()
