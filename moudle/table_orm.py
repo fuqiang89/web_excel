@@ -34,6 +34,7 @@ class  table_orm():
             fields.append('state')
             headers = tuple(fields)
             data = tablib.Dataset(*data, headers=headers)
+            dataJson=dataJson.replace('<br>','\\r')
             data.json=dataJson
             filename="xTable_%s.xlsx" % (time.time())
             f=open('%s%s' % (dataPath,filename),'wb')

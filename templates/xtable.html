@@ -241,8 +241,18 @@
                    {alert("导出失败！");}
                 })
             });
+
            $('#get-alldata').click(function () {
-                alert('current data: ' + JSON.stringify($table.bootstrapTable('getData')));
+               var dataDictJson={};
+               dataDictJson['postdata'] = JSON.stringify($table.bootstrapTable('getData'));
+                $.post("/postData",dataDictJson,function(data,status){
+                   if (data != "False")
+                   {
+                    location.href="/dl?fname=" + data;
+                   }
+                   else
+                   {alert("导出失败！");}
+                })
             });
     });
 </script>

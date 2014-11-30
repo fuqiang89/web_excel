@@ -9,7 +9,7 @@ myUser='root'
 myPasswd='123456'
 
 TP="G:\\BaiduYunDownload\\webExcel\\web_excel\\"
-
+dataPath="G:\\BaiduYunDownload\\webExcel\\web_excel\\data\\"
 class mysqlConn():
     def __init__(self):
         self.mysqld = torndb.Connection( '%s:%s'  % (myHost,myPort),myDb,myUser,myPasswd)

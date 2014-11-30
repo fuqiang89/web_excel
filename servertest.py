@@ -5,7 +5,7 @@ import tornado.ioloop
 import tornado.web
 from tornado.options import define, options, parse_command_line
 
-from webExcel.sign import LoginHandler
+from webExcel import sign
 from webExcel import srv_cmd
 
 define("port", default=8888, help="run on the given port", type=int)
@@ -13,12 +13,15 @@ define("port", default=8888, help="run on the given port", type=int)
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/", srv_cmd.List),
+            (r"/",srv_cmd.Tg),
             (r"/data",srv_cmd.Data),
+            (r"/postData",srv_cmd.postWebData),
+            (r"/dl",srv_cmd.downLoad),
             (r"/test",srv_cmd.Fileds),
-            #(r"/test1",srv_cmd.test1),
+            (r"/xtable",srv_cmd.List),
             (r"/update",srv_cmd.Update),
-            (r"/login",LoginHandler)
+            (r"/login",sign.LoginHandler),
+            (r"/logout",sign.LogoutHandler)
         ]
         settings = dict(
             cookie_secret="61oETzKXQAGaYdkL5gUYGeJJFuYh7EQnp2XdTP1o/Vo=",

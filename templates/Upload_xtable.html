@@ -1,0 +1,220 @@
+{% extends "main.html" %}
+
+        {% block ext_head %}
+        {% end %}
+        {% block nav %}
+        {% include  "nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+            <li class="active">
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li >
+                     <a href="xtable">
+                     xxxxxxx</a>
+                  </li>
+                  <li class="active" >
+                     <a href="xtable">
+                     x组服务器汇总</a>
+                  </li>
+               </ul>
+            </li>
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  X-Table <small>服务器列表</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="xtable">X-Table</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-12">
+               <div class="portlet">
+                  <div class="portlet-title">
+                      {% if i.recs %}
+                     <div class="caption "><i class="icon-cogs "></i>修改记录</div>
+                      {% else %}
+                      <div class="caption "><i class="icon-cogs "></i>新增记录</div>
+                      {% end %}
+
+            <div class="tools">
+            </div>
+                  </div>
+                   <div class="clearfix"></div>
+                  <div class="portlet-body">
+                     <div class="row">
+                        <div class="col-md-3">
+                           <div class="form-group">
+                              <label class="control-label" for="srv_num">服务器编号(srv_num):</label>
+                              <input id="srv_num" rel="v" name="srv_num" type="text" class="form-control" value="" placeholder="编号" />
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label" for="re_admin">接口人(re_admin):</label>
+                              <input id="re_admin" rel="v" name="re_admin" type="text" class="form-control" value="" placeholder="xx|xx" />
+                           </div>
+                           <div class="form-group">
+                             <label class="control-label" >管理员(admin):</label>
+                              <br>
+                             <select class="selectpicker   show-tick "    name="admin" id="admin"  data-width="auto"   >
+                                {%  for admin in i.useAdmin.useAdmin  %}
+                                  <option>{{admin}}</option>
+                                  {% end %}
+                          </select>
+                           </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label" for="rank_one">项目(rank_one):</label>
+                              <input id="rank_one" rel="v" name="rank_one" type="text" class="form-control" value="" placeholder="编号" />
+                           </div>
+
+                           <div class="form-group">
+                              <label class="control-label" for="Srv_used">用途(Srv_used):</label>
+                              <textarea class="form-control"  rel="v"  id="Srv_used" rows="7" placeholder="Enter a message ..."></textarea>
+                           </div>
+                        </div>
+                        <div class="col-md-3">
+                           <div class="form-group">
+                              <label class="control-label" for="inter_ip">外网IP(inter_ip):</label>
+                              <textarea class="form-control" rel="v" id="inter_ip" rows="5" placeholder="Enter inter ip"></textarea>
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label" for="inter_ip">内网IP(local_ip):</label>
+                              <textarea class="form-control" rel="v" id="local_ip" rows="5" placeholder="Enter local ip"></textarea>
+                           </div>
+
+                        </div>
+                        <div class="col-md-3">
+                           <div class="form-group">
+                              <label class="control-label" for="note">备注(note):</label>
+                              <textarea class="form-control" rel="v" id="note" rows="5" placeholder="Enter a message ..."></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <button type="button" class="btn btn-success"  onclick="dosave()" >upload</button>                        </div>
+                     </div>
+                     <!--<div class="row margin-top-10">-->
+                        <!--<div class="col-md-12">-->
+                           <!--<pre id='toastrOptions'>Settings...</pre>-->
+                        <!--</div>-->
+                     <!--</div>-->
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         </div>
+
+  <input class="form-control" type="hidden"  rel="v" name="id" id="id"   value=""/>
+    </div>
+      <!-- END PAGE -->
+
+
+  {% end %}
+   {% block ext_js %}
+          <script src="/static/select/js/bootstrap-select.min.js" type="text/javascript"></script>
+    <script src="/static/select/js/i18n/defaults-zh_CN.min.js" type="text/javascript"></script>
+    <link href="/static/select/css/bootstrap-select.min.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript">
+          $(document).ready(function(e) {
+              $('.selectpicker').selectpicker();
+          });
+      </script>
+
+
+    <script>
+    function dosave(){
+        var rv={};
+        $("[rel='v']").each(function(){
+            rv[$(this).attr("id")]=$(this).val();
+        });
+        rv.admin=$('.selectpicker option:selected').text();
+        rv.status="ok";
+        {% if i.recs and i.recs.id %}
+        rv.act='update';
+        {% else %}
+        rv.act='add';
+        {% end %}
+
+        $.post("/update",rv,function(data,status){
+                alert("Action       "+data.result);
+                if(data.result == "OK" ){
+                location.href="/";
+                }
+        })
+    }
+
+
+    $(document).ready(function(){
+            {% if i.recs %}
+            {% for fd in i.fields.fields %}
+                {% for val in i.recs %}
+                    {% if fd == val %}
+                $("#{{fd}}").val("{{i.recs[val]}}");
+                        {% end %}
+                    {% end %}
+                {% end %}
+
+            $('.selectpicker').selectpicker('val', '{{i.recs.admin}}');
+//             document.getElementById('Srv_used').innerText='{{i.recs.Srv_used}}';
+            {% end %}
+
+    });
+    </script>
+  {% end %}
