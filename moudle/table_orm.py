@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 __author__ = 'fuqiang'
-from config import sdb
-import sys
+from config import sdb,dataPath
+import tablib
+import sys,time
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
+
 class  table_orm():
     def get_fields(self,table_name):
         item=sdb.get("""select fields from table_module where table_name = '%s' """ % table_name)
@@ -17,19 +19,34 @@ class  table_orm():
         if type == 'out':
             for value in item:
                 if value in fields:
-
                     if item[value]:
                         item[value]= item[value].replace('\\n','<br>').replace('\n','<br>')
         if type == 'in':
             for value in item:
                 if value in fields:
                     if item[value]:
-                        print(item[value])
                         item[value]=item[value].replace('\n',r'/n')
-                        print(item[value])
-
         return item
 
+    def exportExecl_json(self,fields,dataJson):
+        try:
+            data=[]
+            fields.append('state')
+            headers = tuple(fields)
+            data = tablib.Dataset(*data, headers=headers)
+            data.json=dataJson
+            filename="xTable_%s.xlsx" % (time.time())
+            f=open('%s%s' % (dataPath,filename),'wb')
+            f.write(data.xlsx)
+            f.close()
+            return filename
+        except Exception,exc:
+            print(sys.exc_info())
+            print(exc)
+            return "False"
 
-#if __name__ == "__main__":
-#    t=table_orm()
+
+if __name__ == "__main__":
+    t=table_orm()
+    dataJson='[{"first_name": "John","last_name": "123"},{"first_name": "222","last_name": "hhh"}]'
+    print  t.exportExecl_json(dataJson)

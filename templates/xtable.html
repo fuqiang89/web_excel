@@ -1,0 +1,249 @@
+{% extends "main.html" %}
+
+        {% block ext_head %}
+     <link rel="stylesheet" href="/static/css/bootstrap-table.css">
+     <link rel="stylesheet" href="/static/css/docs.css">
+        {% end %}
+        {% block nav %}
+        {% include  "nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+            <li class="active">
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li >
+                     <a href="xtable">
+                     xxxxxxx</a>
+                  </li>
+                  <li class="active" >
+                     <a href="xtable">
+                     x组服务器汇总</a>
+                  </li>
+               </ul>
+            </li>
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  X-Table <small>服务器列表</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="xtable">X-Table</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+         <!-- END PAGE HEADER-->
+        <!--<button type="button" class="btn btn-default" onclick="doadd()">新增行</button>-->
+          <button id="sample_editable_1_new" class="btn btn-success" onclick="doadd()">
+              新增服务器 <i class="icon-plus"></i>
+          </button>
+          <button id="get-selections" class="btn btn-success" >
+              导出选中数据<i class=""></i>
+          </button>
+          <button id="get-alldata" class="btn btn-success" >
+              导出数据<i class=""></i>
+          </button>
+         <div class="clearfix"></div>
+         <table id="table-javascript"></table>
+
+         <div class="clearfix"></div>
+      </div>
+      <!-- END PAGE -->
+   </div>
+
+  {% end %}
+   {% block ext_js %}
+<script src="/static/js/bootstrap-table.js"></script>
+<script>
+                        function operateFormatter(value, row, index) {
+                            return [
+                                '<a class="edit ml10" href="javascript:void(0)" title="Edit">',
+                                    '<i class="glyphicon glyphicon-edit"></i>',
+                                '</a>',
+
+                                '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
+                                    '<i class="glyphicon glyphicon-remove"></i>',
+                                '</a>'
+                            ].join('');
+                        }
+
+                        window.operateEvents = {
+                            'click .edit': function (e, value, row, index) {
+                                doupdate(row.id);
+                            },
+                            'click .remove': function (e, value, row, index) {
+                                confirmmsg(row.id);
+                            }
+                        };
+</script>
+
+<script>
+
+        function dodel(id){
+        var rv={};
+        rv.act="del";
+        rv.id=id;
+        $.post("/update",rv,function(v){
+//            alert("删除"+ v.result);
+            location.href="/";
+        })
+    }
+    function confirmmsg(id){
+        var del_id = id
+        if (confirm("你确认要删除这条记录吗？"))
+        dodel(del_id)
+    }
+    function doadd(){
+        location.href="/update";
+    }
+
+    function doupdate(id){
+        location.href="/update?id="+id;
+    }
+</script>
+
+<script>
+                 $(function () {
+                                $('#table-javascript').bootstrapTable({
+                                    method: 'get',
+                                    url: 'data',
+//                                    data: data,
+                                    cache: false,
+//                                    height: 700,
+                                    striped: true,
+                                    pagination: true,
+                                    pageSize: 10,
+                                    pageList: [100,150,200,250,300,350,400],
+                                    search: true,
+                                    showToggle: true,
+                                    showColumns: true,
+                                    showRefresh: true,
+                                    minimumCountColumns: 2,
+                                    clickToSelect: true,
+                                    columns: [{
+                                        field: 'state',
+                                        checkbox: true
+                                    },
+                           {% for r in i.fields.fields %}
+                                {% if r=='id' %}
+                                    {
+                                        field: '{{r}}',
+                                        visible: false,
+                                        title: '{{r}}',
+                                        align: 'right',
+                                        valign: 'top',
+                                        sortable: true
+                                    },
+                                {% else %}
+                                    {
+                                        field: '{{r}}',
+//                                        visible: false,
+                                        title: '{{r}}',
+                                        align: 'bottom',
+                                        valign: 'top',
+                                        sortable: true
+                                    },
+                                {% end %}
+
+                           {% end %}
+
+
+
+                                        {
+                                        field: 'operate',
+//                                        visible: false,
+                                        title: 'Operate',
+                                        align: 'center',
+                                        valign: 'middle',
+                                        clickToSelect: false,
+                                        formatter: operateFormatter,
+                                        events: operateEvents
+                                    }
+
+                            ]
+                                });
+                        });
+</script>
+
+
+<script>
+ $(function () {
+            var id = 0,
+                getRows = function () {
+                    var rows = [];
+                    return rows;
+                },
+                // init table use data
+                $table = $('#table-javascript').bootstrapTable({
+                    data: getRows()
+                });
+
+            $('#get-selections').click(function () {
+                var dataDictJson={}
+                dataDictJson['postdata'] = JSON.stringify($table.bootstrapTable('getSelections'));
+               $.post("/postData",dataDictJson,function(data,status){
+//                   alert("Action "+ data);
+                   if (data != "False")
+                   {
+                    location.href="/dl?fname=" + data;
+                   }
+                   else
+                   {alert("导出失败！");}
+                })
+            });
+           $('#get-alldata').click(function () {
+                alert('current data: ' + JSON.stringify($table.bootstrapTable('getData')));
+            });
+    });
+</script>
+  {% end %}

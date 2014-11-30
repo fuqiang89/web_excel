@@ -2,6 +2,7 @@
 __author__ = ''
 import os,sys
 from tornado import template
+from tornado.web import RequestHandler
 import tornado.web
 from Storage import storage
 from utils import *
@@ -11,6 +12,7 @@ from config import TP
 from moudle.srv_m import table_operate
 from moudle.table_orm import table_orm
 from moudle.operate_register import operate_register
+from config import dataPath
 
 tl=template.Loader(os.path.join(TP, "webExcel/srv_html"))
 table_operate=table_operate()
@@ -104,7 +106,8 @@ class Update(basehandler):
                 #vv=valid(v)
                 vv=True
                 if vv==True:
-                    table_operate.insert(v)
+                    rv=table_orm.replace(v,fields,type='in')
+                    table_operate.insert(rv)
                     #try:
                     #    operate_register.reg_add(v,'s_table','add')
                     #except Exception, exc:
@@ -144,6 +147,26 @@ class Update(basehandler):
 
 
 
+class postWebData(basehandler):
+    def get(self, *args, **kwargs):
+        pass
+    def post(self, *args, **kwargs):
+        args=self.input()
+        fields=table_orm.get_fields("srv_table")['fields']
+        rs=table_orm.exportExecl_json(fields,args['postdata'])
+        self.write(rs)
+class downLoad(basehandler):
+    def get(self, *args, **kwargs):
+        args=self.input()
+        fname=dataPath+args['fname']
+        try:
+            with open(fname, 'rb') as f:
+                self.set_header ('Content-Type', 'text/xlsx')
+                self.set_header ('Content-Disposition', 'attachment; filename=%s' % args['fname'])
+                self.write(f.read())
+                self.finish()
+        except Exception,exc:
+            pass
 #class Search(basehandler):
 #    def get(self):
 #        i=self.input()
