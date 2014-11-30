@@ -1,9 +1,6 @@
 __author__ = 'fuqiang'
 
 from basehandler import basehandler
-#from moudle.mongo import Passwdmongo
-#authmongo = Passwdmongo()
-
 class LoginHandler(basehandler):
     def get(self):
         self.render("login.html")
@@ -18,7 +15,14 @@ class LoginHandler(basehandler):
         else:
             authmes = False
         if authmes == True:
-            self.set_secure_cookie("user", username,expires_days=0.123)
-            self.redirect("/?username=%s" % username)
+            self.set_secure_cookie("user",username,expires_days=0.123)
+            self.redirect(self.get_argument('next', '/'))
         else:
             self.render("login.html")
+class LogoutHandler(basehandler):
+    def get(self):
+        if not self.get_current_user():
+            self.redirect('/')
+            return
+        self.clear_cookie("user")
+        self.redirect(self.get_argument("next", "/"))
