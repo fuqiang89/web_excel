@@ -1,0 +1,94 @@
+{% extends "main.html" %}
+
+        {% block ext_head %}
+        {% end %}
+        {% block nav %}
+        {% include  "nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+            <li class="active">
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li >
+                     <a href="#">
+                     历史操作记录</a>
+                  </li>
+                  <li class="active" >
+                     <a href="xtable">
+                     x组服务器汇总</a>
+                  </li>
+               </ul>
+            </li>
+            <li class="last">
+               <a href="charts">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  X-Table <small>服务器列表</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="#">hostory</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+    <div class="clearfix"></div>
+                     <div class="alert alert-success">
+                        <strong>Success!</strong> The page has been added.
+                     </div>
+
+         </div>
+
+    </div>
+      <!-- END PAGE -->
+
+
+  {% end %}
