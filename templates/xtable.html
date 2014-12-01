@@ -125,6 +125,28 @@
                                 confirmmsg(row.id);
                             }
                         };
+
+
+
+    function interipFormatter(value) {
+        var urldata=""
+        var iparray=value.split('<br>')
+        for (index in iparray)
+        {
+            urldata = urldata + '<a href="/?' + iparray[index] + '">' + iparray[index] + '</a>' + '<br>';
+        }
+        return urldata;
+            }
+    function localipFormatter(value) {
+        var urldata=""
+        var iparray=value.split('<br>')
+        for (index in iparray)
+        {
+            urldata = urldata + '<a href="/?' + iparray[index] + '">' + iparray[index] + '</a>' + '<br>';
+        }
+        return urldata;
+            }
+
 </script>
 
 <script>
@@ -181,6 +203,26 @@
                                         visible: false,
                                         title: '{{r}}',
                                         align: 'right',
+                                        valign: 'top',
+                                        sortable: true
+                                    },
+                                 {% elif r=='inter_ip' %}
+                                    {
+                                        field: '{{r}}',
+//                                        visible: false,
+                                        formatter: interipFormatter,
+                                        title: '{{r}}',
+                                        align: 'bottom',
+                                        valign: 'top',
+                                        sortable: true
+                                    },
+                                 {% elif r=='local_ip' %}
+                                           {
+                                        field: '{{r}}',
+//                                        visible: false,
+                                        formatter: localipFormatter,
+                                        title: '{{r}}',
+                                        align: 'bottom',
                                         valign: 'top',
                                         sortable: true
                                     },
