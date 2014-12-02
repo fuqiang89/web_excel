@@ -1,0 +1,153 @@
+{% extends "main.html" %}
+
+        {% block ext_head %}
+        {% end %}
+        {% block nav %}
+        {% include  "nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+            <li class="active">
+               <a href="javascript:;">
+               <i class="icon-folder-open"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li  class="active">
+                     <a href="javascript:;">
+                     <i class="icon-cogs"></i>
+                     xTable
+                     <span class="arrow"></span>
+                     </a>
+                     <ul class="sub-menu">
+                        <li ><a href="/"><i class="icon-user"></i>  xList</a></li>
+                        <li class="active"><a href="api"><i class="icon-external-link"></i>  xProfile</a></li>
+                        <li><a href="#"><i class="icon-bell"></i>  you know!</a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  X-Profile <small>Profile</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="api">X-Profile</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+         <!-- END PAGE HEADER-->        <!--<button type="button" class="btn btn-default" onclick="doadd()">新增行</button>-->
+
+
+          <!--<div class="alert alert-success" id="events-result">-->
+        <!--Here is the result of event.-->
+           <!--</div>-->
+          <div class="clearfix"></div>
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN Portlet PORTLET-->
+               <div class="portlet">
+                  <div class="portlet-title">
+                     <div class="caption"><h4 class="text-primary">Nestable Portlets</h4></div>
+                     <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                        <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                        <a href="javascript:;" class="reload"></a>
+                        <!--<a href="javascript:;" class="remove"></a>-->
+                     </div>
+                  </div>
+                  <div class="portlet-body">
+                  <ul class="list-group-item-info">
+                     <li ><strong class="text-success">V.A.T Reg :</strong> 542554(DEMO)78</li>
+                     <li><strong class="text-success">Account Name:</strong> FoodMaster Ltd</li>
+                     <li><strong class="text-success">SWIFT code:</strong> 45454DEMO545DEMO</li>
+                     <li><strong class="text-success">V.A.T Reg #:</strong> 542554(DEMO)78</li>
+                     <li><strong class="text-success">Account Name:</strong> FoodMaster Ltd</li>
+                     <li><strong class="text-success">SWIFT code:</strong> 45454DEMO545DEMO</li>
+                  </ul>
+
+                  </div>
+               </div>
+               <!-- END Portlet PORTLET-->
+            </div>
+         </div>
+          <div class="col-md-12">
+                            <div class="portlet-body">
+                     <ul class="list-unstyled">
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Consectetur adipiscing elit</li>
+                        <li>Integer molestie lorem at massa</li>
+                        <li>Facilisis in pretium nisl aliquet</li>
+                        <li>
+                           Nulla volutpat aliquam velit
+                           <ul>
+                              <li>Phasellus iaculis neque</li>
+                              <li>Purus sodales ultricies</li>
+                              <li>Vestibulum laoreet porttitor sem</li>
+                              <li>Ac tristique libero volutpat at</li>
+                           </ul>
+                        </li>
+                        <li>Faucibus porta lacus fringilla vel</li>
+                        <li>Aenean sit amet erat nunc</li>
+                        <li>Eget porttitor lorem</li>
+                     </ul>
+                  </div>
+             </div>
+
+         <div class="clearfix"></div>
+      </div>
+      <!-- END PAGE -->
+   </div>
+
+  {% end %}
+   {% block ext_js %}
+
+  {% end %}

@@ -5,8 +5,7 @@ import tornado.ioloop
 import tornado.web
 from tornado.options import define, options, parse_command_line
 
-from webExcel import sign
-from webExcel import srv_cmd
+from webExcel import sign,srv_cmd,apiMain
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -17,9 +16,9 @@ class Application(tornado.web.Application):
             (r"/data",srv_cmd.Data),
             (r"/postData",srv_cmd.postWebData),
             (r"/dl",srv_cmd.downLoad),
-            (r"/test",srv_cmd.Fileds),
             (r"/xtable",srv_cmd.List),
             (r"/update",srv_cmd.Update),
+            (r"/api",apiMain.API),
             (r"/login",sign.LoginHandler),
             (r"/logout",sign.LogoutHandler)
         ]
