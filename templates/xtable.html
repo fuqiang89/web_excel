@@ -94,6 +94,9 @@
               导出数据<i class=""></i>
           </button>
          <div class="clearfix"></div>
+          <!--<div class="alert alert-success" id="events-result">-->
+        <!--Here is the result of event.-->
+           <!--</div>-->
          <table id="table-javascript"></table>
 
          <div class="clearfix"></div>
@@ -298,4 +301,18 @@
             });
     });
 </script>
+<script>
+    $(function () {
+
+//            var $result = $('#events-result');
+
+            $('#table-javascript').bootstrapTable({
+            }).on('click-row.bs.table', function (e, row, $element) {
+                location.href="/" + row['id'];
+            });
+
+    });
+</script>
+
+
   {% end %}
