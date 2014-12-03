@@ -5,14 +5,14 @@ import tornado.ioloop
 import tornado.web
 from tornado.options import define, options, parse_command_line
 
-from webExcel import sign,srv_cmd,apiMain
+from webExcel import sign,srv_cmd,apiMain,pMain
 
 define("port", default=8888, help="run on the given port", type=int)
 
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/",srv_cmd.Tg),
+            (r"/",pMain.Dashboard),
             (r"/data",srv_cmd.Data),
             (r"/postData",srv_cmd.postWebData),
             (r"/dl",srv_cmd.downLoad),

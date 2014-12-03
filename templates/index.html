@@ -20,14 +20,14 @@
                <div class="clearfix"></div>
                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
             </li>
-            <li class="start">
+            <li class="start active">
                <a href="/">
                <i class="icon-home"></i>
                <span class="title">Dashboard</span>
                <span class="selected"></span>
                </a>
             </li>
-            <li class="active">
+            <li >
                <a href="javascript:;">
                <i class="icon-th"></i>
                <span class="title">服务器管理</span>
@@ -42,7 +42,7 @@
                      </a>
                      <ul class="sub-menu">
                         <li ><a href="xtable">  xList</a></li>
-                        <li class="active"><a href="xProfile">  xProfile</a></li>
+                        <li ><a href="xProfile">  xProfile</a></li>
                         <li ><a href="update"> xUpdate </a></li>
                          <li ><a href="history"> History Operate </a></li>
                      </ul>
@@ -72,7 +72,7 @@
             <div class="col-md-12">
                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                <h3 class="page-title">
-                  X-Profile <small>Profile</small>
+                  Dashboard <small>Dashboard</small>
                </h3>
                <ul class="page-breadcrumb breadcrumb">
                   <li>
@@ -80,9 +80,7 @@
                      <a href="/">Home</a>
                      <i class="icon-angle-right"></i>
                   </li>
-                  <li><a href="xtable">xTable</a></li>
-                   <i class="icon-angle-right"></i>
-                   <li><a href="xProfile">X-Profile</a></li>
+                  <li><a href="/">Dashboard</a></li>
                </ul>
                <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
@@ -99,112 +97,33 @@
                <!-- BEGIN Portlet PORTLET-->
                <div class="portlet">
                   <div class="portlet-title">
-                     <div class="caption"><h4 class="text-primary">Srv Description</h4></div>
-                     <div class="tools">
-                        <a href="javascript:;" class="collapse"></a>
-                        <a href="/update?id={{i.id}}"  class="icon-wrench"></a>
-                        <a onclick="loadProfile()" class=" icon-refresh"></a>
-                        <a onclick="confirmmsg({{i.id}})" class="icon-remove"></a>
-                     </div>
+<!--#############################-->
                   </div>
                   <div class="portlet-body">
-                  <ul class="list-group-item-info">
-                     <li id="srv_num" class="text-success"></li>
-                     <li id="Srv_used" class="text-success"></li>
-                     <li id="inter_ip" class="text-success"></li>
-                     <li id="local_ip" class="text-success"></li>
-                     <li id="rank_one" class="text-success"></li>
-                      <li id="admin" class="text-success" ></li>
-
-                  </ul>
-
+<!--########################-->
+                      <div class="clearfix">
+                       <h4 class="block">链接</h4>
+                     <button type="button" onclick="click()" class="btn btn-warning btn-lg">X组服务器列表</button>
+                     <button type="button" onclick="click()" class="btn btn-danger btn-lg">新增服务器</button>
+                     <button type="button" class="btn btn-info btn-lg">变更历史</button>
+                     <button type="button" class="btn btn-success btn-lg">监控</button>
+                  </div>
                   </div>
                </div>
                <!-- END Portlet PORTLET-->
             </div>
          </div>
          <div class="clearfix"></div>
-          <div class="row">
-            <div class="col-md-12">
-               <!-- BEGIN Portlet PORTLET-->
-               <div class="portlet">
-                  <div class="portlet-title">
-                     <div class="caption"><h4 class="text-primary">Nmap Scan  Result</h4></div>
-                     <div class="tools">
-                        <a href="javascript:;" class="collapse"></a>
-                        <a href=""  class="icon-wrench"></a>
-                        <a onclick="" class=" icon-refresh"></a>
-                        <a onclick="" class="icon-remove"></a>
-                     </div>
-                  </div>
-                  <div class="portlet-body">
-
-
-                  </div>
-               </div>
-               <!-- END Portlet PORTLET-->
-            </div>
-         </div>
       </div>
       <!-- END PAGE -->
    </div>
 
   {% end %}
    {% block ext_js %}
-
 <script>
-    $(document).ready(function(){
-        loadProfile();
-
-    });
-
-</script>
-
-<script>
-
-    function dataSplit(value,key) {
-        var urldata="";
-        var iparray=value.split(key);
-        for (index in iparray)
-        {
-            urldata = urldata + '<a href="#">' + iparray[index] + '</a>' + '   |   ';
-        }
-        return urldata;
-            }
-    function loadProfile()
+    function click()
     {
-      $.getJSON("/api?stype=xProfile&id={{i.id}}", function(json){
-          var inter_ip=dataSplit(json.recs.inter_ip,'/n');
-          var local_ip=dataSplit(json.recs.local_ip,'/n');
-          var Srv_used=dataSplit(json.recs.Srv_used,'/n');
-          $("#srv_num").html('服务器编号 : ' + json.recs.srv_num);
-          $("#Srv_used").html('用途说明 : ' + Srv_used);
-          $("#local_ip").html('局域网IP : ' + local_ip);
-          $("#inter_ip").html('外网IP : ' + inter_ip);
-          $("#rank_one").html('所属项目 : ' + json.recs.rank_one);
-          $("#admin").html('管理员 : ' + json.recs.admin);
-        });
+        location.href="/xtable";
     }
-
-   function dodel(id){
-        var rv={};
-        rv.act="del";
-        rv.id=id;
-        $.post("/update",rv,function(v){
-            alert("删除"+ v.result);
-            location.href="/";
-        });
-    }
- function confirmmsg(id){
-        var del_id = id
-        if (confirm("你确认要删除这条记录吗？"))
-        dodel(del_id)
-
-    }
-
-
 </script>
-
-
-
   {% end %}

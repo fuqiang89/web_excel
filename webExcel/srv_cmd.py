@@ -14,7 +14,7 @@ from moudle.table_orm import table_orm
 from moudle.operate_register import operate_register
 from config import dataPath
 
-tl=template.Loader(os.path.join(TP, "webExcel/srv_html"))
+#tl=template.Loader(os.path.join(TP, "webExcel/srv_html"))
 table_operate=table_operate()
 table_orm=table_orm()
 operate_register=operate_register()
@@ -49,13 +49,13 @@ class List(basehandler):
         self.render("xtable.html",i=i)
     def post(self):
         pass
-class Fileds(basehandler):
-    @tornado.web.authenticated
-    def get(self, *args, **kwargs):
-        i=self.input()
-        i.username=self.current_user
-        i.fields=table_orm.get_fields('srv_table')
-        self.write(json_encode(i))
+#class Fileds(basehandler):
+#    @tornado.web.authenticated
+#    def get(self, *args, **kwargs):
+#        i=self.input()
+#        i.username=self.current_user
+#        i.fields=table_orm.get_fields('srv_table')
+#        self.write(json_encode(i))
 
 
 

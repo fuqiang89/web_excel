@@ -16,7 +16,7 @@ class LoginHandler(basehandler):
             authmes = False
         if authmes == True:
             self.set_secure_cookie("user",username,expires_days=0.123)
-            self.redirect(self.get_argument('next', '/'))
+            self.redirect(self.get_argument('next', '/xtable'))
         else:
             self.render("login.html")
 class LogoutHandler(basehandler):
