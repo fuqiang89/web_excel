@@ -18,6 +18,7 @@ class Application(tornado.web.Application):
             (r"/dl",srv_cmd.downLoad),
             (r"/xtable",srv_cmd.List),
             (r"/update",srv_cmd.Update),
+            (r"/xProfile",srv_cmd.xProfile),
             (r"/api",apiMain.API),
             (r"/login",sign.LoginHandler),
             (r"/logout",sign.LogoutHandler)

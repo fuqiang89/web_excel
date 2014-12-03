@@ -2,7 +2,7 @@
 
 import torndb
 
-myHost='192.168.182.129'
+myHost='10.0.0.115'
 myPort='3306'
 myDb='demo'
 myUser='root'
@@ -20,7 +20,7 @@ class mysqlConn():
         self.mysqld.close()
 
 
-sdb=mysqlConn().mysqld
+#sdb=mysqlConn().mysqld
 
 
 

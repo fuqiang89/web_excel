@@ -34,13 +34,18 @@
                <span class="arrow "></span>
                </a>
                <ul class="sub-menu">
-                  <li >
-                     <a href="#">
-                     历史操作记录</a>
-                  </li>
-                  <li class="active" >
-                     <a href="xtable">
-                     x组服务器汇总</a>
+                  <li  class="active">
+                     <a href="javascript:;">
+                     <i class="icon-table"></i>
+                     xTable
+                     <span class="arrow"></span>
+                     </a>
+                     <ul class="sub-menu">
+                        <li ><a href="/"> xList</a></li>
+                        <li ><a href="xProfile"> xProfile</a></li>
+                        <li class="active"><a href="update"> xUpdate </a></li>
+                         <li ><a href="history"> History Operate </a></li>
+                     </ul>
                   </li>
                </ul>
             </li>
@@ -51,6 +56,7 @@
                </a>
             </li>
          </ul>
+
          <!-- END SIDEBAR MENU -->
       </div>
       <!-- END SIDEBAR -->
@@ -75,7 +81,9 @@
                      <a href="/">Home</a>
                      <i class="icon-angle-right"></i>
                   </li>
-                  <li><a href="xtable">X-Table</a></li>
+                  <li><a href="xtable">xTable</a></li>
+                   <i class="icon-angle-right"></i>
+                   <li><a href="xpdate">xUpdate</a></li>
                </ul>
                <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
@@ -98,15 +106,15 @@
                      <div class="row">
                         <div class="col-md-3">
                            <div class="form-group">
-                              <label class="control-label alert-success" for="srv_num"><strong>服务器编号(srv_num):</strong></label>
+                              <label class="control-label " for="srv_num"><strong>服务器编号(srv_num):</strong></label>
                               <input id="srv_num" rel="v" name="srv_num" type="text" class="form-control" value="" placeholder="编号" />
                            </div>
                            <div class="form-group">
-                              <label class="control-label alert-info" for="re_admin"><strong>接口人(re_admin):</strong></label>
+                              <label class="control-label " for="re_admin"><strong>接口人(re_admin):</strong></label>
                               <input id="re_admin" rel="v" name="re_admin" type="text" class="form-control" value="" placeholder="xx|xx" />
                            </div>
                            <div class="form-group">
-                             <label class="control-label alert-warning" ><strong>管理员(admin):</strong></label>
+                             <label class="control-label " ><strong>管理员(admin):</strong></label>
                               <br>
                              <select class="selectpicker   show-tick "    name="admin" id="admin"  data-width="auto"   >
                                 {%  for admin in i.useAdmin.useAdmin  %}
@@ -117,29 +125,29 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                              <label class="control-label alert-success" for="rank_one"><strong>项目(rank_one):</strong></label>
+                              <label class="control-label " for="rank_one"><strong>项目(rank_one):</strong></label>
                               <input id="rank_one" rel="v" name="rank_one" type="text" class="form-control" value="" placeholder="编号" />
                            </div>
 
                            <div class="form-group">
-                              <label class="control-label alert-warning" for="Srv_used"><strong>用途(Srv_used):</strong></label>
+                              <label class="control-label " for="Srv_used"><strong>用途(Srv_used):</strong></label>
                               <textarea class="form-control"  rel="v"  id="Srv_used" rows="7" placeholder="Enter a message ..."></textarea>
                            </div>
                         </div>
                         <div class="col-md-3">
                            <div class="form-group">
-                              <label class="control-label alert-info" for="inter_ip"><strong>外网IP(inter_ip):</strong></label>
+                              <label class="control-label " for="inter_ip"><strong>外网IP(inter_ip):</strong></label>
                               <textarea class="form-control" rel="v" id="inter_ip" rows="5" placeholder="Enter inter ip"></textarea>
                            </div>
                            <div class="form-group">
-                              <label class="control-label alert-warning" for="inter_ip"><strong>内网IP(local_ip):</strong></label>
+                              <label class="control-label " for="inter_ip"><strong>内网IP(local_ip):</strong></label>
                               <textarea class="form-control" rel="v" id="local_ip" rows="5" placeholder="Enter local ip"></textarea>
                            </div>
 
                         </div>
                         <div class="col-md-3">
                            <div class="form-group">
-                              <label class="control-label alert-info" for="note"><strong>备注(note):</strong></label>
+                              <label class="control-label alert-success" for="note"><strong>备注(note):</strong></label>
                               <textarea class="form-control" rel="v" id="note" rows="5" placeholder="Enter a message ..."></textarea>
                            </div>
                         </div>

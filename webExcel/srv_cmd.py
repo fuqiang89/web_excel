@@ -75,10 +75,7 @@ class Update(basehandler):
         i.fields=table_orm.get_fields("srv_table")
         i.useAdmin=table_orm.get_useAdmin("srv_table")
         self.render("Upload_xtable.html",i=i)
-        #i.s_keys=""
-        #t=tl.load("srv_update.html")
-        #htmlsrc=t.generate(i=i)
-        #self.write(htmlsrc)
+
 
     def post(self):
         fields=table_orm.get_fields("srv_table")['fields']
@@ -167,6 +164,19 @@ class downLoad(basehandler):
                 self.finish()
         except Exception,exc:
             pass
+
+
+class xProfile(basehandler):
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        i=self.input()
+        try:
+            i.id
+        except Exception:
+            i.id=table_operate.getSelf("select max(id) as id from s_table")[0]['id']
+
+        i.username=self.current_user
+        self.render("xProfile.html",i=i)
 #class Search(basehandler):
 #    def get(self):
 #        i=self.input()

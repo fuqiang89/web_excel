@@ -29,21 +29,22 @@
             </li>
             <li class="active">
                <a href="javascript:;">
-               <i class="icon-folder-open"></i>
+               <i class="icon-th"></i>
                <span class="title">服务器管理</span>
                <span class="arrow "></span>
                </a>
                <ul class="sub-menu">
                   <li  class="active">
                      <a href="javascript:;">
-                     <i class="icon-cogs"></i>
+                     <i class="icon-table"></i>
                      xTable
                      <span class="arrow"></span>
                      </a>
                      <ul class="sub-menu">
-                        <li ><a href="/"><i class="icon-user"></i>  xList</a></li>
-                        <li class="active"><a href="api"><i class="icon-external-link"></i>  xProfile</a></li>
-                        <li><a href="#"><i class="icon-bell"></i>  you know!</a></li>
+                        <li ><a href="/">  xList</a></li>
+                        <li class="active"><a href="xProfile">  xProfile</a></li>
+                        <li ><a href="update"> xUpdate </a></li>
+                         <li ><a href="history"> History Operate </a></li>
                      </ul>
                   </li>
                </ul>
@@ -79,7 +80,9 @@
                      <a href="/">Home</a>
                      <i class="icon-angle-right"></i>
                   </li>
-                  <li><a href="api">X-Profile</a></li>
+                  <li><a href="xtable">xTable</a></li>
+                   <i class="icon-angle-right"></i>
+                   <li><a href="xProfile">X-Profile</a></li>
                </ul>
                <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
@@ -96,22 +99,23 @@
                <!-- BEGIN Portlet PORTLET-->
                <div class="portlet">
                   <div class="portlet-title">
-                     <div class="caption"><h4 class="text-primary">Nestable Portlets</h4></div>
+                     <div class="caption"><h4 class="text-primary">Srv Description</h4></div>
                      <div class="tools">
                         <a href="javascript:;" class="collapse"></a>
-                        <a href="#portlet-config" data-toggle="modal" class="config"></a>
-                        <a href="javascript:;" class="reload"></a>
-                        <!--<a href="javascript:;" class="remove"></a>-->
+                        <a href="/update?id={{i.id}}"  class="icon-wrench"></a>
+                        <a onclick="loadProfile()" class=" icon-refresh"></a>
+                        <a onclick="confirmmsg({{i.id}})" class="icon-remove"></a>
                      </div>
                   </div>
                   <div class="portlet-body">
                   <ul class="list-group-item-info">
-                     <li ><strong class="text-success">V.A.T Reg :</strong> 542554(DEMO)78</li>
-                     <li><strong class="text-success">Account Name:</strong> FoodMaster Ltd</li>
-                     <li><strong class="text-success">SWIFT code:</strong> 45454DEMO545DEMO</li>
-                     <li><strong class="text-success">V.A.T Reg #:</strong> 542554(DEMO)78</li>
-                     <li><strong class="text-success">Account Name:</strong> FoodMaster Ltd</li>
-                     <li><strong class="text-success">SWIFT code:</strong> 45454DEMO545DEMO</li>
+                     <li id="srv_num" class="text-success"></li>
+                     <li id="Srv_used" class="text-success"></li>
+                     <li id="inter_ip" class="text-success"></li>
+                     <li id="local_ip" class="text-success"></li>
+                     <li id="rank_one" class="text-success"></li>
+                      <li id="admin" class="text-success" ></li>
+
                   </ul>
 
                   </div>
@@ -121,24 +125,7 @@
          </div>
           <div class="col-md-12">
                             <div class="portlet-body">
-                     <ul class="list-unstyled">
-                        <li>Lorem ipsum dolor sit amet</li>
-                        <li>Consectetur adipiscing elit</li>
-                        <li>Integer molestie lorem at massa</li>
-                        <li>Facilisis in pretium nisl aliquet</li>
-                        <li>
-                           Nulla volutpat aliquam velit
-                           <ul>
-                              <li>Phasellus iaculis neque</li>
-                              <li>Purus sodales ultricies</li>
-                              <li>Vestibulum laoreet porttitor sem</li>
-                              <li>Ac tristique libero volutpat at</li>
-                           </ul>
-                        </li>
-                        <li>Faucibus porta lacus fringilla vel</li>
-                        <li>Aenean sit amet erat nunc</li>
-                        <li>Eget porttitor lorem</li>
-                     </ul>
+
                   </div>
              </div>
 
@@ -149,5 +136,60 @@
 
   {% end %}
    {% block ext_js %}
+
+<script>
+    $(document).ready(function(){
+        loadProfile();
+
+    });
+
+</script>
+
+<script>
+
+    function dataSplit(value,key) {
+        var urldata="";
+        var iparray=value.split(key);
+        for (index in iparray)
+        {
+            urldata = urldata + '<a href="#">' + iparray[index] + '</a>' + '   |   ';
+        }
+        return urldata;
+            }
+    function loadProfile()
+    {
+      $.getJSON("/api?stype=xProfile&id={{i.id}}", function(json){
+          var inter_ip=dataSplit(json.recs.inter_ip,'/n');
+          var local_ip=dataSplit(json.recs.local_ip,'/n');
+          var Srv_used=dataSplit(json.recs.Srv_used,'/n');
+          $("#srv_num").html('服务器编号 : ' + json.recs.srv_num);
+          $("#Srv_used").html('用途说明 : ' + Srv_used);
+          $("#local_ip").html('局域网IP : ' + local_ip);
+          $("#inter_ip").html('外网IP : ' + inter_ip);
+          $("#rank_one").html('所属项目 : ' + json.recs.rank_one);
+          $("#admin").html('管理员 : ' + json.recs.admin);
+        });
+    }
+
+   function dodel(id){
+        var rv={};
+        rv.act="del";
+        rv.id=id;
+        $.post("/update",rv,function(v){
+            alert("删除"+ v.result);
+            location.href="/";
+        });
+    }
+ function confirmmsg(id){
+        var del_id = id
+        if (confirm("你确认要删除这条记录吗？"))
+        dodel(del_id)
+
+    }
+
+
+</script>
+
+
 
   {% end %}

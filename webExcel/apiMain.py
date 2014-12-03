@@ -17,10 +17,18 @@ tl=template.Loader(os.path.join(TP, "webExcel/srv_html"))
 table_operate=table_operate()
 table_orm=table_orm()
 operate_register=operate_register()
+#url/api?stype=xx&
 class  API(basehandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
         i=self.input()
         i.username=self.current_user
-        i.fields=table_orm.get_fields("srv_table")
-        self.render("xProfile.html",i=i)
+#############xProfile##############
+        if i.stype == "xProfile":
+            fields=table_orm.get_fields("srv_table")['fields']
+            i.recs=table_operate.getEntityById(i.id)
+            self.write(json_encode(i))
+
+
+
+######## End   xProfile ##########

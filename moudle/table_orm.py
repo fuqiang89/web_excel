@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
 __author__ = 'fuqiang'
-from config import sdb,dataPath
+from config import *
+import torndb
 import tablib
 import sys,time
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
 
 class  table_orm():
+    def __init__(self):
+        self.sdb=torndb.Connection( '%s:%s'  % (myHost,myPort),myDb,myUser,myPasswd)
+    def __del__(self):
+        self.sdb.close()
     def get_fields(self,table_name):
-        item=sdb.get("""select fields from table_module where table_name = '%s' """ % table_name)
+        item=self.sdb.get("""select fields from table_module where table_name = '%s' """ % table_name)
         item['fields']=item['fields'].split(',')
         return item
     def get_useAdmin(self,table_name):
-        item=sdb.get("""select useAdmin from table_module where table_name = '%s' """ % table_name)
+        item=self.sdb.get("""select useAdmin from table_module where table_name = '%s' """ % table_name)
         item['useAdmin']=item['useAdmin'].split(',')
         return item
     def replace(self,item,fields,type=None):
