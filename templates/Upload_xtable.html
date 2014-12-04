@@ -194,6 +194,7 @@
         });
         rv.admin=$('.selectpicker option:selected').text();
         rv.status="ok";
+        rv.username="{{i.username}}"
         {% if i.recs and i.recs.id %}
         rv.act='update';
         {% else %}
