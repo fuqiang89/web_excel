@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = ''
-import os,sys
+import os,sys,datetime
 from tornado import template
 from tornado.web import RequestHandler
 import tornado.web
@@ -13,12 +13,23 @@ from moudle.srv_m import table_operate
 from moudle.table_orm import table_orm
 from moudle.operate_register import operate_register
 from config import dataPath
+import logging
 
 #tl=template.Loader(os.path.join(TP, "webExcel/srv_html"))
 table_operate=table_operate()
 table_orm=table_orm()
 operate_register=operate_register()
 
+
+
+
+###############
+#logging.basicConfig(level=logging.ERROR,
+#                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+#                    datefmt='%a, %d %b %Y %H:%M:%S',
+#                    filename="%ssrv_cmd.log" % dataPath,
+#                     filemode='a')
+#########
 class Data(basehandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
@@ -96,7 +107,6 @@ class Update(basehandler):
         self.set_header("Content-Type", "application/json")
         v=storage()
         i=self.input()
-#        i.s_keys=""
         v=CopyData_INC(v,i,fields)
         try:
             if i.act=="add":
@@ -105,11 +115,11 @@ class Update(basehandler):
                 if vv==True:
                     rv=table_orm.replace(v,fields,type='in')
                     table_operate.insert(rv)
-                    #try:
-                    #    operate_register.reg_add(v,'s_table','add')
-                    #except Exception, exc:
-                    #    print(sys.exc_info())
-                    #    print(str(exc))
+                    try:
+                        operate_register.reg_add_update(v,'s_table','add',i.username,i.xExplain)
+                    except Exception, exc:
+                        print(sys.exc_info())
+                        print(str(exc))
                     self.write(JsonResult("OK"))
 
                 else:
@@ -121,20 +131,22 @@ class Update(basehandler):
                 if vv==True:
                     rv=table_orm.replace(v,fields,type='in')
                     table_operate.update(rv)
-                    #try:
-                    #    operate_register.reg_add(v,'s_table','update')
-                    #except Exception, exc:
-                    #    print(sys.exc_info())
-                    #    print(str(exc))
+                    try:
+                        #print(i.xExplain)
+                        operate_register.reg_add_update(v,'s_table','update',i.username,i.xExplain)
+                    except Exception, exc:
+                        print(sys.exc_info())
+                        print(str(exc))
                     self.write(JsonResult("OK"))
                 else:
                     self.write(JsonResult("      %s       error!!!" % str(vv)))
             if i.act=="del":
-                #try:
-                #    operate_register.reg_del(i.id,'s_table',fields)
-                #except Exception, exc:
-                #    print(sys.exc_info())
-                #    print(str(exc))
+                try:
+                    operate_register.reg_del(i.id,'s_table',fields,i.username,i.xExplain)
+
+                except Exception, exc:
+                    print(i)
+                    print(str(exc))
                 table_operate.delEntityById(i.id)
 
                 self.write(JsonResult("OK"))
@@ -171,8 +183,9 @@ class xProfile(basehandler):
     def get(self, *args, **kwargs):
         i=self.input()
         try:
-            i.id
+            i.id=table_operate.getEntityBySrv_num(i.srv_num)['id']
         except Exception:
+            #self.render('page_500.html')
             i.id=table_operate.getSelf("select max(id) as id from s_table")[0]['id']
 
         i.username=self.current_user

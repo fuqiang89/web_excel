@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'fuqiang'
 import os,sys
+from bson import json_util
 from tornado import template
 from tornado.web import RequestHandler
 import tornado.web
@@ -26,9 +27,18 @@ class  API(basehandler):
 #############xProfile##############
         if i.stype == "xProfile":
             fields=table_orm.get_fields("srv_table")['fields']
+            #i.recs=InitStorage(i,fields)
             i.recs=table_operate.getEntityById(i.id)
             self.write(json_encode(i))
-
-
-
 ######## End   xProfile ##########
+##########history##################
+        if i.stype == "history":
+            try:
+                dhistory=table_operate.getSelf("select * from table_op_reg order by autoid desc " )
+                for dkey in dhistory:
+                    dkey['op_time']=str(dkey['op_time'])
+
+            except Exception:
+                self.render("page_500.html")
+            self.write(json_encode(dhistory))
+##################################

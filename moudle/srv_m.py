@@ -37,6 +37,16 @@ class table_operate:
             return item
         else:
             return None
+
+    def getEntityBySrv_num(self,srv_num):
+        if srv_num:
+            item=self.sdb.get("""select * from s_table where srv_num=%s""",srv_num)
+            return item
+        else:
+            return None
+
+
+
     def getId(self,id):
         if id:
             id=int(id)

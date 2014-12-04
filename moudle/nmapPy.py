@@ -1,8 +1,13 @@
 __author__ = 'fuqiang'
 
 import nmap
+import torndb,time
 import json
-
+myHost='10.0.0.115'
+myPort='3306'
+myDb='demo2'
+myUser='root'
+myPasswd='123456'
 class Snmap():
     def nmap_port_sev(self,ip,arguments=' -T4  -sUT   -n '):
         data={}
@@ -32,5 +37,21 @@ class Snmap():
         print data
 
 
+class mysqlConn():
+    def __init__(self):
+        self.mysqld = torndb.Connection( '%s:%s'  % (myHost,myPort),myDb,myUser,myPasswd)
+    def mysqld(self):
+        mysqld=self.mysqld
+        return mysqld
+    def __del__(self):
+        self.mysqld.close()
+
+sdb=mysqlConn().mysqld
 if __name__ == '__main__':
-    Snmap=Snmap().nmap_port_sev('121.207.240.92')
+    cstart=time.time()
+    ipp=['127.0.0.1','69.59.152.220','115.239.211.110','162.243.87.81']
+    for i in ipp:
+        print(i)
+        #Snmap().nmap_port_sev(i)
+    cend=time.time()
+    runtime=cend -cstart

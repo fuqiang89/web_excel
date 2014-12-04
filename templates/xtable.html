@@ -102,12 +102,11 @@
               导出数据<i class=""></i>
           </button>
          <div class="clearfix"></div>
-          <!--<div class="alert alert-success" id="events-result">-->
-        <!--Here is the result of event.-->
-           <!--</div>-->
          <table id="table-javascript"></table>
 
          <div class="clearfix"></div>
+     <div class="clearfix"></div>
+
       </div>
       <!-- END PAGE -->
    </div>
@@ -122,21 +121,32 @@
                                     '<i class="glyphicon glyphicon-edit"></i>',
                                 '</a>',
 
-                                '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
-                                    '<i class="glyphicon glyphicon-remove"></i>',
-                                '</a>'
+//                                '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
+//                                    '<i class="glyphicon glyphicon-remove"></i>',
+//                                '</a>'
                             ].join('');
                         }
 
                         window.operateEvents = {
                             'click .edit': function (e, value, row, index) {
                                 doupdate(row.id);
-                            },
-                            'click .remove': function (e, value, row, index) {
-                                confirmmsg(row.id);
                             }
+//                            'click .remove': function (e, value, row, index) {
+////                                confirmmsg(row.id);
+//                                location.href="#myModal";
+//
+//                            }
                         };
 
+
+
+    function srvnumFormatter(value) {
+        var urldata=""
+//        var iparray=value.split('_')
+            urldata = urldata + '<a href="/xProfile?srv_num=' + value + '">' + value + '</a>';
+
+        return urldata;
+            }
 
 
     function interipFormatter(value) {
@@ -144,7 +154,7 @@
         var iparray=value.split('<br>')
         for (index in iparray)
         {
-            urldata = urldata + '<a href="/?' + iparray[index] + '">' + iparray[index] + '</a>' + '<br>';
+            urldata = urldata + '<a href="#?' + iparray[index] + '">' + iparray[index] + '</a>' + '<br>';
         }
         return urldata;
             }
@@ -153,7 +163,7 @@
         var iparray=value.split('<br>')
         for (index in iparray)
         {
-            urldata = urldata + '<a href="/?' + iparray[index] + '">' + iparray[index] + '</a>' + '<br>';
+            urldata = urldata + '<a href="#?' + iparray[index] + '">' + iparray[index] + '</a>' + '<br>';
         }
         return urldata;
             }
@@ -165,10 +175,11 @@
         function dodel(id){
         var rv={};
         rv.act="del";
+        rv.opName="{{i.username}}"
         rv.id=id;
         $.post("/update",rv,function(v){
 //            alert("删除"+ v.result);
-            location.href="/";
+            location.href="/history";
         })
     }
     function confirmmsg(id){
@@ -237,6 +248,16 @@
                                         valign: 'top',
                                         sortable: true
                                     },
+                                 {% elif r=='srv_num' %}
+                                           {
+                                        field: '{{r}}',
+//                                        visible: false,
+                                        formatter: srvnumFormatter,
+                                        title: '{{r}}',
+                                        align: 'bottom',
+                                        valign: 'top',
+                                        sortable: true
+                                    },
                                 {% else %}
                                     {
                                         field: '{{r}}',
@@ -254,7 +275,7 @@
 
                                         {
                                         field: 'operate',
-                                        visible: false,
+//                                        visible: false,
                                         title: 'Operate',
                                         align: 'center',
                                         valign: 'middle',
@@ -309,18 +330,20 @@
             });
     });
 </script>
-<script>
-    $(function () {
 
-//            var $result = $('#events-result');
 
-            $('#table-javascript').bootstrapTable({
-            }).on('click-row.bs.table', function (e, row, $element) {
-                location.href="/xProfile?id=" + row['id'];
-            });
+<!--<script>-->
+    <!--$(function () {-->
 
-    });
-</script>
+<!--//            var $result = $('#events-result');-->
+
+            <!--$('#table-javascript').bootstrapTable({-->
+            <!--}).on('click-row.bs.table', function (e, row, $element) {-->
+                <!--location.href="/xProfile?id=" + row['id'];-->
+            <!--});-->
+
+    <!--});-->
+<!--</script>-->
 
 
   {% end %}

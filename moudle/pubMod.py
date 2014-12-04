@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Administrator'
 import logging
 import datetime
@@ -5,26 +6,24 @@ import sys,re
 import functools
 import cStringIO
 import traceback
+import os
 
+from config import dataPath
 
-
-def LogMod(fname="fname",Path="",Cutlog=False):
+def LogMod(msg,fname="fname",Path=dataPath,Cutlog=False):
     if Cutlog == False:
-        fname=Path + fname
-        logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                    datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=fname,
-                     filemode='a')
+        fname= Path + fname
     else:
         daytime=datetime.datetime.now().strftime('%Y-%m-%d')
-        fname=Path + fname + daytime
-        logging.basicConfig(level=logging.DEBUG,
+        fname=  Path + fname + daytime
+
+    logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
                     filename=fname,
                      filemode='a')
     return logging
+
 
 def catch_exception(func):
     """装饰器
@@ -41,3 +40,4 @@ def catch_exception(func):
             print('\nargs:\n%s\nkwargs:\n%s\nerr_msg:\n%s\n'%(str(args),str(kwargs),err_msg))
             return  err_msg
     return t
+

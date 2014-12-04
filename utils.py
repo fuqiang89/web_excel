@@ -131,9 +131,41 @@ def IsLegalAccounts(varObj):
 
 #匹配IP地址
 def IsIpAddr(varObj):
-    rule = '\d+\.\d+\.\d+\.\d+'
+    rule = '^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-9]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$'
+    #rule ='^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$'
     match = re.match( rule , varObj )
 
     if match:
         return True
     return False
+
+def IsPriIp(obj):
+    rule = '^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-9]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$'
+    match = re.match( rule , obj )
+    if match is None:
+        return False
+    iplist=obj.split('.')
+    #A类
+    if int(iplist[0]) == 10:
+        return True
+    #B类
+    if int(iplist[0]) == 172 and 15 < int(iplist[1]) < 32:
+        return True
+    #C
+    if int(iplist[0]) == 192 and  int(iplist[1]) == 168:
+        return True
+    return False
+
+
+def IsPubIp(obj):
+    rule = '^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-9]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$'
+    match = re.match( rule , obj )
+    if match is None:
+        return False
+    if IsPriIp(obj) == True:
+        return False
+
+    return True
+
+
+

@@ -109,10 +109,10 @@
                               <label class="control-label " for="srv_num"><strong>服务器编号(srv_num):</strong></label>
                               <input id="srv_num" rel="v" name="srv_num" type="text" class="form-control" value="" placeholder="编号" />
                            </div>
-                           <div class="form-group">
-                              <label class="control-label " for="re_admin"><strong>接口人(re_admin):</strong></label>
-                              <input id="re_admin" rel="v" name="re_admin" type="text" class="form-control" value="" placeholder="xx|xx" />
-                           </div>
+                           <!--<div class="form-group">-->
+                              <!--<label class="control-label " for="re_admin"><strong>接口人(re_admin):</strong></label>-->
+                              <!--<input id="re_admin" rel="v" name="re_admin" type="text" class="form-control" value="" placeholder="xx|xx" />-->
+                           <!--</div>-->
                            <div class="form-group">
                              <label class="control-label " ><strong>管理员(admin):</strong></label>
                               <br>
@@ -154,14 +154,33 @@
                      </div>
                      <div class="row">
                         <div class="col-md-12">
-                           <button type="button" class="btn btn-success"  onclick="dosave()" >upload</button>                        </div>
+                      <a href="#myModal" role="button" class="btn btn-success" data-toggle="modal">Submit</a>
+                      <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                 <h4 class="modal-title">（下架&更新）说明</h4>
+                              </div>
+                              <div class="modal-body">
+                           <div class="form-group">
+                              <label class="control-label alert-success" for="xExplain"><strong>说明(explain):</strong></label>
+                              <textarea class="form-control" rel="v" id="xExplain" rows="5" placeholder="Enter a message ..."></textarea>
+                           </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+                                 <button type="button" class="btn btn-info"  onclick="dosave()" >Confirm</button>
+                              </div>
+                           </div>
+                        </div>
                      </div>
-                     <!--<div class="row margin-top-10">-->
-                        <!--<div class="col-md-12">-->
-                           <!--<pre id='toastrOptions'>Settings...</pre>-->
-                        <!--</div>-->
-                     <!--</div>-->
-                  </div>
+
+                        </div>
+                     </div>
+
+                     </div>
                </div>
             </div>
          </div>
@@ -202,9 +221,9 @@
         {% end %}
 
         $.post("/update",rv,function(data,status){
-                alert("Action       "+data.result);
+//                alert("Action       "+data.result);
                 if(data.result == "OK" ){
-                location.href="/";
+                location.href="/history";
                 }
         })
     }

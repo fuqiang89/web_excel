@@ -8,22 +8,30 @@ class operate_register():
         self.sdb=torndb.Connection( '%s:%s'  % (myHost,myPort),myDb,myUser,myPasswd)
     def __del__(self):
         self.sdb.close()
-    def reg_del(self,id,table_name,fields):
+    def reg_del(self,id,table_name,fields,opName,xExplain):
         fields=', '.join(fields)
         tmptime=datetime.datetime.now()
+        #print(opName)
         sql_all="""select %s from %s where id = %s""" % (fields,table_name,id)
         item=self.sdb.get(sql_all)
         item['act']='del'
         item['op_time']=tmptime
+        item['opName']= opName
         item['table_name']=table_name
+        item['xExplain']=xExplain
+        #print(item)
         self.sdb.insert_by_dict('table_op_reg',item)
-    def reg_add(self,obj,table_name,act):
+    def reg_add_update(self,obj,table_name,act,opName,xExplain):
         tmptime=datetime.datetime.now()
+        #print(obj,table_name,act,opName,xExplain)
         obj['table_name']=table_name
         obj['op_time']=tmptime
+        obj['opName']=opName
         obj['act']=act
+        obj['xExplain']=xExplain
         if act=='add':
-            obj['id']=0
+            autoid=self.sdb.get("select max(id) as id from %s" % (table_name))['id']
+            obj['id']=autoid
         self.sdb.insert_by_dict("table_op_reg",obj)
 
 if __name__=='__main__':
