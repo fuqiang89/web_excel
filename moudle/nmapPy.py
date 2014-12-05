@@ -3,6 +3,12 @@ __author__ = 'fuqiang'
 import nmap
 import torndb,time
 import json
+import sys
+from utils import *
+import threading
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 myHost='10.0.0.115'
 myPort='3306'
 myDb='demo2'
@@ -48,10 +54,32 @@ class mysqlConn():
 
 sdb=mysqlConn().mysqld
 if __name__ == '__main__':
+    obj=sdb.query("select srv_num from s_table")
+    IpDict=[]
+    for key in obj:
+        iptmp=(key['srv_num'].split('_')[1]).strip()
+        if IsPubIp(iptmp) == True:
+            IpDict.append(iptmp)
+
+    def thnmap(obj):
+        for i in obj:
+            b=obj.pop()
+            print(b)
+            print(obj)
+            try:
+                Snmap().nmap_port_sev(b)
+            except Exception,esx:
+                print(esx)
+                continue
+    threads = []
+    threads.append(threading.Thread(target=thnmap(IpDict)))
+    threads.append(threading.Thread(target=thnmap(IpDict)))
+    threads.append(threading.Thread(target=thnmap(IpDict)))
     cstart=time.time()
-    ipp=['127.0.0.1','69.59.152.220','115.239.211.110','162.243.87.81']
-    for i in ipp:
-        print(i)
-        #Snmap().nmap_port_sev(i)
+    for t in threads:
+        t.setDaemon(True)
+        t.start()
+    t.join()
     cend=time.time()
     runtime=cend -cstart
+    print(runtime)
