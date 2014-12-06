@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 __author__ = 'fuqiang'
 import os,sys
-from bson import json_util
+import json
+# from bson import json_util
 from tornado import template
 from tornado.web import RequestHandler
 import tornado.web
@@ -24,9 +25,11 @@ class  API(basehandler):
     def get(self, *args, **kwargs):
         i=self.input()
         i.username=self.current_user
+
+
 #############xProfile##############
         if i.stype == "xProfile":
-            fields=table_orm.get_fields("srv_table")['fields']
+            # fields=table_orm.get_fields("srv_table")['fields']
             #i.recs=InitStorage(i,fields)
             i.recs=table_operate.getEntityById(i.id)
             self.write(json_encode(i))
@@ -41,4 +44,14 @@ class  API(basehandler):
             except Exception:
                 self.render("page_500.html")
             self.write(json_encode(dhistory))
+##################################
+#################nmap#####################
+        if i.stype == "nmap":
+            try:
+                dnmap=table_operate.getSelf("SELECT * from table_nmap WHERE srv_num = (SELECT srv_num from s_table WHERE id = %s)" % i.id )
+                for dkey in dnmap:
+                    dkey['opTime']=str(dkey['opTime'])
+            except Exception,e:
+                self.render("page_500.html")
+            self.write(json_encode(dnmap))
 ##################################

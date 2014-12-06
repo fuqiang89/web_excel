@@ -1,6 +1,10 @@
 {% extends "main.html" %}
 
         {% block ext_head %}
+        <style type="text/css">
+            span.tab-space-namp {padding-left:5em;}
+        </style>
+        span.tab-space {padding-left:5em;}
         {% end %}
         {% block nav %}
         {% include  "nav.html" %}
@@ -164,8 +168,8 @@
                      </div>
                   </div>
                   <div class="portlet-body">
-
-
+                <div id="show_nmap" class="clearfix">
+                </div>
                   </div>
                </div>
                <!-- END Portlet PORTLET-->
@@ -178,16 +182,9 @@
   {% end %}
    {% block ext_js %}
 
-<script>
-    $(document).ready(function(){
-        loadProfile();
 
-    });
-
-</script>
 
 <script>
-
     function dataSplit(value,key) {
         var urldata="";
         var iparray=value.split(key);
@@ -233,9 +230,31 @@
 
     }
 
-
+</script>
+<script>
+    function loadNmap()
+    {
+      $.getJSON("/api?stype=nmap&id={{i.id}}", function(json){
+        var  nmapdata=JSON.parse(json[0].nmapdata);
+        var ncode='<li><span class="tab-space-namp">nport</span><span class="tab-space-namp">status</span><span class="tab-space-namp">name</span></li>';
+        var recode='';
+        for (line in nmapdata)
+        {
+            var tmpj=nmapdata[line]
+            var recode=recode + ncode.replace('status',tmpj.state).replace('name',tmpj.name).replace('nport',tmpj.nport);
+        }
+          $("#show_nmap").html(recode);
+        });
+    }
 </script>
 
+<script>
+    $(document).ready(function(){
+        loadProfile();
+        loadNmap();
 
+    });
+
+</script>
 
   {% end %}

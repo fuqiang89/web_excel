@@ -10,7 +10,7 @@ class operate_register():
         self.sdb.close()
     def reg_del(self,id,table_name,fields,opName,xExplain):
         fields=', '.join(fields)
-        tmptime=datetime.datetime.now()
+        tmptime=str(datetime.datetime.now())
         #print(opName)
         sql_all="""select %s from %s where id = %s""" % (fields,table_name,id)
         item=self.sdb.get(sql_all)
