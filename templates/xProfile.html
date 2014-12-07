@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 
         {% block ext_head %}
-        <style type="text/css">
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
             span.tab-space-namp {padding-left:5em;}
         </style>
         span.tab-space {padding-left:5em;}
@@ -172,9 +172,11 @@
                         <h3><span id="nopTime" class="label label-success"></span></h3>
                         </div>
                       <div >
+
                            <h3><button  onclick="reScanNmap()"  class="btn btn-info ">立即扫描</button></h3>
                         </div>
-                     <div class="table-responsive">
+                     <div id="show_scan_status" class="clearfix">
+                        </div>
                         <table class="table table-bordered table-hover">
                            <thead>
                               <tr>
@@ -197,9 +199,7 @@
                <!-- END Portlet PORTLET-->
             </div>
          </div>
-      </div>
-      <!-- END PAGE -->
-   </div>
+
 
   {% end %}
    {% block ext_js %}
@@ -283,14 +283,21 @@
 <script>
     function reScanNmap()
     {
+      var snmap_status = '<img src="/static/metronic/assets/img/ajax-loading.gif" />' +
+              '<h3><span class="tab-space text-success" >开始扫描ing，可能需要比较长的时间，请耐心等待。。。。。</span></h3>';
+        $("#show_scan_status").html(snmap_status);
       $.getJSON("/api?stype=nmap&id={{i.id}}&slevel=scan", function(json){
                 if (json.status == true)
                 {
+
+
                      loadNmap();
+              var successcode='<h3><span class="tab-space text-danger" >扫描成功 + 更新时间：' + json[0].opTime + '</span></h3>';
                 }
                 else
                 {
-                    alert(json.status)
+                 var failurecode='<h3><span class="tab-space text-danger" >扫描失败，是否ip有问题？？</span></h3>';
+                   $("#show_scan_status").html(failurecode);
                 }
         });
 
