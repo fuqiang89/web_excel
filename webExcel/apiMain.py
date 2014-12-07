@@ -10,11 +10,20 @@ from Storage import storage
 from utils import *
 from tornado.escape import json_encode
 from basehandler import basehandler
+import tornado.httpserver
+import tornado.ioloop
+import tornado.options
+import tornado.web
+import tornado.httpclient
+import tornado.gen
+
+#################
 from config import TP
 from moudle.Mysql_orm import table_operate
 from moudle.table_orm import table_orm
 from moudle.operate_register import operate_register
-from config import dataPath
+#################
+
 tl=template.Loader(os.path.join(TP, "webExcel/srv_html"))
 table_operate=table_operate()
 table_orm=table_orm()
@@ -25,6 +34,8 @@ from moudle.nmapApi import Snmap
 
 class  API(basehandler):
     @tornado.web.authenticated
+    @tornado.web.asynchronous
+    @tornado.gen.coroutine
     def get(self, *args, **kwargs):
         i=self.input()
         i.username=self.current_user
@@ -32,8 +43,6 @@ class  API(basehandler):
 
 #############xProfile##############
         if i.stype == "xProfile":
-            # fields=table_orm.get_fields("srv_table")['fields']
-            #i.recs=InitStorage(i,fields)
             i.recs=table_operate.getEntityById(i.id)
             self.write(json_encode(i))
 ######## End   xProfile ##########
@@ -64,10 +73,11 @@ class  API(basehandler):
                     self.render("page_500.html")
             if  i.slevel == "scan":
                 try:
+                    from moudle.apiDef import nmapScan
                     id=i.id
                     srv_num=table_operate.getSelf("""SELECT srv_num from s_table
                      where id={0:s}""".format(id))[0]['srv_num']
-                    nmapdata=Snmap().nmap_port_sev(srv_num)
+                    nmapdata = yield nmapScan(srv_num)
                     self.write(json_encode(nmapdata))
                 except Exception,e:
                     print(e)
