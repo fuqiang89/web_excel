@@ -289,11 +289,11 @@
       $.getJSON("/api?stype=nmap&id={{i.id}}&slevel=scan", function(json){
                 if (json.status == true)
                 {
-
+                var successcode='<h3><span class="tab-space text-success" >扫描完成！</span></h3>';
+                    $("#show_scan_status").html(successcode);
 
                      loadNmap();
-                var successcode='<h3><span class="tab-space text-danger" >扫描成功 + 更新时间：' + json[0].opTime + '</span></h3>';
-                    $("#show_scan_status").html(successcode);
+
                 }
                 else
                 {
