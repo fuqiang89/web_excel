@@ -171,6 +171,9 @@
                         <div class=" pull-right">
                         <h3><span id="nopTime" class="label label-success"></span></h3>
                         </div>
+                      <div >
+                           <h3><button  onclick="reScanNmap()"  class="btn btn-info ">立即扫描</button></h3>
+                        </div>
                      <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                            <thead>
@@ -280,10 +283,12 @@
 <script>
     function reScanNmap()
     {
-        $.getJSON("/api?stype=nmap&id={{i.id}}&slevel=scan", function(json){
-            alert('s')
-
+      $.getJSON("/api?stype=xProfile&slevel=scan&id={{i.id}}", function(json){
+                alert('s');
+                loadNmap();
         });
+
+
     }
 </script>
 
