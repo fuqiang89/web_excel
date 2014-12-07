@@ -69,7 +69,7 @@ class  API(basehandler):
                      where id={0:s}""".format(id))[0]['srv_num']
 
                     nmapdata=Snmap().nmap_port_sev(srv_num)
-                    if type(nmapdata) == 'dict':
+                    if nmapdata != False:
                         nmapdata['reslut']='ok'
                         self.write(json_encode(nmapdata))
                     else:
