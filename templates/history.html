@@ -104,10 +104,29 @@
                         <a onclick="loadhistory()" class=" icon-refresh"></a>
                      </div>
                   </div>
-                  <div  id="show_history" class="portlet-body">
+                  <div class="portlet-body">
+                     <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                           <thead>
+                              <tr>
+                                 <th>操作</th>
+                                 <th>编号</th>
+                                 <th>用途</th>
+                                 <th>备注</th>
+                                 <th>说明</th>
+                                 <th>操作人</th>
+                                 <th>操作时间</th>
+                              </tr>
+                           </thead>
+                           <tbody id="show_history">
 
+                           </tbody>
+                        </table>
+                     </div>
+                </div>
 
-                  </div>
+                  <!--<div  id="show_history" class="portlet-body">-->
+                  <!--</div>-->
                </div>
                <!-- END Portlet PORTLET-->
             </div>
@@ -127,8 +146,19 @@
 <script>
     function loadhistory()
     {
-  var  dcode = '<div  class="alert cssdata "><strong>act</strong><span class="tab-space">编号:srv_num</span><span class="tab-space">用途:Srv_used</span><span class="tab-space">备注:note</span><span class="tab-space">说明:xExplain</span><span class="tab-space">操作人:opName</span><span class="tab-space">时间:dtime</span></div> '
-
+//  var  dcode = '<div  class="alert cssdata "><strong>act</strong><span class="tab-space">
+// 编号:srv_num</span><span class="tab-space">用途:Srv_used</span>
+// <span class="tab-space">备注:note</span><span class="tab-space">说明:xExplain</span>
+// <span class="tab-space">操作人:opName</span><span class="tab-space">时间:dtime</span></div> '
+          var dcode= '<tr>'+
+                          '<td class="cssdata">act</td>' +
+                          '<td class="cssdata">srv_num</td>' +
+                          '<td class="cssdata">Srv_used</td>' +
+                          '<td class="cssdata">note</td>' +
+                          '<td class="cssdata">xExplain</td>' +
+                          '<td class="cssdata">opName</td>' +
+                          '<td class="cssdata">dtime</td>' +
+                     '</tr>';
               $.getJSON("/api?stype=history", function(json){
                   var historydata="";
                   for (line in json)
@@ -136,21 +166,21 @@
                       if (json[line].act == 'del')
                      {
 
-      var tmp=dcode.replace('act','删除').replace('cssdata','alert-danger').replace('srv_num',json[line].srv_num).replace('Srv_used',json[line].Srv_used).replace('note',json[line].note).replace('xExplain',json[line].xExplain).replace('opName',json[line].opName).replace('dtime',(json[line].op_time));
+      var tmp=dcode.replace('act','删除').replace(/cssdata/g,'danger').replace('srv_num',json[line].srv_num).replace('Srv_used',json[line].Srv_used).replace('note',json[line].note).replace('xExplain',json[line].xExplain).replace('opName',json[line].opName).replace('dtime',(json[line].op_time));
                          historydata= historydata + tmp
                      }
 
                       if (json[line].act == 'add')
                      {
 
-                var tmp2=dcode.replace('act','新增').replace('cssdata','alert-success').replace('srv_num',json[line].srv_num).replace('Srv_used',json[line].Srv_used).replace('note',json[line].note).replace('xExplain',json[line].xExplain).replace('opName',json[line].opName).replace('dtime',(json[line].op_time));
+                var tmp2=dcode.replace('act','新增').replace(/cssdata/g,'success').replace('srv_num',json[line].srv_num).replace('Srv_used',json[line].Srv_used).replace('note',json[line].note).replace('xExplain',json[line].xExplain).replace('opName',json[line].opName).replace('dtime',(json[line].op_time));
                          historydata= historydata + tmp2
                      }
 
                       if (json[line].act == 'update')
                      {
 
-                var tmp3=dcode.replace('act','更新').replace('cssdata','alert-warning').replace('srv_num',json[line].srv_num).replace('Srv_used',json[line].Srv_used).replace('note',json[line].note).replace('xExplain',json[line].xExplain).replace('opName',json[line].opName).replace('dtime',(json[line].op_time));
+                var tmp3=dcode.replace('act','更新').replace(/cssdata/g,'warning').replace('srv_num',json[line].srv_num).replace('Srv_used',json[line].Srv_used).replace('note',json[line].note).replace('xExplain',json[line].xExplain).replace('opName',json[line].opName).replace('dtime',(json[line].op_time));
                          historydata= historydata + tmp3
                      }
 

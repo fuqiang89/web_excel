@@ -167,8 +167,25 @@
                         <a onclick="" class="icon-remove"></a>
                      </div>
                   </div>
+
                   <div class="portlet-body">
-                <div id="show_nmap" class="clearfix">
+                     <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                           <thead>
+                              <tr>
+                                 <th>端口</th>
+                                 <th>协议</th>
+                                 <th>状态</th>
+                                 <th>服务名称</th>
+                              </tr>
+                           </thead>
+                           <tbody id="show_nmap">
+
+                           </tbody>
+                        </table>
+                     </div>
+
+                <!--<div id="show_nmap" class="clearfix">-->
                 </div>
                   </div>
                </div>
@@ -236,12 +253,22 @@
     {
       $.getJSON("/api?stype=nmap&id={{i.id}}", function(json){
         var  nmapdata=JSON.parse(json[0].nmapdata);
-        var ncode='<li><span class="tab-space-namp">nport</span><span class="tab-space-namp">status</span><span class="tab-space-namp">name</span></li>';
+//        var ncode='<li><span class="tab-space-namp">nport</span>' +
+//                '<span class="tab-space-namp">status</span>' +
+//                '<span class="tab-space-namp">ntype</span>' +
+//                '<span class="tab-space-namp">name</span></li>';
+          var ncode= '<tr>'+
+                          '<td class="active">nport</td>' +
+                          '<td class="success">ntype</td>' +
+                          '<td class="danger">status</td>' +
+                          '<td class="warning">name</td>' +
+                     '</tr>';
         var recode='';
         for (line in nmapdata)
         {
             var tmpj=nmapdata[line]
-            var recode=recode + ncode.replace('status',tmpj.state).replace('name',tmpj.name).replace('nport',tmpj.nport);
+            recode=recode + ncode.replace('status',tmpj.state).replace('name',tmpj.name).replace('nport',tmpj.nport).replace('ntype',tmpj.ntype);
+
         }
           $("#show_nmap").html(recode);
         });

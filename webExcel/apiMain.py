@@ -19,7 +19,8 @@ tl=template.Loader(os.path.join(TP, "webExcel/srv_html"))
 table_operate=table_operate()
 table_orm=table_orm()
 operate_register=operate_register()
-#url/api?stype=xx&
+
+
 class  API(basehandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
@@ -40,18 +41,20 @@ class  API(basehandler):
                 dhistory=table_operate.getSelf("select * from table_op_reg order by autoid desc " )
                 for dkey in dhistory:
                     dkey['op_time']=str(dkey['op_time'])
-
+                self.write(json_encode(dhistory))
             except Exception:
                 self.render("page_500.html")
-            self.write(json_encode(dhistory))
+
 ##################################
 #################nmap#####################
         if i.stype == "nmap":
             try:
-                dnmap=table_operate.getSelf("SELECT * from table_nmap WHERE srv_num = (SELECT srv_num from s_table WHERE id = %s)" % i.id )
-                for dkey in dnmap:
+                nmap=table_operate.getSelf("SELECT * from table_nmap WHERE srv_num = (SELECT srv_num from s_table WHERE id = %s)" % i.id )
+                for dkey in nmap:
                     dkey['opTime']=str(dkey['opTime'])
+                self.write(json_encode(nmap))
             except Exception,e:
+                print(e)
                 self.render("page_500.html")
-            self.write(json_encode(dnmap))
+
 ##################################

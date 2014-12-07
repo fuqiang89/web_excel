@@ -51,35 +51,36 @@ class mysqlConn():
         return mysqld
     def __del__(self):
         self.mysqld.close()
-
+mylock = threading.RLock()
+class myThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+    def run(self):
+        global IpDict
+        while IpDict:
+            mylock.acquire()
+            ip=IpDict.pop()
+            print ip
+            mylock.release()
+            Snmap().nmap_port_sev(ip)
 sdb=mysqlConn().mysqld
-if __name__ == '__main__':
-    obj=sdb.query("select srv_num from s_table")
-    IpDict=[]
-    for key in obj:
-        iptmp=(key['srv_num'].split('_')[1]).strip()
-        if IsPubIp(iptmp) == True:
-            IpDict.append(iptmp)
 
-    def thnmap(obj):
-        for i in obj:
-            b=obj.pop()
-            print(b)
-            print(obj)
-            try:
-                Snmap().nmap_port_sev(b)
-            except Exception,esx:
-                print(esx)
-                continue
-    threads = []
-    threads.append(threading.Thread(target=thnmap(IpDict)))
-    threads.append(threading.Thread(target=thnmap(IpDict)))
-    threads.append(threading.Thread(target=thnmap(IpDict)))
-    cstart=time.time()
-    for t in threads:
-        t.setDaemon(True)
-        t.start()
-    t.join()
-    cend=time.time()
-    runtime=cend -cstart
-    print(runtime)
+obj=sdb.query("select srv_num from s_table")
+IpDict=[]
+for key in obj:
+    iptmp=(key['srv_num'].split('_')[1]).strip()
+    if IsPubIp(iptmp) == True:
+        IpDict.append(iptmp)
+
+thread1 = myThread()
+thread2 = myThread()
+thread3 = myThread()
+cstart=time.time()
+thread1.start()
+
+thread2.start()
+thread3.start()
+cend=time.time()
+
+runtime=cend -cstart
+print(runtime)

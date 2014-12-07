@@ -2,11 +2,11 @@
 
 import torndb
 
-myHost='172.16.10.101'
+myHost='10.0.0.108'
 myPort='3306'
-myDb='srv_table'
-myUser='srv_table_user'
-myPasswd='srv_table_fuqiang123'
+myDb='demo2'
+myUser='root'
+myPasswd='123456'
 
 TP="G:\\BaiduYunDownload\\webExcel\\web_excel\\"
 dataPath="G:\\BaiduYunDownload\\webExcel\\web_excel\\data\\"

@@ -103,7 +103,6 @@ for key in obj:
     iptmp=str((key['srv_num'].split('_')[1]).strip())
     if IsPubIp(iptmp) == True:
         IpDict.append(iptmp)
-Snmap().nmap_port_sev('127.0.0.1')
 cstart=time.time()
 therd={}
 for i in range(200):
