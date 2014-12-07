@@ -170,13 +170,30 @@
   {% end %}
    {% block ext_js %}
 <script>
-    function Go()
+    function loadNmap(obj)
     {
-    var nip = document.getElementById('nip').value;
-    var args = document.getElementById('args').value;
-     alert(nip + args)
+
+        var  nmapdata=JSON.parse(obj.data.nmapdata);
+
+          var ncode= '<tr>'+
+                          '<td class="active">nport</td>' +
+                          '<td class="success">ntype</td>' +
+                          '<td class="danger">status</td>' +
+                          '<td class="warning">name</td>' +
+                     '</tr>';
+        var recode='';
+        for (line in nmapdata)
+        {
+            var tmpj=nmapdata[line]
+            recode=recode + ncode.replace('status',tmpj.state).replace('name',tmpj.name).replace('nport',tmpj.nport).replace('ntype',tmpj.ntype);
+
+        }
+          $("#show_nmap").html(recode);
+          $("#nopTime").html('扫描时间：' + json[0].opTime);
+
     }
 </script>
+
 <script>
     function ScanNmap()
     {
@@ -192,7 +209,7 @@
                 var successcode='<h3><span class="tab-space text-success" >扫描完成！</span></h3>';
                     $("#show_scan_status").html(successcode);
 
-                     alert(json)
+                     loadNmap(json);
 
                 }
                 else
