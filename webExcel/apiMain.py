@@ -78,7 +78,15 @@ class  API(basehandler):
                     id=i.id
                     srv_num=table_operate.getSelf("""SELECT srv_num from s_table
                      where id={0:s}""".format(id))[0]['srv_num']
-                    nmapdata = yield self.nmapScan(srv_num)
+                    args=''
+                    nmapdata = yield self.nmapScan(srv_num,args)
+                    self.write(json_encode(nmapdata))
+                except Exception,e:
+                    print(e)
+                try:
+                    nip=i.nip
+                    args=i.args
+                    nmapdata = yield self.nmapScan(nip,args)
                     self.write(json_encode(nmapdata))
                 except Exception,e:
                     print(e)
@@ -86,6 +94,8 @@ class  API(basehandler):
 
 ##########nmap#########
     @run_on_executor
-    def nmapScan(self,obj):
-        return Snmap().nmap_port_sev(obj)
+    def nmapScan(self,obj,args):
+        if not args:
+            args=' -T4  -sUT   -n '
+        return Snmap().nmap_port_sev(obj,arguments=args)
 ##################################

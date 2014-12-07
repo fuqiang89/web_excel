@@ -41,6 +41,16 @@ class history(basehandler):
         pass
 
 
+class nmap(basehandler):
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        i=self.input()
+        i.username=self.current_user
+        self.render("nmap.html",i=i)
+    def post(self):
+        pass
+
+
 #class  Socket(tornado.websocket.WebSocketHandler):
 #    @tornado.web.authenticated
     #def open(self):

@@ -20,7 +20,7 @@ class Snmap():
         else:
             ip=srvip.split('_')[1].strip()
             if IsIpAddr(ip) != True:
-                return {'status':False}
+                return False
         tmptime=datetime.datetime.now()
         data={}
         try:
@@ -31,7 +31,7 @@ class Snmap():
             tcpdata=sn[ip].all_tcp()
             udpdata=sn[ip].all_udp()
         except Exception:
-            return {'status':False}
+            return {'status':F}
         keys=[]
         def pStatus(ip,port,type):
             portstatusdict={}
