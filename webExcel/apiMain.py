@@ -16,7 +16,8 @@ import tornado.options
 import tornado.web
 import tornado.httpclient
 import tornado.gen
-
+from tornado.concurrent import run_on_executor
+from concurrent.futures import ThreadPoolExecutor
 #################
 from config import TP
 from moudle.Mysql_orm import table_operate
@@ -33,6 +34,7 @@ from moudle.nmapApi import Snmap
 ###
 
 class  API(basehandler):
+    executor = ThreadPoolExecutor(2)
     @tornado.web.authenticated
     @tornado.web.asynchronous
     @tornado.gen.coroutine
@@ -73,14 +75,17 @@ class  API(basehandler):
                     self.render("page_500.html")
             if  i.slevel == "scan":
                 try:
-                    from moudle.apiDef import nmapScan
                     id=i.id
                     srv_num=table_operate.getSelf("""SELECT srv_num from s_table
                      where id={0:s}""".format(id))[0]['srv_num']
-                    nmapdata = yield nmapScan(srv_num)
+                    nmapdata = yield self.nmapScan(srv_num)
                     self.write(json_encode(nmapdata))
                 except Exception,e:
                     print(e)
 
 
+##########nmap#########
+    @run_on_executor
+    def nmapScan(self,obj):
+        return Snmap().nmap_port_sev(obj)
 ##################################
