@@ -81,6 +81,7 @@ class  API(basehandler):
                     args=''
                     nmapdata = yield self.nmapScan(srv_num,args)
                     self.write(json_encode(nmapdata))
+                    self.finish()
                 except Exception,e:
                     print(e)
                 try:
@@ -88,6 +89,7 @@ class  API(basehandler):
                     args=i.args
                     nmapdata = yield self.nmapScan(nip,args)
                     self.write(json_encode(nmapdata))
+                    self.finish()
                 except Exception,e:
                     print(e)
 
