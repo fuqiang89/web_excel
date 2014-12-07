@@ -292,7 +292,8 @@
 
 
                      loadNmap();
-              var successcode='<h3><span class="tab-space text-danger" >扫描成功 + 更新时间：' + json[0].opTime + '</span></h3>';
+                var successcode='<h3><span class="tab-space text-danger" >扫描成功 + 更新时间：' + json[0].opTime + '</span></h3>';
+                    $("#show_scan_status").html(successcode);
                 }
                 else
                 {
