@@ -10,9 +10,9 @@ import threading
 
 
 
-from moudle import srv_m
+from moudle import Mysql_orm
 from moudle import table_orm
-table_operate=srv_m.table_operate()
+table_operate=Mysql_orm.table_operate()
 reload(sys)
 sys.setdefaultencoding('utf-8')
 myHost='172.16.10.101'
@@ -116,44 +116,3 @@ cend=time.time()
 
 runtime=cend -cstart
 print(runtime)
-
-# thread1 = myThread()
-# thread2 = myThread()
-# thread3 = myThread()
-# thread4 = myThread()
-# thread5 = myThread()
-# thread6 = myThread()
-# thread7 = myThread()
-# thread8 = myThread()
-# thread9 = myThread()
-# thread10 = myThread()
-#
-# cstart=time.time()
-# thread1.start()
-# thread2.start()
-# thread3.start()
-# thread4.start()
-# thread5.start()
-# thread6.start()
-# thread7.start()
-#
-# thread8.start()
-# thread9.start()
-# thread10.start()
-#
-# thread1.join()
-# thread2.join()
-# thread3.join()
-# thread4.join()
-# thread5.join()
-# thread6.join()
-# thread7.join()
-#
-# thread8.join()
-# thread9.join()
-# thread10.join()
-#
-# cend=time.time()
-#
-# runtime=cend -cstart
-# print(runtime)

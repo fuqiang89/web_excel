@@ -84,3 +84,6 @@ class table_operate:
         if item:
             item=storage(item)
         return item
+    ##insert by dict
+    def insert_by_dict(self,table_name,dict):
+        return self.sdb.insert_by_dict(table_name,dict)

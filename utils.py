@@ -158,6 +158,7 @@ def IsPriIp(obj):
 
 
 def IsPubIp(obj):
+    obj=str(obj)
     rule = '^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-9]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$'
     match = re.match( rule , obj )
     if match is None:
@@ -168,5 +169,5 @@ def IsPubIp(obj):
     return True
 
 
-#print IsPubIp('218.60.26.46 ')
+
 

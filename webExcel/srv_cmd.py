@@ -9,7 +9,7 @@ from utils import *
 from tornado.escape import json_encode
 from basehandler import basehandler
 from config import TP
-from moudle.srv_m import table_operate
+from moudle.Mysql_orm import table_operate
 from moudle.table_orm import table_orm
 from moudle.operate_register import operate_register
 from config import dataPath
@@ -186,7 +186,7 @@ class xProfile(basehandler):
             i.id=table_operate.getEntityBySrv_num(i.srv_num)['id']
         except Exception:
             #self.render('page_500.html')
-            i.id=table_operate.getSelf("select max(id) as id from s_table")[0]['id']
+            i.id=table_operate.getSelf('select max(id) as id from s_table')[0]['id']
 
         i.username=self.current_user
         self.render("xProfile.html",i=i)

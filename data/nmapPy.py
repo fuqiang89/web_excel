@@ -9,11 +9,6 @@ import threading
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-myHost='10.0.0.115'
-myPort='3306'
-myDb='demo2'
-myUser='root'
-myPasswd='123456'
 class Snmap():
     def nmap_port_sev(self,ip,arguments=' -T4  -sUT   -n '):
         data={}
