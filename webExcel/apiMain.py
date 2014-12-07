@@ -67,14 +67,8 @@ class  API(basehandler):
                     id=i.id
                     srv_num=table_operate.getSelf("""SELECT srv_num from s_table
                      where id={0:s}""".format(id))[0]['srv_num']
-
                     nmapdata=Snmap().nmap_port_sev(srv_num)
-                    if nmapdata['status'] == True:
-                        nmapdata['data']['reslut']='ok'
-                        self.write(json_encode(nmapdata))
-                    else:
-                        nmapdata['reslut']='failure'
-                        self.write(json_encode(nmapdata))
+                    self.write(json_encode(nmapdata))
                 except Exception,e:
                     print(e)
 
