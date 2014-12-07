@@ -283,7 +283,7 @@
 <script>
     function reScanNmap()
     {
-      $.getJSON("/api?stype=xProfile&slevel=scan&id={{i.id}}", function(json){
+      $.getJSON("/api?stype=nmap&id={{i.id}}&slevel=scan", function(json){
                 alert('s');
                 loadNmap();
         });
