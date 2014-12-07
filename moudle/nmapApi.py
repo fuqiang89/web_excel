@@ -14,7 +14,7 @@ sys.setdefaultencoding('utf-8')
 
 class Snmap():
     def nmap_port_sev(self,srvip,arguments=' -T4  -sUT   -n '):
-
+        arguments=str(arguments).strip()
         if IsIpAddr(srvip) == True:
             ip=srvip
         else:
@@ -31,7 +31,7 @@ class Snmap():
             tcpdata=sn[ip].all_tcp()
             udpdata=sn[ip].all_udp()
         except Exception:
-            return {'status':F}
+            return {'status':False}
         keys=[]
         def pStatus(ip,port,type):
             portstatusdict={}
