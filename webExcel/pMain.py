@@ -51,6 +51,18 @@ class nmap(basehandler):
         pass
 
 
+class monitor(basehandler):
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        i=self.input()
+        i.username=self.current_user
+        if 'ui_ajax' in i.values():
+            self.render("sub/ui_ajax.html",i=i)
+
+        else:
+            self.render("monitor.html",i=i)
+    def post(self, *args, **kwargs):
+        pass
 #class  Socket(tornado.websocket.WebSocketHandler):
 #    @tornado.web.authenticated
     #def open(self):

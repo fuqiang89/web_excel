@@ -21,6 +21,7 @@ class Application(tornado.web.Application):
             (r"/xProfile",srv_cmd.xProfile),
             (r"/history",pMain.history),
             (r"/nmap",pMain.nmap),
+            (r"/monitor",pMain.monitor),
             (r"/api",apiMain.API),
             (r"/login",sign.LoginHandler),
             (r"/logout",sign.LogoutHandler)
