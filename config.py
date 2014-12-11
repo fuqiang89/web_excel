@@ -2,7 +2,7 @@
 
 import torndb
 
-myHost='10.0.0.108'
+myHost='10.0.0.110'
 myPort='3306'
 myDb='demo2'
 myUser='root'
