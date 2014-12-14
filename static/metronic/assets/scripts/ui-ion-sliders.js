@@ -46,7 +46,39 @@ var UIIonSliders = function () {
                 from: 55000,
                 hideText: true
             });
-            
+
+
+$("#sliders_minute").ionRangeSlider({
+    grid: true,
+    from: 1,
+    values: [
+        "1", "2",
+        "3", "4",
+        "5", "6",
+        "7", "8",
+        "9", "10"
+    ]
+});
+var $range = $("#range_30");
+$range.ionRangeSlider({
+    type: "single",
+    min: 1,
+    max: 10,
+    step: 1,
+//    grid: true,
+    grid_snap: true,
+    prefix: "min"
+});
+
+$range.on("change", function () {
+    var $this = $(this),
+        value = $this.prop("value");
+
+    console.log("Value: " + value);
+});
+
+
+
             $("#range_3").ionRangeSlider({
                 type: "double",
                 postfix: " miles",
