@@ -23,12 +23,14 @@ from config import TP
 from moudle.Mysql_orm import table_operate
 from moudle.table_orm import table_orm
 from moudle.operate_register import operate_register
+from moudle.accountMod import *
 #################
 
 tl=template.Loader(os.path.join(TP, "webExcel/srv_html"))
 table_operate=table_operate()
 table_orm=table_orm()
 operate_register=operate_register()
+auth=Authentication()
 ##namp
 from moudle.nmapApi import Snmap
 ###
@@ -93,6 +95,21 @@ class  API(basehandler):
                 except Exception,e:
                     print(e)
 
+
+    @tornado.web.authenticated
+    @tornado.web.asynchronous
+    @tornado.gen.coroutine
+    def post(self, *args, **kwargs):
+        i=self.input()
+        i.username=self.current_user
+        if i.stype == "changePasswd":
+            try:
+                reslut_cPw=auth.change_passwd(i.username,i.old_passwd,i.new_passwd)
+                if reslut_cPw == True:
+                    self.clear_cookie("user")
+                    self.write("ok")
+            except Exception,e:
+                print(e)
 
 ##########nmap#########
     @run_on_executor

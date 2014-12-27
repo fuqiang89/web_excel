@@ -1,0 +1,179 @@
+{% extends "main.html" %}
+
+        {% block ext_head %}
+        {% end %}
+        {% block nav %}
+        {% include  "nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start active">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+
+
+            <li >
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li  class="active">
+                     <a href="javascript:;">
+                     <i class="icon-table"></i>
+                     xTable
+                     <span class="arrow"></span>
+                     </a>
+                     <ul class="sub-menu">
+                        <li ><a href="xtable">  xList</a></li>
+                        <li ><a href="xProfile">  xProfile</a></li>
+                        <li ><a href="update"> xUpdate </a></li>
+                         <li ><a href="history"> History Operate </a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="">
+               <a href="javascript:;">
+               <i class="icon-wrench"></i>
+               <span class="title">web 工具</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li >
+                     <a href="/nmap">
+                     nmap scan</a>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  userinfo <small>userinfo</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="#">userinfo</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+        <div class="text-center">
+          <label class="text-danger" for="new_passwd"><strong>重置密码</strong></label>
+
+            </div>
+        <div class="text-center">
+                     <form class="form-inline" role="form">
+                        <div class="form-group">
+                           <label class="text-danger" for="new_passwd"><strong></strong></label>
+                           <input  type="password" rel="v" class="form-control success" id="old_passwd" placeholder="旧密码">
+                        </div>
+                     </form>
+                  </div>
+        <div class="text-center">
+                     <form class="form-inline" role="form">
+                        <div class="form-group">
+                           <label class="text-danger" for="new_passwd"><strong></strong></label>
+                           <input  type="password" rel="v" class="form-control success" id="new_passwd" placeholder="新密码">
+                        </div>
+                     </form>
+                  </div>
+        <div class="text-center">
+                     <form class="form-inline" role="form">
+                        <div class="form-group">
+                           <label class="text-danger" for="new_passwd"><strong></strong></label>
+                           <input  rel="v"  type="password" class="form-control success" id="new_passwd_r" placeholder="确认密码">
+                        </div>
+
+                     </form>
+                  </div>
+                      <div class="row top-buffer text-center ">
+                       <button type="submit" onclick="dosave()" class="btn btn-success">确定</button>
+                    </div>
+
+
+
+      </div>
+      <!-- END PAGE -->
+   </div>
+
+  {% end %}
+   {% block ext_js %}
+<script>
+  function dosave()
+        {
+        var new_passwd = $("#new_passwd").val().replace(/\s+/g, "");
+        var new_passwd_r = $("#new_passwd_r").val().replace(/\s+/g, "");
+      if(new_passwd.length==0){
+         alert("请输入新密码");
+         return false;
+      }
+            if (new_passwd == new_passwd_r)
+            {
+             var rv={};
+            $("[rel='v']").each(function(){
+            rv[$(this).attr("id")]=$(this).val();
+            });
+            rv.username="{{i.username}}";
+                $.post("/api?stype=changePasswd",rv,function(data,status){
+                if(data == "ok" ){
+                    alert("修改成功！！请重新登录！");
+                location.href="/login";
+                     }
+                    else{
+                    alert("重置密码失败！");
+                    return false;
+
+                }
+                })
+            }
+            else{
+               alert("密码不正确");
+            }
+}
+   </script>
+  {% end %}
