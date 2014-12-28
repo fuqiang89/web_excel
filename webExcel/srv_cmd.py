@@ -33,14 +33,31 @@ operate_register=operate_register()
 class Data(basehandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        ddata=table_operate.getAll()
-        for key  in ddata:
+        i=self.input()
+        i.username=self.current_user
+        keys=['Fileds','Filter']
+        ckeck_keys=set(i.keys()).intersection(set(keys))
+        if  len(list(ckeck_keys))!=2:
+            ddata=table_operate.getAll()
+            for key  in ddata:
+                for vk in key:
+                    if key[vk]:
+                        if vk in ['Srv_used','local_ip','inter_ip','note']:
+                            key[vk]= key[vk].replace('/n','<br>')
+
+            self.write(json_encode(ddata))
+            return
+        if i.Fileds == '':
+            Fileds=table_orm.get_fields("srv_table")['fields']
+        else:
+            Fileds=i.Fileds[:-1].split(':')
+        result_data=table_operate.search(i.search,Fileds,i.Filter,'s_table')
+        for key  in result_data:
             for vk in key:
                 if key[vk]:
                     if vk in ['Srv_used','local_ip','inter_ip','note']:
                         key[vk]= key[vk].replace('/n','<br>')
-        self.write(json_encode(ddata))
-
+        self.write(json_encode(result_data))
 
 class  Tg(basehandler):
     @tornado.web.authenticated

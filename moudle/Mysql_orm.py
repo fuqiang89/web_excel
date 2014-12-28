@@ -15,11 +15,31 @@ class table_operate:
     def getAll(self):
         items=self.sdb.query("select * from s_table  order by id desc")
         return items
+##search
+
     #def search(self,keys):
     #    sql="""select * FROM s_table WHERE srv_num REGEXP '%s' OR inter_ip REGEXP '%s' \
     #     OR local_ip REGEXP '%s' OR role REGEXP '%s' OR admin REGEXP '%s' OR re_man REGEXP '%s'"""
     #    items=sdb.query(sql % (keys,keys,keys,keys,keys,keys))
     #    return items
+    def _sql_where_search(self,_search,Fileds,Filter,tablename,ord='OR'):
+        sql='select * FROM {0:s} WHERE '.format(tablename)
+        for i in Fileds:
+            sql=sql + " {0:s} {1:s} '{2:s}' {3:s} ".format(i,Filter,_search,ord)
+        sql=sql[:-3]
+        return sql
+
+    def search(self,_search,Fileds,Filter,tablename):
+        if Filter in ['REGEXP','LIKE']:
+            sql=self._sql_where_search(_search,Fileds,Filter,tablename,ord='OR')
+            #print(sql)
+            items=self.sdb.query(sql)
+            return items
+        if Filter == 'NOT_REGEXP':
+            Filter='NOT REGEXP'
+            sql=self._sql_where_search(_search,Fileds,Filter,tablename,ord='OR')
+            items=self.sdb.query(sql)
+            return items
 
 #自定义查询
     def getSelf(self,Sql):
