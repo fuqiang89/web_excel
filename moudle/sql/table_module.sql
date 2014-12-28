@@ -28,4 +28,4 @@ CREATE TABLE `table_module` (
 -- ----------------------------
 -- Records of table_module
 -- ----------------------------
-INSERT INTO `table_module` VALUES ('srv_table', 'id,srv_num,inter_ip,local_ip,rank_one,Srv_used,admin,note', '吴枝森,林铮,章伟平,王富强,田碧鑫,方艳燕');
+INSERT INTO `table_module` VALUES ('srv_table', 'id,srv_num,inter_ip,local_ip,rank_one,Srv_used,admin,note', '');
