@@ -23,7 +23,7 @@ class LoginHandler(basehandler):
                 self.redirect(self.get_argument('next', '/xtable'))
             if result_login_status != 0:
                 self.set_secure_cookie("user",username,expires_days=0.123)
-                self.render('userinfo.html',i=i)
+                self.render('user/userinfo.html',i=i)
         else:
             self.render("login.html")
 class LogoutHandler(basehandler):

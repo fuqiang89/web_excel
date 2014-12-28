@@ -1,0 +1,217 @@
+{% extends "../main.html" %}
+
+        {% block ext_head %}
+<!--<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>-->
+   <link href="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/passwd/passwd.css" rel="stylesheet" type="text/css"/>
+   <link rel="stylesheet" type="text/css" href="/static/metronic/assets/plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable.css"/>
+   <link rel="stylesheet" type="text/css" href="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/address/address.css"/>
+        {% end %}
+        {% block nav %}
+        {% include  "../nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start active">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+
+
+            <li >
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li  class="active">
+                     <a href="javascript:;">
+                     <i class="icon-table"></i>
+                     xTable
+                     <span class="arrow"></span>
+                     </a>
+                     <ul class="sub-menu">
+                        <li ><a href="xtable">  xList</a></li>
+                        <li ><a href="xProfile">  xProfile</a></li>
+                        <li ><a href="update"> xUpdate </a></li>
+                         <li ><a href="history"> History Operate </a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="">
+               <a href="javascript:;">
+               <i class="icon-wrench"></i>
+               <span class="title">web 工具</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li >
+                     <a href="/nmap">
+                     nmap scan</a>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  userinfo <small>userinfo</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="#">userinfo</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+
+                     <table id="user" class="table table-bordered table-striped">
+                        <tbody>
+                           <tr>
+                              <td style="width:15%">用户名</td>
+                              <td style="width:50%"><a href="#" id="username" ></a></td>
+                           </tr>
+                           <tr>
+                              <td>密码</td>
+                              <td><a href="#" id="passwd"></a></td>
+                           </tr>
+                          <tr>
+                              <td>Email</td>
+                              <td><a href="#" id="mail"></a></td>
+                           </tr>
+                          <tr>
+                              <td>电话</td>
+                              <td><a href="#" id="phone"></a></td>
+                           </tr>
+                        </tbody>
+                     </table>
+
+    <!--<br><a href="#" class="btn btn-info" id="savebtn">Save</a> <a href="#" class="btn btn-info" id="resetbtn">Reset</a>-->
+</div>
+
+      </div>
+      <!-- END PAGE -->
+   </div>
+
+  {% end %}
+   {% block ext_js %}
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>-->
+
+  <script type="text/javascript" src="/static/metronic/assets/plugins/select2/select2.min.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script> 
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/moment.min.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/address/address.js"></script>
+  <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/passwd/passwd.js"></script>
+
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/wysihtml5/wysihtml5.js"></script>       
+    
+    
+<script>
+    $.fn.editable.defaults.mode = 'inline';
+    $(document).ready(function() {
+
+$('#username').editable({
+    type: 'text',
+    url: '/api?stype=account&slevel=changeUsername',
+    pk: 1,
+    value: '{{i.username}}',
+    title: 'Enter username',
+    ajaxOptions: {
+        dataType: 'json'
+    },
+    success: function(response, newValue) {
+        if(!response) {
+            return "Unknown error!";
+        }
+
+        if(response.success === false) {
+             return response.msg;
+            }
+         }
+    });
+
+        $('#passwd').editable({
+            url: '/api?stype=account&slevel=changePasswd',
+            type: 'passwd',
+            pk: 1,
+            value: {
+                oldPasswd: "",
+                newPasswd: "",
+                retryPasswd: ""
+            },
+            ajaxOptions: {
+                dataType: 'json'
+            },
+    success: function(response, newValue) {
+        if(!response) {
+            return "Unknown error!";
+        }
+
+        if(response.success === false) {
+//             return response.msg;
+               return '执行 错误！';
+            }
+         },
+            validate: function (value) {
+                if (value.oldPasswd == '') return 'oldPasswd is required!';
+                if (value.newPasswd == '') return 'newPasswd is required!';
+                if (value.retryPasswd == '') return 'retryPasswd is required!';
+                if (value.newPasswd != value.retryPasswd ) return 'newPasswd != retryPasswd';
+
+            }
+
+
+
+        });
+
+
+
+    });
+    </script>
+  {% end %}

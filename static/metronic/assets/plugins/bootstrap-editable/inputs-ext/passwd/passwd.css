@@ -1,0 +1,9 @@
+.editable-passwd {
+    display: block;
+    margin-bottom: 5px;  
+}
+
+.editable-passwd span {
+    width: 70px;  
+    display: inline-block;
+}

@@ -94,22 +94,72 @@ class  API(basehandler):
                     self.finish()
                 except Exception,e:
                     print(e)
+#######################
+        if  "myProfile" in i.values():
+            self.render('user/account_info.html',i=i)
 
+################
 
     @tornado.web.authenticated
     @tornado.web.asynchronous
     @tornado.gen.coroutine
     def post(self, *args, **kwargs):
         i=self.input()
+
         i.username=self.current_user
-        if i.stype == "changePasswd":
-            try:
-                reslut_cPw=auth.change_passwd(i.username,i.old_passwd,i.new_passwd)
-                if reslut_cPw == True:
-                    self.clear_cookie("user")
-                    self.write("ok")
-            except Exception,e:
-                print(e)
+        keys=['stype','slevel']
+
+        ckeck_keys=set(i.keys()).intersection(set(keys))
+        if  len(list(ckeck_keys))!=2:
+            print(len(list(ckeck_keys)))
+            self.clear()
+            self.set_status(500)
+            self.finish(json_encode({"success": False}))
+            return False
+
+
+
+        if  i.stype == 'account':
+            if i.slevel == 'firstChangePasswd':
+                try:
+                    reslut_cPw=auth.change_passwd(i.username,i.old_passwd,i.new_passwd)
+                    if reslut_cPw == True:
+                        self.clear_cookie("user")
+                        self.write("ok")
+                        return True
+                except Exception,e:
+                    print(e)
+            if i.slevel == 'changeUsername':
+                try:
+                    print(i.value)
+                    reslut_cUn=auth.change_username(i.username,i.value)
+                    if reslut_cUn:
+                        self.clear_cookie("user")
+                        self.finish(json_encode({"success": True}))
+                        return True
+                    else:
+                        self.write(json_encode({"success": False}))
+                        return False
+                except Exception,e:
+                    print(e)
+                    self.write(json_encode({"success": False}))
+
+            if i.slevel == 'changePasswd':
+
+                try:
+                    reslut_cPw=auth.change_passwd(i.username,i['value[oldPasswd]'],i['value[newPasswd]'])
+                    if reslut_cPw == True:
+                        self.clear_cookie("user")
+                        self.write(json_encode({"success": True}))
+                        return True
+                    else:
+                        self.write(json_encode({"success": False}))
+                    return False
+                except Exception,e:
+                    print(e)
+                    self.write(json_encode({"success": False}))
+                    return False
+
 
 ##########nmap#########
     @run_on_executor

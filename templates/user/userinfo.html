@@ -1,9 +1,9 @@
-{% extends "main.html" %}
+{% extends "../main.html" %}
 
         {% block ext_head %}
         {% end %}
         {% block nav %}
-        {% include  "nav.html" %}
+        {% include  "../nav.html" %}
         {% end %}
 
 
@@ -159,7 +159,7 @@
             rv[$(this).attr("id")]=$(this).val();
             });
             rv.username="{{i.username}}";
-                $.post("/api?stype=changePasswd",rv,function(data,status){
+                $.post("/api?stype=account&slevel=firstChangePasswd",rv,function(data,status){
                 if(data == "ok" ){
                     alert("修改成功！！请重新登录！");
                 location.href="/login";

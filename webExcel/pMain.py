@@ -63,6 +63,14 @@ class monitor(basehandler):
             self.render("monitor.html",i=i)
     def post(self, *args, **kwargs):
         pass
+class myProfile(basehandler):
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        i=self.input()
+        i.username=self.current_user
+        self.render('user/account_info.html',i=i)
+    def post(self, *args, **kwargs):
+        pass
 #class  Socket(tornado.websocket.WebSocketHandler):
 #    @tornado.web.authenticated
     #def open(self):
