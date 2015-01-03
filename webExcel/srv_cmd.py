@@ -99,7 +99,8 @@ class Update(basehandler):
             for keys  in i.recs:
                 if keys in ['Srv_used','local_ip','inter_ip','note']:
                     #if isinstance(i.recs[keys],str):
-                    i.recs[keys]= i.recs[keys].replace('/n',r'\n')
+                    if i.recs[keys]:
+                        i.recs[keys]= i.recs[keys].replace('/n',r'\n')
         i.fields=table_orm.get_fields("srv_table")
         i.useAdmin=table_orm.get_useAdmin("srv_table")
         self.render("Upload_xtable.html",i=i)
