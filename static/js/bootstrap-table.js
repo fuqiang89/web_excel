@@ -1125,6 +1125,7 @@
             },
             error: function (res) {
                 that.trigger('load-error', res.status);
+                location.href="/xtable";
             },
             complete: function () {
                 if (!silent) {
