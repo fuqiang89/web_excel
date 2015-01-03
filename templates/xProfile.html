@@ -252,7 +252,10 @@
         });
         rv.act="del";
         rv.username="{{i.username}}"
-
+        if(rv.xExplain.length==0){
+         alert("说明  is require");
+         return false;
+            }
         rv.id=id;
         $.post("/update",rv,function(v){
 //            alert("删除"+ v.result);

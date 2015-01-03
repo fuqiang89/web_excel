@@ -120,15 +120,15 @@
                      <div class="row">
                         <div class="col-md-3">
                            <div class="form-group">
-                              <label class="control-label " for="srv_num"><strong>服务器编号(srv_num):</strong></label>
-                              <input id="srv_num" rel="v" name="srv_num" type="text" class="form-control" value="" placeholder="编号" />
+                              <label class="control-label " for="srv_num"><strong>MasterIP(srv_127.0.0.1):</strong></label>
+                              <input id="srv_num" rel="v" name="srv_num" type="text" class="form-control" value="" placeholder="MasterIP" />
                            </div>
                            <!--<div class="form-group">-->
                               <!--<label class="control-label " for="re_admin"><strong>接口人(re_admin):</strong></label>-->
                               <!--<input id="re_admin" rel="v" name="re_admin" type="text" class="form-control" value="" placeholder="xx|xx" />-->
                            <!--</div>-->
                            <div class="form-group">
-                             <label class="control-label " ><strong>管理员(admin):</strong></label>
+                             <label class="control-label " ><strong>管理员:</strong></label>
                               <br>
                              <select class="selectpicker   show-tick "    name="admin" id="admin"  data-width="auto"   >
                                 {%  for admin in i.useAdmin.useAdmin  %}
@@ -139,36 +139,38 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                              <label class="control-label " for="rank_one"><strong>项目(rank_one):</strong></label>
+                              <label class="control-label " for="rank_one"><strong>一级项目:</strong></label>
                               <input id="rank_one" rel="v" name="rank_one" type="text" class="form-control" value="" placeholder="编号" />
                            </div>
 
                            <div class="form-group">
-                              <label class="control-label " for="Srv_used"><strong>用途(Srv_used):</strong></label>
-                              <textarea class="form-control"  rel="v"  id="Srv_used" rows="7" placeholder="Enter a message ..."></textarea>
+                              <label class="control-label " for="Srv_used"><strong>用途{}{}{}:</strong></label>
+                              <textarea class="form-control"  rel="v"  id="Srv_used" rows="11" placeholder="Enter a message ..."></textarea>
                            </div>
                         </div>
                         <div class="col-md-3">
                            <div class="form-group">
-                              <label class="control-label " for="inter_ip"><strong>外网IP(inter_ip):</strong></label>
-                              <textarea class="form-control" rel="v" id="inter_ip" rows="5" placeholder="Enter inter ip"></textarea>
+                              <label class="control-label " for="inter_ip"><strong>外网IP:</strong></label>
+                              <textarea class="form-control" rel="v" id="inter_ip" rows="6" placeholder="Enter inter ip"></textarea>
                            </div>
                            <div class="form-group">
-                              <label class="control-label " for="inter_ip"><strong>内网IP(local_ip):</strong></label>
-                              <textarea class="form-control" rel="v" id="local_ip" rows="5" placeholder="Enter local ip"></textarea>
+                              <label class="control-label " for="inter_ip"><strong>内网IP:</strong></label>
+                              <textarea class="form-control" rel="v" id="local_ip" rows="6" placeholder="Enter local ip"></textarea>
                            </div>
 
                         </div>
                         <div class="col-md-3">
                            <div class="form-group">
-                              <label class="control-label alert-success" for="note"><strong>备注(note):</strong></label>
-                              <textarea class="form-control" rel="v" id="note" rows="5" placeholder="Enter a message ..."></textarea>
+                              <label class="control-label alert-success" for="note"><strong>备注:</strong></label>
+                              <textarea class="form-control" rel="v" id="note" rows="15" placeholder="Enter a message ..."></textarea>
                            </div>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-12">
-                      <a href="#myModal" role="button" class="btn btn-success" data-toggle="modal">Submit</a>
+                    {% if i.recs and i.recs.id %}
+
+                      <a href="#myModal" role="button" class="btn btn-success pull-right" data-toggle="modal">Submit</a>
                       <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                            <div class="modal-content">
@@ -185,12 +187,15 @@
                               </div>
                               <div class="modal-footer">
                                  <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-                                 <button type="button" class="btn btn-info"  onclick="dosave()" >Confirm</button>
+                                 <button type="button" class="btn btn-info"  onclick="dosave()" >确认修改</button>
                               </div>
                            </div>
                         </div>
                      </div>
+                    {% else %}
+                  <button type="button" class="btn btn-success pull-right"  onclick="dosave()" >确认新增</button>
 
+                    {% end %}
                         </div>
                      </div>
 
@@ -220,24 +225,58 @@
 
 
     <script>
+    function isMasterIp(str){
+
+    var reg=/^srv_(([01]?[\d]{1,2})|(2[0-4][\d])|(25[0-5]))(\.(([01]?[\d]{1,2})|(2[0-4][\d])|(25[0-5]))){3}$/
+    if(reg.test(str)){
+       return true;
+    }
+    else{
+        alert("masterIp 格式错误 \n example: srv_127.0.0.1");
+        return false;
+    }
+    }
     function dosave(){
         var rv={};
         $("[rel='v']").each(function(){
             rv[$(this).attr("id")]=$(this).val();
         });
+        if(rv.srv_num.length==0){
+         alert("masterIp is require");
+         return false;
+            }
+        if (isMasterIp(rv.srv_num)==false){
+            return false;
+        }
+        if(rv.rank_one.length==0){
+         alert("一级项目 is require");
+         return false;
+            }
+        if(rv.Srv_used.length==0){
+         alert("用途  is require");
+         return false;
+            }
         rv.admin=$('.selectpicker option:selected').text();
         rv.status="ok";
         rv.username="{{i.username}}"
+
         {% if i.recs and i.recs.id %}
         rv.act='update';
+        if(rv.xExplain.length==0){
+         alert("说明  is require");
+         return false;
+            }
         {% else %}
         rv.act='add';
         {% end %}
 
         $.post("/update",rv,function(data,status){
-//                alert("Action       "+data.result);
-                if(data.result == "OK" ){
-                location.href="/history";
+
+                if(data.result == 'True' ){
+                location.href="/history"
+                }
+                else{
+                    alert(data.result)
                 }
         })
     }

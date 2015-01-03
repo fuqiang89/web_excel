@@ -132,32 +132,34 @@ class Update(basehandler):
                 vv=True
                 if vv==True:
                     rv=table_orm.replace(v,fields,type='in')
-                    table_operate.insert(rv)
+                    redata=table_operate.insert(rv)
                     try:
                         operate_register.reg_add_update(v,'s_table','add',i.username,i.xExplain)
                     except Exception, exc:
                         print(sys.exc_info())
                         print(str(exc))
-                    self.write(JsonResult("OK"))
+
+                    self.write(JsonResult(str(redata)))
 
                 else:
-                    self.write(JsonResult("%s       error!!!" % str(vv)))
+                    self.write(JsonResult("%s  add error!!!" % str(vv)))
 
             if i.act=="update":
                 #vv=valid(v)
                 vv=True
                 if vv==True:
                     rv=table_orm.replace(v,fields,type='in')
-                    table_operate.update(rv)
+                    redata=table_operate.update(rv)
                     try:
                         #print(i.xExplain)
                         operate_register.reg_add_update(v,'s_table','update',i.username,i.xExplain)
                     except Exception, exc:
                         print(sys.exc_info())
                         print(str(exc))
-                    self.write(JsonResult("OK"))
+
+                    self.write(json_encode({'result':str(redata)}))
                 else:
-                    self.write(JsonResult("      %s       error!!!" % str(vv)))
+                    self.write(json_encode({'result':"update error!"}))
             if i.act=="del":
                 try:
                     operate_register.reg_del(i.id,'s_table',fields,i.username,i.xExplain)
@@ -165,9 +167,13 @@ class Update(basehandler):
                 except Exception, exc:
                     print(i)
                     print(str(exc))
-                table_operate.delEntityById(i.id)
-
-                self.write(JsonResult("OK"))
+                try:
+                    table_operate.delEntityById(i.id)
+                    self.write(JsonResult('True'))
+                    return
+                except Exception,e:
+                    self.write(JsonResult(str(e)))
+                    return
         except Exception, exc:
             print(sys.exc_info())
             self.write(JsonResult("%s" % str(exc)))
@@ -208,15 +214,5 @@ class xProfile(basehandler):
 
         i.username=self.current_user
         self.render("xProfile.html",i=i)
-#class Search(basehandler):
-#    def get(self):
-#        i=self.input()
-#        if i.s_keys:
-#            i.recs=optobj.search(i.s_keys)
-#        else:
-#            i.recs=optobj.getAll()
-#        t=tl.load("srvlist.html")
-#        #t=tl.load("new.html")
-#        htmlsrc=t.generate(i=i)
-#        self.write(htmlsrc)
+
 #

@@ -87,17 +87,24 @@ class table_operate:
         if obj.id > 0:
             where='id=%s' % obj.id
             del obj["id"]
-            return self.sdb.update_by_dict('s_table',obj,where)
+            try:
+                self.sdb.update_by_dict('s_table',obj,where)
+                return True
+            except Exception,e:
+                return e
         else:
-            return "ERROR xxxx!!"
+            return "更新错误！id={0}".format(obj.id)
     def insert(self,obj):
         obj=storage(obj)
         if obj.id:
-            #print(obj.id)
-            return "ERROR xxxx!!"
+            return "add error !!"
         else:
             del obj["id"]
-            return self.sdb.insert_by_dict("s_table",obj)
+            try:
+                self.sdb.insert_by_dict("s_table",obj)
+                return True
+            except Exception,e:
+                return e
 
     def getRowBySqlwhere(self,sqlwhere):
         item=self.sdb.get("""select * from s_table where id>0 """+sqlwhere)
