@@ -208,7 +208,8 @@
     function srvnumFormatter(value) {
         var urldata=""
 //        var iparray=value.split('_')
-            urldata = urldata + '<a href="/xProfile?srv_num=' + value + '">' + value + '</a>';
+            var srvnum = value.replace(' ','')
+            urldata = urldata + '<a href="/xProfile?srv_num=' + srvnum + '">' + srvnum + '</a>';
 
         return urldata;
             }
