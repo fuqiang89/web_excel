@@ -207,6 +207,7 @@
 
     function srvnumFormatter(value) {
         var urldata=""
+        var value = value.replace(' ','')
 //        var iparray=value.split('_')
             urldata = urldata + '<a href="/xProfile?srv_num=' + value + '">' + value + '</a>';
 
@@ -216,7 +217,10 @@
 
     function interipFormatter(value) {
         var urldata=""
-        var iparray=value.split('<br>')
+        if (value){var iparray=value.split('<br>')}else{
+            return urldata;
+        }
+
         for (index in iparray)
         {
             urldata = urldata + '<a href="#?' + iparray[index] + '">' + iparray[index] + '</a>' + '<br>';
@@ -225,7 +229,10 @@
             }
     function localipFormatter(value) {
         var urldata=""
-        var iparray=value.split('<br>')
+        if (value){var iparray=value.split('<br>')}else{
+            return urldata;
+        }
+
         for (index in iparray)
         {
             urldata = urldata + '<a href="#?' + iparray[index] + '">' + iparray[index] + '</a>' + '<br>';

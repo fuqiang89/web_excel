@@ -41,6 +41,9 @@ class table_operate:
             items=self.sdb.query(sql)
             return items
 
+
+
+
 #自定义查询
     def getSelf(self,Sql):
         items=self.sdb.query(Sql)
@@ -114,3 +117,15 @@ class table_operate:
     ##insert by dict
     def insert_by_dict(self,table_name,dict):
         return self.sdb.insert_by_dict(table_name,dict)
+
+if __name__ == '__main__':
+    tt=table_operate()
+    with open('port.txt') as f:
+        a=1
+        for ip in f:
+            a=a+1
+            print(a)
+            ip=str(ip.replace(' ','').replace('\n',''))
+            dd=tt.search(ip,['srv_num','inter_ip','local_ip'],'REGEXP','s_table')
+            if dd:
+                print(dd)
