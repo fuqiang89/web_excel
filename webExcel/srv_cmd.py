@@ -135,7 +135,7 @@ class Update(basehandler):
                     rv=table_orm.replace(v,fields,type='in')
                     redata=table_operate.insert(rv)
                     try:
-                        operate_register.reg_add_update(v,'s_table','add',i.username,i.xExplain)
+                        operate_register.reg_add_update(v,'s_table','add',i.username)
                     except Exception, exc:
                         print(sys.exc_info())
                         print(str(exc))
