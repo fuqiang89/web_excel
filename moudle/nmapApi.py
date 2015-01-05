@@ -16,9 +16,9 @@ class Snmap():
     def nmap_port_sev(self,srvip,arguments=' -T4  -sUT   -n '):
         arguments=str(arguments).strip()
         if IsIpAddr(srvip) == True:
-            ip=srvip
+            ip=str(srvip)
         else:
-            ip=srvip.split('_')[1].strip()
+            ip=str(srvip.split('_')[1].strip())
             if IsIpAddr(ip) != True:
                 return False
         tmptime=datetime.datetime.now()
