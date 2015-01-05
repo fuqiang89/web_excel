@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'fuqiang'
 import os,sys
-import json
+import json,ast
 # from bson import json_util
 from tornado import template
 from tornado.web import RequestHandler
@@ -69,8 +69,22 @@ class  API(basehandler):
                     WHERE srv_num =
                     (SELECT srv_num from s_table WHERE id = {0:s})
                     order by id desc limit 1""".format(i.id))
-                    for dkey in nmap:
-                        dkey['opTime']=str(dkey['opTime'])
+                    nmap[0]['opTime']=str(nmap[0]['opTime'])
+                    nmapdata=nmap[0]['nmapdata'][1:-1]
+                    port_ignore=[25,110,111]
+                    port_state=['filtered','closed','open|filtered']
+                    nmapdata=ast.literal_eval(nmapdata)
+                    renmapdata=[]
+                    for portinfo in nmapdata:
+
+                        if (portinfo['nport'] in port_ignore) \
+                            or (portinfo['state'] in port_state):
+                            print(portinfo['nport'],portinfo['state'])
+                        else:
+                            print(portinfo['nport'],portinfo['state'])
+                            renmapdata.append(portinfo)
+                    nmap[0]['nmapdata']=renmapdata
+                    #print(nmap)
                     self.write(json_encode(nmap))
                 except Exception,e:
                     print(e)

@@ -273,7 +273,8 @@
     function loadNmap()
     {
       $.getJSON("/api?stype=nmap&id={{i.id}}&slevel=xProfile", function(json){
-        var  nmapdata=JSON.parse(json[0].nmapdata);
+//        var  nmapdata=JSON.parse(json[0].nmapdata);
+          var  nmapdata=json[0].nmapdata;
 //        var ncode='<li><span class="tab-space-namp">nport</span>' +
 //                '<span class="tab-space-namp">status</span>' +
 //                '<span class="tab-space-namp">ntype</span>' +
