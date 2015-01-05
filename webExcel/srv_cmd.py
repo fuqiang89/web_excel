@@ -103,6 +103,7 @@ class Update(basehandler):
                         i.recs[keys]= i.recs[keys].replace('/n',r'\n')
         i.fields=table_orm.get_fields("srv_table")
         i.useAdmin=table_orm.get_useAdmin("srv_table")
+        i.HardwareTypes=table_orm.get_HardwareTypes("srv_table")
         self.render("Upload_xtable.html",i=i)
 
 
@@ -134,7 +135,7 @@ class Update(basehandler):
                     rv=table_orm.replace(v,fields,type='in')
                     redata=table_operate.insert(rv)
                     try:
-                        operate_register.reg_add_update(v,'s_table','add',i.username,i.xExplain)
+                        operate_register.reg_add_update(v,'s_table','add',i.username)
                     except Exception, exc:
                         print(sys.exc_info())
                         print(str(exc))

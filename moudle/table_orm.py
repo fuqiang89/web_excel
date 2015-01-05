@@ -20,6 +20,10 @@ class  table_orm():
         item=self.sdb.get("""select useAdmin from table_module where table_name = '%s' """ % table_name)
         item['useAdmin']=item['useAdmin'].split(',')
         return item
+    def get_HardwareTypes(self,table_name):
+        item=self.sdb.get("""select HardwareTypes from table_module where table_name = '%s' """ % table_name)
+        item['HardwareTypes']=item['HardwareTypes'].split(',')
+        return item
     def replace(self,item,fields,type=None):
         if type == 'out':
             for value in item:
