@@ -210,8 +210,8 @@ class xProfile(basehandler):
         try:
             i.id=table_operate.getEntityBySrv_num(i.srv_num)['id']
         except Exception:
-            #self.render('page_500.html')
-            i.id=table_operate.getSelf('select max(id) as id from s_table')[0]['id']
+            self.render('page_500.html')
+            #i.id=table_operate.getSelf('select max(id) as id from s_table')[0]['id']
 
         i.username=self.current_user
         self.render("xProfile.html",i=i)

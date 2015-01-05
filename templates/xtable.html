@@ -47,7 +47,7 @@
                      </a>
                      <ul class="sub-menu">
                         <li class="active" ><a href="xtable"> xList</a></li>
-                        <li ><a href="xProfile"> xProfile</a></li>
+                        <!--<li ><a href="xProfile"> xProfile</a></li>-->
                         <li ><a href="update"> xUpdate </a></li>
                          <li ><a href="history"> History Operate </a></li>
                      </ul>
@@ -208,7 +208,9 @@
     function srvnumFormatter(value) {
         var urldata=""
 //        var iparray=value.split('_')
+        if(value){
             var srvnum = value.replace(' ','')
+        }
             urldata = urldata + '<a href="/xProfile?srv_num=' + srvnum + '">' + srvnum + '</a>';
 
         return urldata;
