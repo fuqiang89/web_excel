@@ -136,6 +136,15 @@
                                   {% end %}
                           </select>
                            </div>
+                           <div class="form-group">
+                             <label class="control-label " ><strong>硬件类型:</strong></label>
+                              <br>
+                             <select class="selectpicker_ht   show-tick "    name="HardwareTypes" id="HardwareTypes"  data-width="auto"   >
+                                {%  for ht in i.HardwareTypes.HardwareTypes  %}
+                                  <option>{{ht}}</option>
+                                  {% end %}
+                          </select>
+                           </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
@@ -220,6 +229,7 @@
     <script type="text/javascript">
           $(document).ready(function(e) {
               $('.selectpicker').selectpicker();
+               $('.selectpicker_ht').selectpicker();
           });
       </script>
 
@@ -257,6 +267,7 @@
          return false;
             }
         rv.admin=$('.selectpicker option:selected').text();
+        rv.HardwareTypes=$('.selectpicker_ht option:selected').text();
         rv.status="ok";
         rv.username="{{i.username}}"
 
@@ -293,6 +304,7 @@
                 {% end %}
 
             $('.selectpicker').selectpicker('val', '{{i.recs.admin}}');
+            $('.selectpicker_ht').selectpicker('val', '{{i.recs.HardwareTypes}}');
 //             document.getElementById('Srv_used').innerText='{{i.recs.Srv_used}}';
             {% end %}
 

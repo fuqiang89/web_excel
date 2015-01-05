@@ -103,6 +103,7 @@ class Update(basehandler):
                         i.recs[keys]= i.recs[keys].replace('/n',r'\n')
         i.fields=table_orm.get_fields("srv_table")
         i.useAdmin=table_orm.get_useAdmin("srv_table")
+        i.HardwareTypes=table_orm.get_HardwareTypes("srv_table")
         self.render("Upload_xtable.html",i=i)
 
 
