@@ -22,6 +22,7 @@ class table_operate:
     #     OR local_ip REGEXP '%s' OR role REGEXP '%s' OR admin REGEXP '%s' OR re_man REGEXP '%s'"""
     #    items=sdb.query(sql % (keys,keys,keys,keys,keys,keys))
     #    return items
+
     def _sql_where_search(self,_search,Fileds,Filter,tablename,ord='OR'):
         sql='select * FROM {0:s} WHERE '.format(tablename)
         for i in Fileds:
@@ -48,7 +49,11 @@ class table_operate:
     def getSelf(self,Sql):
         items=self.sdb.query(Sql)
         return items
-
+    def getone(self,Sql):
+        items=self.sdb.get(Sql)
+        return items
+    def mdb(self):
+        return self.sdb
     def delEntityById(self,id):
         return self.sdb.execute("""delete from s_table where id=%s""",id)
 

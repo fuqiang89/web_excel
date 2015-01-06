@@ -198,6 +198,7 @@
                                  <th>协议</th>
                                  <th>状态</th>
                                  <th>服务名称</th>
+                                  <th>状态确认</th>
                               </tr>
                            </thead>
                            <tbody id="show_nmap">
@@ -284,12 +285,43 @@
                           '<td class="success">ntype</td>' +
                           '<td class="active">status</td>' +
                           '<td class="success">name</td>' +
+                          '<td><a onclick="confirmnmap({{i.id}},vPort)" class="btn btn-btnStatus btn-xs green-stripe disabled">verify</a></td>' +
                      '</tr>';
         var recode='';
         for (line in nmapdata)
         {
             var tmpj=nmapdata[line]
-            recode=recode + ncode.replace('status',tmpj.state).replace('name',tmpj.name).replace('nport',tmpj.nport).replace('ntype',tmpj.ntype);
+            if (tmpj.verify == 0){
+            recode=recode + ncode.replace('status',tmpj.state).
+                    replace('name',tmpj.name).
+                    replace('nport',tmpj.nport).
+                    replace('ntype',tmpj.ntype).
+                    replace('verify','等待确认').
+                    replace('btnStatus','warning').
+                    replace('disabled','').
+                    replace('vPort',tmpj.nport);
+            }else if(tmpj.verify == 1){
+            recode=recode + ncode.replace('status',tmpj.state).
+                    replace('name',tmpj.name).
+                    replace('nport',tmpj.nport).
+                    replace('ntype',tmpj.ntype).
+                    replace('verify','确认忽略').
+                    replace('btnStatus','success');
+            }else if(tmpj.verify == 2){
+            recode=recode + ncode.replace('status',tmpj.state).
+                    replace('name',tmpj.name).
+                    replace('nport',tmpj.nport).
+                    replace('ntype',tmpj.ntype).
+                    replace('verify','系统过滤忽略').
+                    replace('btnStatus','primary');
+            }else {
+            recode=recode + ncode.replace('status',tmpj.state).
+                    replace('name',tmpj.name).
+                    replace('nport',tmpj.nport).
+                    replace('ntype',tmpj.ntype).
+                    replace('verify','unknow!!!status!').
+                    replace('btnStatus','danger');
+            }
 
         }
           $("#show_nmap").html(recode);
@@ -322,6 +354,22 @@
 
 
     }
+
+function confirmnmap(id,vPort){
+    var url="/api?stype=nmap&id=SrvId&nport=vPort&slevel=verify".replace('SrvId',id).replace('vPort',vPort);
+
+
+      $.getJSON(url, function(json){
+
+        if (json.status == true){
+            loadNmap();
+        }else{
+            alert(json.error_info);
+        }
+
+      });
+}
+
 </script>
 
 

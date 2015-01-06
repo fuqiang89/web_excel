@@ -2,6 +2,7 @@
 __author__ = 'fuqiang'
 import os,sys
 import json,ast
+import datetime
 # from bson import json_util
 from tornado import template
 from tornado.web import RequestHandler
@@ -69,26 +70,60 @@ class  API(basehandler):
                     WHERE srv_num =
                     (SELECT srv_num from s_table WHERE id = {0:s})
                     order by id desc limit 1""".format(i.id))
+
+                    verifyNmap=table_operate.getone("""
+                    SELECT * from verify_nmap
+                    where srv_num =
+                    (SELECT srv_num from s_table WHERE id = {0:s})
+                    order by id desc limit 1""".format(i.id))
+                    verifyNmap=verifyNmap['nmapdata']
+
+
+                    #verifyNmap=ast.literal_eval(verifyNmap['nmapdata'])
+                    verifyPorts=[]
+                    verifyNmap=ast.literal_eval(verifyNmap)
+                    for verify in verifyNmap:
+                        verifyPorts.append(verify['port'])
+                        verifyPorts.append(verify['verify'])
+
                     nmap[0]['opTime']=str(nmap[0]['opTime'])
                     nmapdata=nmap[0]['nmapdata'][1:-1]
+
                     port_ignore=[25,110,111]
                     port_state=['filtered','closed','open|filtered']
+
                     nmapdata=ast.literal_eval(nmapdata)
                     renmapdata=[]
-                    for portinfo in nmapdata:
 
+                    for portinfo in nmapdata:
+                        if (portinfo['nport'] in verifyPorts):
+                            index=verifyPorts.index(portinfo['nport'])
+
+                            portinfo['verify']=verifyPorts[index+1]
                         if (portinfo['nport'] in port_ignore) \
                             or (portinfo['state'] in port_state):
-                            print(portinfo['nport'],portinfo['state'])
-                        else:
-                            print(portinfo['nport'],portinfo['state'])
-                            renmapdata.append(portinfo)
+                            portinfo['verify']=2
+                        renmapdata.append(portinfo)
+                    #for portinfo in nmapdata:
+                    #
+                    #    if (portinfo['nport'] in port_ignore) \
+                    #        or (portinfo['state'] in port_state):
+                    #        pass
+                    #        #print(portinfo['nport'],portinfo['state'])
+                    #    else:
+                    #        #print(portinfo['nport'],portinfo['state'])
+                    #        renmapdata.append(portinfo)
+                    #for i in renmapdata:
+                    #    print(i)
                     nmap[0]['nmapdata']=renmapdata
                     #print(nmap)
                     self.write(json_encode(nmap))
+                    return
                 except Exception,e:
+                    print(sys.exc_info())
                     print(e)
                     self.render("page_500.html")
+                    return
             if  i.slevel == "scan":
                 try:
                     id=i.id
@@ -106,11 +141,47 @@ class  API(basehandler):
                     nmapdata = yield self.nmapScan(nip,args)
                     self.write(json_encode(nmapdata))
                     self.finish()
+                    return
                 except Exception,e:
                     print(e)
+                    return
+            if i.slevel == "verify":
+                try:
+                    tmptime=datetime.datetime.now()
+                    srv_num=table_operate.getone("""
+                    SELECT srv_num from s_table WHERE id = {0:s}
+                    """.format(i.id))['srv_num']
+                    verifyNmap=table_operate.getone("""
+                        SELECT * from verify_nmap
+                        where srv_num =
+                        (SELECT srv_num from s_table WHERE id = {0:s})
+                        order by id desc limit 1""".format(i.id))
+                    verifyNmap=verifyNmap['nmapdata']
+                    verifyNmap=ast.literal_eval(verifyNmap)
+                    updateVerifyNmap=[]
+                    updateData={}
+                    for vn in verifyNmap:
+                        if str(vn['port'])== i.nport:
+                            vn['verify']= 1
+                        updateVerifyNmap.append(vn)
+                    updateData['srv_num']=srv_num
+                    updateData['opTime']=str(tmptime)
+                    updateData['nmapdata']=json.dumps(updateVerifyNmap)
+                    print(updateData)
+                    table_operate.mdb().update_by_dict('verify_nmap',updateData,
+                                           "srv_num = '{0:s}'".format(srv_num))
+                    self.write(json_encode({'status':True}))
+                    return
+                except Exception,e:
+                    print(e)
+                    self.write(json_encode({'status':False,'error_info':'update error! {0}'.format(str(e))}))
+                    return
+
+
 #######################
         if  "myProfile" in i.values():
             self.render('user/account_info.html',i=i)
+            return
 
 ################
 
