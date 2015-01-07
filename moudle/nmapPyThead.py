@@ -1,25 +1,30 @@
 __author__ = 'fuqiang'
 import sys
-sys.path.append('/root/web_excel/')
+sys.path.append('/data/wwwroot/www.test.com/webroot/web_excel_150107_test/web_excel')
 import nmap
 import torndb,time,datetime
-import json
+import json,ast
 from utils import *
 import threading
 
 
 
 
-from moudle import Mysql_orm
+
+from moudle.Mysql_orm import table_operate
 from moudle import table_orm
-table_operate=Mysql_orm.table_operate()
+table_operate=table_operate()
 reload(sys)
+
+
 sys.setdefaultencoding('utf-8')
-myHost='10.0.0.110'
+
+
+myHost='172.16.10.101'
 myPort='3306'
 myDb='srv_table_test'
-myUser='root'
-myPasswd='123456'
+myUser='srv_table_user'
+myPasswd='srv_table_fuqiang123'
 
 
 
@@ -65,29 +70,66 @@ class Snmap():
             keys.append(uportstatusdict)
             verifyKeys.append(verifyPortUdp)
 
-
-
         srv_num='srv_{0}'.format(ip)
         data['srv_num'] =srv_num
         data['nmapdata']=json.dumps(keys)
         data['opTime']=str(tmptime)
 
+        oldVerify=table_operate.getone("""select nmapdata from verify_nmap
+        where srv_num = '{0:s}'""".format(srv_num))
 
-        verifydata['srv_num'] =srv_num
-        verifydata['nmapdata']=json.dumps(verifyKeys)
-        verifydata['opTime'] =str(tmptime)
-        try:
-            sdbnmap.insert_by_dict('table_nmap',data)
+
+        vports=[]
+        verifyKeysComparison=[]
+
+
+        if oldVerify:
+            oldVerifyData=oldVerify['nmapdata']
+            oldVerifyData=ast.literal_eval(oldVerifyData)
+            for vk in oldVerifyData:
+                if vk['verify'] == 1:
+                    vports.append(vk['port'])
+            for nk in verifyKeys:
+                if nk['port'] in vports:
+                    nk['verify'] = 1
+                    verifyKeysComparison.append(nk)
+                else:verifyKeysComparison.append(nk)
             try:
+                verifydata['srv_num'] =srv_num
+                verifydata['nmapdata']=json.dumps(verifyKeysComparison)
+                verifydata['opTime'] =str(tmptime)
+                sdbnmap.insert_by_dict('table_nmap',data)
+                sdbnmap.update_by_dict('verify_nmap',verifydata, "srv_num = '{0:s}'".format(srv_num))
+            except Exception,e:
+                print(sys.exc_info())
+                print(e)
+        else:
+            try:
+                verifydata['srv_num'] =srv_num
+                verifydata['nmapdata']=json.dumps(verifyKeys)
+                verifydata['opTime'] =str(tmptime)
+                sdbnmap.insert_by_dict('table_nmap',data)
                 sdbnmap.insert_by_dict('verify_nmap',verifydata)
             except Exception,e:
+                print(sys.exc_info())
                 print(e)
 
-                sdbnmap.update_by_dict('verify_nmap',verifydata,
-                                       "srv_num = '{0:s}'".format(srv_num))
-        except Exception,e:
-            print(sys.exc_info())
-            print(e)
+
+
+
+
+        # try:
+        #     sdbnmap.insert_by_dict('table_nmap',data)
+        #     try:
+        #         sdbnmap.insert_by_dict('verify_nmap',verifydata)
+        #     except Exception,e:
+        #         print(e)
+        #
+        #         sdbnmap.update_by_dict('verify_nmap',verifydata,
+        #                                "srv_num = '{0:s}'".format(srv_num))
+        # except Exception,e:
+        #     print(sys.exc_info())
+        #     print(e)
 
         #print data
 
@@ -110,12 +152,14 @@ class myThread(threading.Thread):
         global IpDict
         while IpDict:
             mylock.acquire()
-            ip=IpDict.pop()
+            ip=str(IpDict.pop())
             print ip,len(IpDict)
             mylock.release()
             try:
                 Snmap().nmap_port_sev(ip)
             except Exception,e:
+                print(e)
+                print(sys.exc_info())
                 print(ip + " is nmap error  ")
                 continue
 sdbnmap=mysqlConn().mysqld
