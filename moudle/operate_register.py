@@ -21,14 +21,14 @@ class operate_register():
         item['xExplain']=xExplain
         #print(item)
         self.sdb.insert_by_dict('table_op_reg',item)
-    def reg_add_update(self,obj,table_name,act,opName):
+    def reg_add_update(self,obj,table_name,act,opName,xExplain):
         tmptime=datetime.datetime.now()
         #print(obj,table_name,act,opName,xExplain)
         obj['table_name']=table_name
         obj['op_time']=tmptime
         obj['opName']=opName
         obj['act']=act
-        # obj['xExplain']=xExplain
+        obj['xExplain']=xExplain
         if act=='add':
             autoid=self.sdb.get("select max(id) as id from %s" % (table_name))['id']
             obj['id']=autoid
