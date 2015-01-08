@@ -1,5 +1,5 @@
 __author__ = 'fuqiang'
-import sys
+import sys,ast
 sys.path.append('/data/wwwroot/www.test.com/webroot/web_excel/')
 import nmap
 import datetime
@@ -23,18 +23,17 @@ class Snmap():
                 return False
         tmptime=datetime.datetime.now()
         data={}
-        try:
-
-            sn=nmap.PortScanner()
-            sn.scan(ip,arguments=arguments)
-
-            tcpdata=sn[ip].all_tcp()
-            udpdata=sn[ip].all_udp()
-        except Exception:
-            return {'status':False}
+        verifydata={}
+        sn=nmap.PortScanner()
+        sn.scan(ip,arguments=arguments)
+        tcpdata=sn[ip].all_tcp()
+        udpdata=sn[ip].all_udp()
         keys=[]
+        verifyKeys=[]
+
         def pStatus(ip,port,type):
             portstatusdict={}
+            verifyPort={}
             portstatusdict['ntype']=type
             portstatusdict['nport']=port
             portstatusdict['name']=str(sn[ip][type][port]['name'])
@@ -45,23 +44,65 @@ class Snmap():
             portstatusdict['version']=sn[ip][type][port]['version']
             portstatusdict['reason']=sn[ip][type][port]['reason']
             portstatusdict['cpe']=sn[ip][type][port]['cpe']
-            return portstatusdict
+            portstatusdict['verify']=0
+            verifyPort['port']=port
+            verifyPort['state']=sn[ip][type][port]['state']
+            verifyPort['verify']=0
+            return portstatusdict,verifyPort
         for tport in tcpdata:
-            tportstatusdict=pStatus(ip,tport,'tcp')
+            tportstatusdict,verifyPortTcp=pStatus(ip,tport,'tcp')
             keys.append(tportstatusdict)
+            verifyKeys.append(verifyPortTcp)
 
 
         for uport in udpdata:
-            uportstatusdict=pStatus(ip,uport,'udp')
+            uportstatusdict,verifyPortUdp=pStatus(ip,uport,'udp')
             keys.append(uportstatusdict)
+            verifyKeys.append(verifyPortUdp)
 
-        data['srv_num']='srv_%s' % ip
+        srv_num='srv_{0}'.format(ip)
+        data['srv_num'] =srv_num
         data['nmapdata']=json.dumps(keys)
         data['opTime']=str(tmptime)
-        try:
-            table_operate.insert_by_dict('table_nmap',data)
-        except Exception,e:
-            print(e)
+
+        oldVerify=table_operate.getone("""select nmapdata from verify_nmap
+        where srv_num = '{0:s}'""".format(srv_num))
+
+
+        vports=[]
+        verifyKeysComparison=[]
+
+
+        if oldVerify:
+            oldVerifyData=oldVerify['nmapdata']
+            oldVerifyData=ast.literal_eval(oldVerifyData)
+            for vk in oldVerifyData:
+                if vk['verify'] == 1:
+                    vports.append(vk['port'])
+            for nk in verifyKeys:
+                if nk['port'] in vports:
+                    nk['verify'] = 1
+                    verifyKeysComparison.append(nk)
+                else:verifyKeysComparison.append(nk)
+            try:
+                verifydata['srv_num'] =srv_num
+                verifydata['nmapdata']=json.dumps(verifyKeysComparison)
+                verifydata['opTime'] =str(tmptime)
+                table_operate.insert_by_dict('table_nmap',data)
+                table_operate.mdb().update_by_dict('verify_nmap',verifydata, "srv_num = '{0:s}'".format(srv_num))
+            except Exception,e:
+                print(sys.exc_info())
+                print(e)
+        else:
+            try:
+                verifydata['srv_num'] =srv_num
+                verifydata['nmapdata']=json.dumps(verifyKeys)
+                verifydata['opTime'] =str(tmptime)
+                table_operate.insert_by_dict('table_nmap',data)
+                table_operate.insert_by_dict('verify_nmap',verifydata)
+            except Exception,e:
+                print(sys.exc_info())
+                print(e)
         return {'data':data,'status':True}
 
 
