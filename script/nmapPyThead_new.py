@@ -3,7 +3,7 @@ import sys
 sys.path.append('/data/wwwroot/www.test.com/webroot/web_excel_150106/web_excel')
 import nmap
 import torndb,time,datetime
-import json,ast
+import json,ast,copy
 from utils import *
 import threading
 import time
@@ -13,7 +13,7 @@ import time
 
 
 # from moudle.Mysql_orm import table_operate
-# from moudle import table_orm
+from moudle import table_orm
 # table_operate=table_operate()
 reload(sys)
 
@@ -29,9 +29,11 @@ myPasswd='srv_table_fuqiang123'
 
 
 
+result=[]
+resultVerify=[]
+resultoldVerify=[]
 class Snmap():
     def nmap_port_sev(self,ip,arguments=' -T4  -sUT   -n '):
-        sdb=torndb.Connection( '%s:%s'  % (myHost,myPort),myDb,myUser,myPasswd)
 
         tmptime=datetime.datetime.now()
         data={}
@@ -73,67 +75,28 @@ class Snmap():
             verifyKeys.append(verifyPortUdp)
 
         srv_num='srv_{0}'.format(ip)
-        data['srv_num'] =srv_num
-        data['nmapdata']=json.dumps(keys)
-        data['opTime']=str(tmptime)
+        data['srv_num'] = verifydata['srv_num'] =srv_num
+        # data['nmapdata']=json.dumps(keys)
+        data['nmapdata']=keys
+        data['opTime']= verifydata['opTime'] =str(tmptime)
+        verifydata['nmapdata']=verifyKeys
+        result.append(data)
+        resultVerify.append(verifydata)
 
-        oldVerify=sdb.get("""select nmapdata from verify_nmap
+        oldVerify=sdbnmap.get("""select nmapdata from verify_nmap
         where srv_num = '{0:s}'""".format(srv_num))
-
-
-        vports=[]
-        verifyKeysComparison=[]
-
-
         if oldVerify:
             oldVerifyData=oldVerify['nmapdata']
             oldVerifyData=ast.literal_eval(oldVerifyData)
-            for vk in oldVerifyData:
-                if vk['verify'] == 1:
-                    vports.append(vk['port'])
-            for nk in verifyKeys:
-                if nk['port'] in vports:
-                    nk['verify'] = 1
-                    verifyKeysComparison.append(nk)
-                else:verifyKeysComparison.append(nk)
-            try:
-                verifydata['srv_num'] =srv_num
-                verifydata['nmapdata']=json.dumps(verifyKeysComparison)
-                verifydata['opTime'] =str(tmptime)
-                sdb.insert_by_dict('table_nmap',data)
-                sdb.update_by_dict('verify_nmap',verifydata, "srv_num = '{0:s}'".format(srv_num))
-            except Exception,e:
-                print(sys.exc_info())
-                print(e)
-        else:
-            try:
-                verifydata['srv_num'] =srv_num
-                verifydata['nmapdata']=json.dumps(verifyKeys)
-                verifydata['opTime'] =str(tmptime)
-                sdb.insert_by_dict('table_nmap',data)
-                sdb.insert_by_dict('verify_nmap',verifydata)
-            except Exception,e:
-                print(sys.exc_info())
-                print(e)
-        sdb.close()
+            resultoldVerify.append(oldVerifyData)
+        else:resultoldVerify.append(None)
 
 
 
 
-        # try:
-        #     sdbnmap.insert_by_dict('table_nmap',data)
-        #     try:
-        #         sdbnmap.insert_by_dict('verify_nmap',verifydata)
-        #     except Exception,e:
-        #         print(e)
-        #
-        #         sdbnmap.update_by_dict('verify_nmap',verifydata,
-        #                                "srv_num = '{0:s}'".format(srv_num))
-        # except Exception,e:
-        #     print(sys.exc_info())
-        #     print(e)
 
-        #print data
+
+
 
 
 class mysqlConn():
@@ -166,13 +129,12 @@ class myThread(threading.Thread):
 sdbnmap=mysqlConn().mysqld
 
 obj=sdbnmap.query("select srv_num from s_table")
-sdbnmap.close()
 IpDict=[]
 for key in obj:
     iptmp=str((key['srv_num'].split('_')[1]).strip())
     if IsPubIp(iptmp) == True:
         IpDict.append(iptmp)
-
+IpDict=['127.0.0.1','121.207.254.248']
 cstart=time.time()
 therd={}
 for i in range(200):
@@ -186,4 +148,35 @@ cend=time.time()
 
 runtime=cend -cstart
 print(runtime)
+
+# olddata=copy.deepcopy(resultoldVerify)
+for ok in resultoldVerify:
+    if ok is None:
+        try:
+            row=resultVerify[resultoldVerify.index(ok)]
+            row['nmapdata']=json.dumps(row['nmapdata'])
+            sdbnmap.insert_by_dict('verify_nmap',row)
+            resultoldVerify.remove(ok)
+        except Exception,e:
+            resultoldVerify.remove(ok)
+            print(sys.exc_info())
+            print(e)
+
+# for ko in olddata:
+
+
+
+
+
+# for obj in resultVerify:
+#     verifyKeysComparison=[]
+#     vports=[]
+#     nmapdata=obj['nmapdata']
+#     for vk in nmapdata:
+#         if vk['verify'] ==1:
+#             vports.append(vk['port'])
+#     for nk in result[resultVerify.index(obj)]:
+#         if nk['port'] in vports:
+#             nk['verify'] = 1
+#         else:verifyKeysComparison.append(nk)
 
