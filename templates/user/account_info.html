@@ -157,11 +157,20 @@ function isEmail(value){
                 isok= reg.test(value );
                 if (!isok) {
                     alert("邮箱格式不正确！");
-//                    document.getElementByIdx("mail").focus();
+                    document.getElementByIdx("mail").focus();
                     return false;
                 }else{return true;}
             }
         }
+    function checkMobile(s) {
+    var regu = /^[1][0-9][0-9]{9}$/;
+    var re = new RegExp(regu);
+    isok=re.test(s);
+        if(!isok){alert("电话格式错误！");
+        document.getElementByIdx("mail").focus();
+        return false;
+        }else{return true;}
+    }
     </script>
     
 <script>
@@ -214,8 +223,35 @@ $('#mail').editable({
             }
     });
 
+$('#phone').editable({
+    type: 'text',
+    url: '/api?stype=account&slevel=phone',
+    pk: 1,
+    value: '{{i.phone}}',
+    title: 'Enter phone',
+    ajaxOptions: {
+        dataType: 'json'
+    },
+    success: function(response, newValue) {
+        if(!response) {
+            return "Unknown error!";
+        }
 
-        $('#passwd').editable({
+        if(response.success === false) {
+             return response.msg;
+            }
+         },
+            validate: function (value) {
+                if (value == '') return 'phone is required!';
+                if (checkMobile(value) != true){
+                    return false;
+                }
+            }
+    });
+
+
+
+$('#passwd').editable({
             url: '/api?stype=account&slevel=changePasswd',
             type: 'passwd',
             pk: 1,

@@ -270,7 +270,19 @@ class  API(basehandler):
                     print(e)
                     self.write(json_encode({"success": False}))
                     return False
-
+            if i.slevel == 'phone':
+                #print(i.value)
+                try:
+                    reslut_cMl=auth.change_phone(i.username,i.value)
+                    if reslut_cMl == True:
+                        self.write(json_encode({"success": True}))
+                    else:
+                        self.write(json_encode({"success": False}))
+                        return False
+                except Exception,e:
+                    print(e)
+                    self.write(json_encode({"success": False}))
+                    return False
 ##########nmap#########
     @run_on_executor
     def nmapScan(self,obj,args):
