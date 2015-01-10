@@ -72,8 +72,19 @@ class Authentication:
         except Exception,e:
             print(e)
             return False
+    def change_email(self,username,new_email):
+        try:
+            m_data=self.sdb.get("""select * from account
+                        where del=0 and username='{0}'""".format(username))
+            if m_data:
+                newDict={'mail':new_email}
+                self.sdb.update_by_dict('account',newDict,"username = '{0}'".format(username))
+                return True
+        except Exception,e:
+            print(e)
+            return False
 
-if __name__ == "__main__":
-    dd=Authentication()
-    #print(dd.userAuth('ttt','gg'))
-    print(dd.add_account('dd','dd'))
+#if __name__ == "__main__":
+#    dd=Authentication()
+#    #print(dd.userAuth('ttt','gg'))
+#    print(dd.add_account('dd','dd'))

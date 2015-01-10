@@ -150,7 +150,19 @@
   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/passwd/passwd.js"></script>
 
    <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/wysihtml5/wysihtml5.js"></script>       
-    
+<script>
+function isEmail(value){
+                if (value != "") {
+                var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                isok= reg.test(value );
+                if (!isok) {
+                    alert("邮箱格式不正确！");
+//                    document.getElementByIdx("mail").focus();
+                    return false;
+                }else{return true;}
+            }
+        }
+    </script>
     
 <script>
     $.fn.editable.defaults.mode = 'inline';
@@ -175,6 +187,33 @@ $('#username').editable({
             }
          }
     });
+
+$('#mail').editable({
+    type: 'text',
+    url: '/api?stype=account&slevel=Email',
+    pk: 1,
+    value: '{{i.mail}}',
+    title: 'Enter Email',
+    ajaxOptions: {
+        dataType: 'json'
+    },
+    success: function(response, newValue) {
+        if(!response) {
+            return "Unknown error!";
+        }
+
+        if(response.success === false) {
+             return response.msg;
+            }
+         },
+            validate: function (value) {
+                if (value == '') return 'mail is required!';
+                if (isEmail(value) != true){
+                    return false;
+                }
+            }
+    });
+
 
         $('#passwd').editable({
             url: '/api?stype=account&slevel=changePasswd',

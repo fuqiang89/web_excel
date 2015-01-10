@@ -180,6 +180,10 @@ class  API(basehandler):
 
 #######################
         if  "myProfile" in i.values():
+            accoutinfo=table_operate.getone("select * from account where username='{0}'".format(i.username))
+            i.mail=accoutinfo['mail']
+            i.phone=accoutinfo['phone']
+
             self.render('user/account_info.html',i=i)
             return
 
@@ -216,7 +220,7 @@ class  API(basehandler):
                     print(e)
             if i.slevel == 'changeUsername':
                 try:
-                    print(i.value)
+                    #print(i.value)
                     reslut_cUn=auth.change_username(i.username,i.value)
                     if reslut_cUn:
                         self.clear_cookie("user")
@@ -244,7 +248,19 @@ class  API(basehandler):
                     print(e)
                     self.write(json_encode({"success": False}))
                     return False
-
+            if i.slevel == 'Email':
+                #print(i.value)
+                try:
+                    reslut_cMl=auth.change_email(i.username,i.value)
+                    if reslut_cMl == True:
+                        self.write(json_encode({"success": True}))
+                    else:
+                        self.write(json_encode({"success": False}))
+                        return False
+                except Exception,e:
+                    print(e)
+                    self.write(json_encode({"success": False}))
+                    return False
 
 ##########nmap#########
     @run_on_executor
