@@ -3,7 +3,7 @@ __author__ = ''
 from config import *
 import torndb
 from Storage import storage
-from table_orm import table_orm
+from tableOrm import table_orm
 table_orm=table_orm()
 def GC_set(obj):
     return ""

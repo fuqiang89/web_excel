@@ -13,8 +13,8 @@ from tornado.escape import json_encode
 from basehandler import basehandler
 from config import TP
 from moudle.mysqlOrm import table_operate
-from moudle.table_orm import table_orm
-from moudle.operate_register import operate_register
+from moudle.tableOrm import table_orm
+from moudle.operateRegister import operate_register
 from config import dataPath
 
 table_operate=table_operate()
