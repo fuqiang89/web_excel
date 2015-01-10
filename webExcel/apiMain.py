@@ -148,9 +148,17 @@ class  API(basehandler):
             if i.slevel == "verify":
                 try:
                     tmptime=datetime.datetime.now()
-                    srv_num=table_operate.getone("""
-                    SELECT srv_num from s_table WHERE id = {0:s}
-                    """.format(i.id))['srv_num']
+                    srv_data=table_operate.getone("""
+                    SELECT srv_num,admin from s_table WHERE id = {0:s}
+                    """.format(i.id))
+                    srv_num=srv_data['srv_num']
+                    admin=srv_data['admin']
+                    username=table_operate.getone("""select username from account
+                    where name='{0}'""".format(admin))['username']
+
+                    if i.username != username:
+                        self.write(json_encode({'status':False,'error_info':'你没有权限确认！'}))
+                        return
                     verifyNmap=table_operate.getone("""
                         SELECT * from verify_nmap
                         where srv_num =
@@ -174,6 +182,7 @@ class  API(basehandler):
                     return
                 except Exception,e:
                     print(e)
+                    print(sys.exc_info())
                     self.write(json_encode({'status':False,'error_info':'update error! {0}'.format(str(e))}))
                     return
 
