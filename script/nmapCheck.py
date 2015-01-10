@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'fuqiang'
 import ast
-from moudle.Mysql_orm import table_operate
+from moudle.mysqlOrm import table_operate
 table_operate=table_operate()
 
 def AllMasterIP():

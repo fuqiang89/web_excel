@@ -6,9 +6,9 @@ import datetime
 from utils import *
 
 
-from moudle import Mysql_orm
+from moudle import mysqlOrm
 from moudle import table_orm
-table_operate=Mysql_orm.table_operate()
+table_operate=mysqlOrm.table_operate()
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
