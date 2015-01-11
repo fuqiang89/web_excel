@@ -192,6 +192,7 @@ class  API(basehandler):
             accoutinfo=table_operate.getone("select * from account where username='{0}'".format(i.username))
             i.mail=accoutinfo['mail']
             i.phone=accoutinfo['phone']
+            i.name=accoutinfo['name']
 
             self.render('user/account_info.html',i=i)
             return

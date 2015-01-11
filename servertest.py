@@ -4,7 +4,7 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 from tornado.options import define, options, parse_command_line
-
+from app import apiTest
 from webExcel import sign,srv_cmd,apiMain,pMain
 
 define("port", default=8888, help="run on the given port", type=int)
@@ -24,6 +24,7 @@ class Application(tornado.web.Application):
             (r"/monitor",pMain.monitor),
             (r"/profile",pMain.myProfile),
             (r"/api",apiMain.API),
+            (r"/apiTest",apiTest.apiTst),
             (r"/login",sign.LoginHandler),
             (r"/logout",sign.LogoutHandler)
         ]
