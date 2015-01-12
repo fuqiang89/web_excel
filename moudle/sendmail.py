@@ -14,10 +14,10 @@ class Mail():
         self.text_subtype = 'plain'
         self.html_subtype ='html'
         self.SMTPserver = 'smtp.qq.com'
-        self.sender =     'cdn3322@qq.com'
-        self.USERNAME = 'cdn3322@qq.com'
-        self.PASSWORD = "apptst3421"
-    def Sendmail(self,to_users=['513914894@qq.com'],picname=[],subject='',
+        self.sender =     'xxxx.com'
+        self.USERNAME = 'xxx@qq.com'
+        self.PASSWORD = "xxx"
+    def Sendmail(self,to_users=['xxx@qq.com'],picname=[],subject='',
                  subtoye='html',content='null',filename=''):
         to_users=to_users
         filename=filename
@@ -78,5 +78,5 @@ class Mail():
 sendmail=Mail()
 if __name__ =='__main__':
     mail=Mail()
-    bb=mail.Sendmail(to_users=['513914894@qq.com'])
+    bb=mail.Sendmail(to_users=['xxx@qq.com'])
     print(bb)
