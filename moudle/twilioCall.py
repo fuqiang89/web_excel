@@ -12,9 +12,9 @@ class TwilioCallNotifier():
         self.voice='alice'
         self.language='zh-CN'
         self.loop=3
-        self.token='672cce676d48607ce5cfb960378b1752'
-        self.sid='ACbedcf286eec27acb8bc9ad81dbd32fd4'
-        self.from_='+81345895170'
+        self.token='xxx'
+        self.sid='xxxx'
+        self.from_='xxx'
     def _mk_twiml(self, message):
         '''
         Make Twiml Say XML
@@ -50,4 +50,4 @@ class TwilioCallNotifier():
 CallMs=TwilioCallNotifier()
 if __name__ == '__main__':
     call=TwilioCallNotifier()
-    call.notify('8613799848615','你有一封端口扫描邮件，请查收！')
+    call.notify('xxx','你有一封端口扫描邮件，请查收！')
