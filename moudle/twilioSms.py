@@ -13,9 +13,9 @@ class TwilioSmsNotifier():
         self.voice='alice'
         self.language='zh-CN'
         self.loop=3
-        self.token='b7377852f535471f885b4e92a17e4b70'
-        self.sid='ACe16e98d8211ad87d6ce7af1474ba8b18'
-        self.from_='+18157684491'
+        self.token='xxx'
+        self.sid='xx'
+        self.from_='xx'
     def sms(self,to,mes):
         if not to.startswith('+'):
             to = '+86' + to
@@ -32,4 +32,4 @@ class TwilioSmsNotifier():
 SMS=TwilioSmsNotifier()
 
 if __name__ == '__main__':
-    SMS.sms('13799848615','测试 ')
+    SMS.sms('xxx','测试 ')
