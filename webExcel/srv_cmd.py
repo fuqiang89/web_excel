@@ -58,6 +58,7 @@ class Data(basehandler):
                     if vk in ['Srv_used','local_ip','inter_ip','note']:
                         key[vk]= key[vk].replace('/n','<br>')
         self.write(json_encode(result_data))
+        return
 
 class  Tg(basehandler):
     @tornado.web.authenticated
@@ -209,8 +210,10 @@ class xProfile(basehandler):
         i=self.input()
         try:
             i.id=table_operate.getEntityBySrv_num(i.srv_num)['id']
+            i.fields=table_orm.get_history_fields("srv_table")
         except Exception:
             self.render('page_500.html')
+            return
             #i.id=table_operate.getSelf('select max(id) as id from s_table')[0]['id']
 
         i.username=self.current_user

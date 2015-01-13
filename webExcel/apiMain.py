@@ -58,8 +58,22 @@ class  API(basehandler):
                 for dkey in dhistory:
                     dkey['op_time']=str(dkey['op_time'])
                 self.write(json_encode(dhistory))
+                return
             except Exception:
                 self.render("page_500.html")
+                return
+        if i.stype == "history_show":
+            try:
+                srvhistory=table_operate.getSelf("""select * from table_op_reg
+                where srv_num = '{0}'
+                order by autoid desc """.format(i.srv_num))
+                for dkey in srvhistory:
+                    dkey['op_time']=str(dkey['op_time'])
+                self.write(json_encode(srvhistory))
+            except Exception,e:
+                self.render("page_500.html")
+                return
+
 
 ##################################
 #################nmap#####################

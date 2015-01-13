@@ -16,6 +16,10 @@ class  table_orm():
         item=self.sdb.get("""select fields from table_module where table_name = '%s' """ % table_name)
         item['fields']=item['fields'].split(',')
         return item
+    def get_history_fields(self,table_name):
+        item=self.sdb.get("""select history_fields from table_module where table_name = '%s' """ % table_name)
+        item['history_fields']=item['history_fields'].split(',')
+        return item
     def get_useAdmin(self,table_name):
         item=self.sdb.get("""select useAdmin from table_module where table_name = '%s' """ % table_name)
         item['useAdmin']=item['useAdmin'].split(',')
