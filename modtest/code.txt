@@ -1,0 +1,13 @@
+
+                    nmapkey=table_operate.getSelf("""
+                    SELECT srv_num from table_nmap group by srv_num
+                    """
+                    )
+                    alldata={}
+                    for nn in nmapkey:
+
+                        ddd=table_operate.getSelf("""
+                        SELECT * from table_nmap where
+                        srv_num = '{0:s}' order by id desc limit 1
+                        """.format(nn['srv_num'])
+                        )

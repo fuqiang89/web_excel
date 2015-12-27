@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-table.css">
+    <link rel="stylesheet" href="/static/css/docs.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-table.js"></script>
+<script>
+                        function operateFormatter(value, row, index) {
+                            return [
+                                '<a class="edit ml10" href="javascript:void(0)" title="Edit">',
+                                    '<i class="glyphicon glyphicon-edit"></i>',
+                                '</a>',
+
+                                '<a class="remove ml10" href="javascript:void(0)" title="Remove">',
+                                    '<i class="glyphicon glyphicon-remove"></i>',
+                                '</a>'
+                            ].join('');
+                        }
+
+                        window.operateEvents = {
+                            'click .edit': function (e, value, row, index) {
+                                doupdate(row.id);
+                            },
+                            'click .remove': function (e, value, row, index) {
+                                confirmmsg(row.id);
+                            }
+                        };
+</script>
+
+<script>
+        function dodel(id){
+        var rv={};
+        rv.act="del";
+        rv.id=id;
+        $.post("/update",rv,function(v){
+//            alert("删除"+ v.result);
+            location.href="/";
+        })
+    }
+    function confirmmsg(id){
+        var del_id = id
+        if (confirm("你确认要删除这条记录吗？"))
+        dodel(del_id)
+    }
+    function doadd(){
+        location.href="/update";
+    }
+
+    function doupdate(id){
+        location.href="/update?id="+id;
+    }
+</script>
+
+</head>
+<body>
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
+    <div class="container">
+    </div>
+</header>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+            <div>
+                <button type="button" class="btn btn-default" onclick="doadd()">新增行</button>
+                    <table id="table-javascript"></table>
+                    <script>
+                        $(function () {
+                                $('#table-javascript').bootstrapTable({
+                                    method: 'get',
+                                    url: 'data',
+//                                    data: data,
+                                    cache: false,
+//                                    height: 700,
+                                    striped: true,
+                                    pagination: true,
+                                    pageSize: 10,
+                                    pageList: [50, 100,150,200,250,300,350,400],
+                                    search: true,
+                                    showColumns: true,
+                                    showRefresh: true,
+                                    minimumCountColumns: 2,
+                                    clickToSelect: true,
+                                    columns: [{
+                                        field: 'state',
+                                        checkbox: true
+                                    },
+                           {% for r in i.fields.fields %}
+                                {% if r=='id' %}
+                                    {
+                                        field: '{{r}}',
+                                        visible: false,
+                                        title: '{{r}}',
+                                        align: 'right',
+                                        valign: 'top',
+                                        sortable: true
+                                    },
+                                {% else %}
+                                    {
+                                        field: '{{r}}',
+//                                        visible: false,
+                                        title: '{{r}}',
+                                        align: 'bottom',
+                                        valign: 'top',
+                                        sortable: true
+                                    },
+                                {% end %}
+
+                           {% end %}
+
+
+
+                                        {
+                                        field: 'operate',
+//                                        visible: false,
+                                        title: 'Operate',
+                                        align: 'center',
+                                        valign: 'middle',
+                                        clickToSelect: false,
+                                        formatter: operateFormatter,
+                                        events: operateEvents
+                                    }
+
+                            ]
+                                });
+                        });
+                    </script>
+            </div>
+
+            <hr>
+    </div>
+</div>
+
+</body>
+</html>

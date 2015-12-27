@@ -1,0 +1,384 @@
+{% extends "main.html" %}
+
+        {% block ext_head %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+            span.tab-space-namp {padding-left:5em;}
+        </style>
+        span.tab-space {padding-left:5em;}
+        {% end %}
+        {% block nav %}
+        {% include  "nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+            <li class="active">
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li  class="active">
+                     <a href="javascript:;">
+                     <i class="icon-table"></i>
+                     xTable
+                     <span class="arrow"></span>
+                     </a>
+                     <ul class="sub-menu">
+                        <li ><a href="xtable">  xList</a></li>
+                        <!--<li class="active"><a href="xProfile">  xProfile</a></li>-->
+                        <!--<li ><a href="update"> xUpdate </a></li>-->
+                         <li ><a href="history"> History Operate </a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+            <li class="">
+               <a href="javascript:;">
+               <i class="icon-wrench"></i>
+               <span class="title">web 工具</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li >
+                     <a href="nmap">
+                     nmap scan</a>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  X-Profile <small>Profile</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="xtable">xTable</a></li>
+                   <i class="icon-angle-right"></i>
+                   <li><a href="xProfile">X-Profile</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+         <!-- END PAGE HEADER-->        <!--<button type="button" class="btn btn-default" onclick="doadd()">新增行</button>-->
+
+
+          <!--<div class="alert alert-success" id="events-result">-->
+        <!--Here is the result of event.-->
+           <!--</div>-->
+          <div class="clearfix"></div>
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN Portlet PORTLET-->
+               <div class="portlet">
+                  <div class="portlet-title">
+                     <div class="caption"><h4 class="text-primary">Srv Description</h4></div>
+                     <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                        <a href="/update?id={{i.id}}"  class="glyphicon glyphicon-edit"></a>
+                        <a onclick="loadProfile()" class=" icon-refresh"></a>
+                        <!--<a onclick="confirmmsg({{i.id}})" class="icon-remove"></a>-->
+                        <a href="#myModal" class="icon-remove" data-toggle="modal"></a>
+
+                         <!--######-->
+                      <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                 <h4 class="modal-title">（下架&更新）说明</h4>
+                              </div>
+                              <div class="modal-body">
+                           <div class="form-group">
+                              <label class="control-label alert-success" for="xExplain"><strong>说明(explain):</strong></label>
+                              <textarea class="form-control" rel="v" id="xExplain" rows="5" placeholder="Enter a message ..."></textarea>
+                           </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+                                 <button type="button" class="btn btn-info"  onclick="dodel({{i.id}})" >Confirm</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                         <!--#########-->
+                     </div>
+                  </div>
+                  <div class="portlet-body">
+                  <ul class="list-group-item-info">
+                     <li id="srv_num" class="text-success"></li>
+                     <li id="Srv_used" class="text-success"></li>
+                     <li id="inter_ip" class="text-success"></li>
+                     <li id="local_ip" class="text-success"></li>
+                     <li id="rank_one" class="text-success"></li>
+                      <li id="admin" class="text-success" ></li>
+
+                  </ul>
+
+                  </div>
+               </div>
+               <!-- END Portlet PORTLET-->
+            </div>
+         </div>
+         <div class="clearfix"></div>
+          <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN Portlet PORTLET-->
+               <div class="portlet">
+                  <div class="portlet-title">
+                     <div class="caption"><h4 class="text-primary">Nmap Scan  Result</h4></div>
+                     <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                        <!--<a href=""  class="icon-wrench"></a>-->
+                        <a onclick="loadNmap()" class=" icon-refresh"></a>
+                        <!--<a href="javascript:;" class="icon-remove"></a>-->
+                     </div>
+                  </div>
+                  <div class="portlet-body">
+                        <div class=" pull-right">
+                        <h3><span id="nopTime" class="label label-success"></span></h3>
+                        </div>
+                      <div >
+
+                           <h3><button  onclick="reScanNmap()"  class="btn btn-info ">立即扫描</button></h3>
+                        </div>
+                     <div id="show_scan_status" class="clearfix">
+                        </div>
+                        <table class="table table-bordered table-hover">
+                           <thead>
+                              <tr>
+                                 <th>端口</th>
+                                 <th>协议</th>
+                                 <th>状态</th>
+                                 <th>服务名称</th>
+                                  <th>状态确认</th>
+                              </tr>
+                           </thead>
+                           <tbody id="show_nmap">
+
+                           </tbody>
+                        </table>
+                     </div>
+
+                <!--<div id="show_nmap" class="clearfix">-->
+                </div>
+                  </div>
+               </div>
+               <!-- END Portlet PORTLET-->
+            </div>
+         </div>
+
+
+  {% end %}
+   {% block ext_js %}
+
+
+
+<script>
+    function dataSplit(value,key) {
+        var urldata="";
+        var iparray=value.split(key);
+        for (index in iparray)
+        {
+            urldata = urldata + '<a href="#">' + iparray[index] + '</a>' + '&nbsp;&nbsp;&nbsp;&nbsp; ';
+        }
+        return urldata;
+            }
+    function loadProfile()
+    {
+      $.getJSON("/api?stype=xProfile&id={{i.id}}", function(json){
+          var inter_ip=dataSplit(json.recs.inter_ip,'/n');
+          var local_ip=dataSplit(json.recs.local_ip,'/n');
+          var Srv_used=dataSplit(json.recs.Srv_used,'/n');
+          $("#srv_num").html('机器编号:&nbsp;&nbsp; ' + json.recs.srv_num);
+          $("#Srv_used").html('用途说明:&nbsp;&nbsp;' + Srv_used);
+          $("#local_ip").html('局域网IP:&nbsp;&nbsp;' + local_ip);
+          $("#inter_ip").html('外网IP&nbsp;&nbsp&nbsp;&nbsp;:&nbsp;&nbsp;' + inter_ip);
+          $("#rank_one").html('所属项目:&nbsp;&nbsp;' + json.recs.rank_one);
+          $("#admin").html('管理员&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;' + json.recs.admin);
+        });
+    }
+
+   function dodel(id){
+        var rv={};
+        $("[rel='v']").each(function(){
+            rv[$(this).attr("id")]=$(this).val();
+        });
+        rv.act="del";
+        rv.username="{{i.username}}"
+        if(rv.xExplain.length==0){
+         alert("说明  is require");
+         return false;
+            }
+        rv.id=id;
+        $.post("/update",rv,function(v){
+//            alert("删除"+ v.result);
+            location.href="/history";
+        });
+    }
+ function confirmmsg(id){
+        var vid = id;
+        if (confirm("你确认要删除这条记录吗？"))
+        dodel(vid);
+
+    }
+</script>
+<script>
+    function loadNmap()
+    {
+      $.getJSON("/api?stype=nmap&id={{i.id}}&slevel=xProfile", function(json){
+//        var  nmapdata=JSON.parse(json[0].nmapdata);
+          var  nmapdata=json[0].nmapdata;
+//        var ncode='<li><span class="tab-space-namp">nport</span>' +
+//                '<span class="tab-space-namp">status</span>' +
+//                '<span class="tab-space-namp">ntype</span>' +
+//                '<span class="tab-space-namp">name</span></li>';
+          var ncode= '<tr>'+
+                          '<td class="active">nport</td>' +
+                          '<td class="success">ntype</td>' +
+                          '<td class="active">status</td>' +
+                          '<td class="success">name</td>' +
+                          '<td><a onclick="confirmnmap({{i.id}},vPort)" class="btn btn-btnStatus btn-xs green-stripe disabled">verify</a></td>' +
+                     '</tr>';
+        var recode='';
+        for (line in nmapdata)
+        {
+            var tmpj=nmapdata[line]
+            if (tmpj.verify == 0){
+            recode=recode + ncode.replace('status',tmpj.state).
+                    replace('name',tmpj.name).
+                    replace('nport',tmpj.nport).
+                    replace('ntype',tmpj.ntype).
+                    replace('verify','等待确认').
+                    replace('btnStatus','warning').
+                    replace('disabled','').
+                    replace('vPort',tmpj.nport);
+            }else if(tmpj.verify == 1){
+            recode=recode + ncode.replace('status',tmpj.state).
+                    replace('name',tmpj.name).
+                    replace('nport',tmpj.nport).
+                    replace('ntype',tmpj.ntype).
+                    replace('verify','确认忽略').
+                    replace('btnStatus','success');
+            }else if(tmpj.verify == 2){
+            recode=recode + ncode.replace('status',tmpj.state).
+                    replace('name',tmpj.name).
+                    replace('nport',tmpj.nport).
+                    replace('ntype',tmpj.ntype).
+                    replace('verify','系统过滤忽略').
+                    replace('btnStatus','primary');
+            }else {
+            recode=recode + ncode.replace('status',tmpj.state).
+                    replace('name',tmpj.name).
+                    replace('nport',tmpj.nport).
+                    replace('ntype',tmpj.ntype).
+                    replace('verify','unknow!!!status!').
+                    replace('btnStatus','danger');
+            }
+
+        }
+          $("#show_nmap").html(recode);
+          $("#nopTime").html('扫描时间：' + json[0].opTime);
+        });
+    }
+</script>
+
+<script>
+    function reScanNmap()
+    {
+      var snmap_status = '<img src="/static/metronic/assets/img/ajax-loading.gif" />' +
+              '<h3><span class="tab-space text-success" >开始扫描ing，可能需要比较长的时间，请耐心等待。。。。。</span></h3>';
+        $("#show_scan_status").html(snmap_status);
+      $.getJSON("/api?stype=nmap&id={{i.id}}&slevel=scan", function(json){
+                if (json.status == true)
+                {
+                var successcode='<h3><span class="tab-space text-success" >扫描完成！</span></h3>';
+                    $("#show_scan_status").html(successcode);
+
+                     loadNmap();
+
+                }
+                else
+                {
+                 var failurecode='<h3><span class="tab-space text-danger" >扫描失败，是否ip有问题？？</span></h3>';
+                   $("#show_scan_status").html(failurecode);
+                }
+        });
+
+
+    }
+
+function confirmnmap(id,vPort){
+    var url="/api?stype=nmap&id=SrvId&nport=vPort&slevel=verify".replace('SrvId',id).replace('vPort',vPort);
+
+
+      $.getJSON(url, function(json){
+
+        if (json.status == true){
+            loadNmap();
+        }else{
+            alert(json.error_info);
+        }
+
+      });
+}
+
+</script>
+
+
+
+<script>
+    $(document).ready(function(){
+        loadProfile();
+        loadNmap();
+    });
+</script>
+
+  {% end %}

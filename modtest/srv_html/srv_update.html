@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-table.css">
+    <link rel="stylesheet" href="/static/css/docs.css">
+    <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-table.js"></script>
+
+   <!--add select-->
+    <script src="/static/select/js/bootstrap-select.min.js" type="text/javascript"></script>
+    <script src="/static/select/js/i18n/defaults-zh_CN.min.js" type="text/javascript"></script>
+    <link href="/static/select/css/bootstrap-select.min.css" type="text/css" rel="stylesheet" />
+
+        <script type="text/javascript">
+          $(document).ready(function(e) {
+              $('.selectpicker').selectpicker();
+          });
+      </script>
+
+
+    <script>
+    function dosave(){
+        var rv={};
+        $("[rel='v']").each(function(){
+            rv[$(this).attr("id")]=$(this).val();
+        });
+        rv.admin=$('.selectpicker option:selected').text();
+        rv.status="ok";
+        {% if i.recs and i.recs.id %}
+        rv.act='update';
+        {% else %}
+        rv.act='add';
+        {% end %}
+
+        $.post("/update",rv,function(data,status){
+                alert("Action       "+data.result);
+                location.href="/";
+        })
+    }
+
+
+    $(document).ready(function(){
+            {% if i.recs %}
+            {% for fd in i.fields.fields %}
+                {% for val in i.recs %}
+                    {% if fd == val %}
+                        {% if fd not in ['Srv_used'] %}
+                $("#{{fd}}").val("{{i.recs[val]}}");
+                        {% end %}
+                        {% end %}
+                    {% end %}
+                {% end %}
+
+            $('.selectpicker').selectpicker('val', '{{i.recs.admin}}');
+             document.getElementById('Srv_used').innerText='{{i.recs.Srv_used}}';
+            {% end %}
+
+    });
+    </script>
+
+
+</head>
+<body>
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
+    <div class="container">
+
+    </div>
+</header>
+<div class="container-fluid">
+    	<div class="row clearfix">
+		<div class="col-md-12 column">
+            <br>
+
+			<table  class="table">
+				<thead>
+					<tr class="bg-success">
+                <th   style="text-align:center;">srv_num</th>
+                 <th   style="text-align:center;">rank_one</th>
+                 <th   style="text-align:center;">re_admin</th>
+                 <th   style="text-align:center;">admin</th>
+                	</tr>
+				</thead>
+                <tbody>
+                <td><input   class="form-control" type="text" rel="v" name="dd" id="dd" value=""/></td>
+<td><input   class="form-control" type="text" rel="v" name="dd" id="dd" value=""/></td>
+                <td><input   class="form-control" type="text" rel="v" name="dd" id="dd" value=""/></td>
+                <td><input   class="form-control" type="text" rel="v" name="dd" id="dd" value=""/></td>
+				</tbody>
+			</table>
+
+        </div>
+        </div>
+	<div class="row-fluid">
+		<div class="span2">
+         		<h4 class="text-left">
+			     外网ip：
+				</h4>
+			 <textarea class="field span12" id="textarea" rows="8" placeholder=""></textarea>
+		</div>
+		<div class="span2">
+               <h4 class="text-left  text-error">
+			     内网ip：
+				</h4>
+			 <textarea class="field span12" id="te" rows="8" placeholder=""></textarea>
+		</div>
+		<div class="span4">
+                 <h4 class="text-left  text-error">
+			     用途：
+				</h4>
+			 <textarea class="field span12" id="" rows="8" placeholder=""></textarea>
+		</div>
+	</div>
+</div>
+</body>
+</html>

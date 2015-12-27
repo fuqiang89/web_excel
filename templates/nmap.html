@@ -1,0 +1,228 @@
+{% extends "main.html" %}
+
+        {% block ext_head %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+            .top-buffer { margin-top:20px; }
+        </style>
+        {% end %}
+        {% block nav %}
+        {% include  "nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start ">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+
+
+            <li >
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li  >
+                     <a href="javascript:;">
+                     <i class="icon-table"></i>
+                     xTable
+                     <span class="arrow"></span>
+                     </a>
+                     <ul class="sub-menu">
+                        <li ><a href="xtable">  xList</a></li>
+                        <!--<li ><a href="xProfile">  xProfile</a></li>-->
+                        <!--<li ><a href="update"> xUpdate </a></li>-->
+                         <li ><a href="history"> History Operate </a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="active">
+               <a href="javascript:;">
+               <i class="icon-wrench"></i>
+               <span class="title">web 工具</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li class="active" >
+                     <a href="nmap">
+                     nmap scan</a>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  Nmap Scan <small>Nmap Scan</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="">web tools</a></li>
+                   <i class="icon-angle-right"></i>
+                    <li><a href="/nmap">nmap</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+         <!-- END PAGE HEADER-->        <!--<button type="button" class="btn btn-default" onclick="doadd()">新增行</button>-->
+
+
+          <!--<div class="alert alert-success" id="events-result">-->
+        <!--Here is the result of event.-->
+           <!--</div>-->
+          <div class="clearfix"></div>
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN Portlet PORTLET-->
+               <div class="portlet">
+                  <div class="portlet-title">
+<!--#############################-->
+                  </div>
+                  <div class="portlet-body">
+<!--########################-->
+                      <div class="text-center">
+                     <form class="form-inline" role="form">
+                        <div class="form-group">
+                           <label class="text-danger" for="nip"><strong>扫描IP</strong></label>
+                           <input  rel="v" class="form-control success" id="nip" placeholder="ip">
+                        </div>
+                        <div class="form-group">
+                           <label class="text-danger" for="args"><strong>扫描参数</strong></label>
+                           <input  class="form-control" rel="v" id="args" placeholder="默认参数：-T4  -sUT   -n ">
+                        </div>
+
+                     </form>
+
+                  </div>
+                      <div class="row top-buffer text-center ">
+                       <button type="submit" onclick="ScanNmap()" class="btn btn-success">Go!</button>
+                          </div>
+                        <div class=" pull-right">
+                        <h3><span id="nopTime" class="label label-success"></span></h3>
+
+                        </div>
+                      <div class="row top-buffer text-center ">
+                    <div id="show_scan_status" class="clearfix">
+                        </div>
+                          </div>
+                                           <table class="table table-bordered table-hover">
+                           <thead>
+                              <tr>
+                                 <th>端口</th>
+                                 <th>协议</th>
+                                 <th>状态</th>
+                                 <th>服务名称</th>
+                              </tr>
+                           </thead>
+                           <tbody id="show_nmap">
+
+                           </tbody>
+                        </table>
+               </div>
+               <!-- END Portlet PORTLET-->
+            </div>
+         </div>
+         <div class="clearfix"></div>
+      </div>
+      <!-- END PAGE -->
+   </div>
+
+  {% end %}
+   {% block ext_js %}
+<script>
+    function loadNmap(obj)
+    {
+
+        var  nmapdata=JSON.parse(obj.data.nmapdata);
+
+          var ncode= '<tr>'+
+                          '<td class="active">nport</td>' +
+                          '<td class="success">ntype</td>' +
+                          '<td class="active">status</td>' +
+                          '<td class="success">name</td>' +
+                     '</tr>';
+        var recode='';
+        for (line in nmapdata)
+        {
+            var tmpj=nmapdata[line]
+            recode=recode + ncode.replace('status',tmpj.state).replace('name',tmpj.name).replace('nport',tmpj.nport).replace('ntype',tmpj.ntype);
+
+        }
+          $("#show_nmap").html(recode);
+          $("#nopTime").html('扫描时间：' + obj.data.opTime);
+
+    }
+</script>
+
+<script>
+    function ScanNmap()
+    {
+    var getnip = document.getElementById('nip').value;
+    var getargs = document.getElementById('args').value;
+      var snmap_status = '<img src="/static/metronic/assets/img/ajax-loading.gif" />' +
+              '<h3><span class="tab-space text-success" >开始扫描ing，可能需要比较长的时间，请耐心等待。。。。。</span></h3>';
+        $("#show_scan_status").html(snmap_status);
+        var url = "/api?stype=nmap&slevel=scan&nip=getnip&args=getargs".replace('getnip',getnip).replace('getargs',getargs);
+      $.getJSON(url, function(json){
+                if (json.status == true)
+                {
+                var successcode='<h3><span class="tab-space text-success" >扫描完成！</span></h3>';
+                    $("#show_scan_status").html(successcode);
+
+                     loadNmap(json);
+
+                }
+                else
+                {
+                 var failurecode='<h3><span class="tab-space text-danger" >扫描失败，是否ip有问题？？</span></h3>';
+                   $("#show_scan_status").html(failurecode);
+                }
+        });
+
+
+    }
+</script>
+  {% end %}

@@ -1,0 +1,172 @@
+<div class="modal-dialog modal-wide">
+    <div class="modal-content">                             
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+<h4 class="modal-title">Add Uptime Check</h4>
+</div>
+<div class="modal-body">
+    <div class="row ">
+    <div class="form-group has-success">
+      <label  class="col-md-3 control-label">Name of check:</label>
+          <div class="col-md-9">
+          <input type="text" class="form-control"  placeholder="">
+          </div>
+    </div>
+    </div>
+
+    <div class="row top-buffer">
+            <div class="form-group has-success">
+               <label class="col-md-3 control-label " for="range_30">Check interval:</label>
+               <div class="col-md-9">
+                <input type="text" id="range_30" name="range_30" value="" />
+               </div>
+            </div>
+           </div>
+    <div class="row top-buffer ">
+         <ul  class="nav nav-tabs pull-right">
+                        <li class=" "><a href="#tab_1_1" data-toggle="tab"><span class="tab-space-monitor ">Network</span></a></li>
+                        <li class="active"><a href="#tab_1_2" data-toggle="tab"><span class="tab-space-monitor">Web</span></a></li>
+                     </ul>
+         <div  class="tab-content pull-right">
+                        <div class="tab-pane fade " id="tab_1_1">
+                            <div class="row top-buffer">
+                           <div class="form-group ">
+                              <label  class=""><strong>Check type:</strong></label>
+                              <div class="radio-list">
+                                 <label>
+                                 <input type="radio" name="optionsRadios" id="Radios11" value="optio" checked>
+                                   <strong>TCP</strong><small class="tab-space-monitor">Monitor a TCP port for a response</small>
+
+                                 </label>
+                                 <label>
+                                 <input type="radio" name="optionsRadios" id="Radios12" value="opti" >
+                                   <strong>Ping</strong><small class="tab-space-monitor">Monitor network connectivity</small>
+
+                                 </label>
+                                 <label>
+                                 <input type="radio" name="optionsRadios" id="Radios13" value="op" >
+                                     <strong>DNS</strong><small class="tab-space-monitor">Monitor lookups on a DNS server</small>
+
+                                 </label>
+                                 <label>
+                                 <input type="radio" name="optionsRadios" id="Radios14" value="option21" >
+                                  <strong>UDP</strong><small class="tab-space-monitor">Monitor a UDP port for a response</small>
+
+                                 </label>
+
+                              </div>
+                           </div>
+                           </div>
+
+                        </div>
+                        <div class="tab-pane fade active in" id="tab_1_2">
+                            <div class="row top-buffer">
+                           <div class="form-group ">
+                              <label  class=""><strong>Check type:</strong></label>
+                              <div class="radio-list">
+                                 <label>
+                                 <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                    <strong>HTTP(S)</strong><small class="tab-space-monitor">Monitor a web page</small>
+
+                                 </label>
+                                 <label>
+                                 <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" >
+                                    <strong>HTTP Custom</strong><small class="tab-space-monitor">Monitor scripts on your web page</small>
+
+                                 </label>
+                              </div>
+                           </div>
+                           </div>
+
+                        </div>
+                     </div>
+           </div>
+       <div class="row ">
+         <ul  class="nav nav-tabs pull-right">
+                        <li class=" "><a href="#tab_Required" data-toggle="tab"><span class="tab-space-monitor ">Optional</span></a></li>
+                        <li class="active"><a href="#tab_Optional" data-toggle="tab"><span class="tab-space-monitor">Required</span></a></li>
+                     </ul>
+         <div  class="tab-content">
+                        <div class="tab-pane fade active in" id="tab_Optional">
+                            <div class="row top-buffer">
+                               <div class="form-group has-success top-buffer">
+                                 <label  class="col-md-3 control-label "><span class="tab-space-monitor">URL/IP:</span></label>
+                                <div class="col-md-7">
+                                <input type="text" class="form-control"  placeholder="">
+                                </div>
+                            </div>
+
+                           </div>
+
+                        </div>
+                        <div class="tab-pane fade " id="tab_Required">
+                            <div class="row top-buffer">
+                               <div class="form-group has-success top-buffer">
+                                 <label  class="col-md-5 control-label "><span class="tab-space-monitor">Port:</span></label>
+                                <div class="col-md-3">
+                                <input type="text" class="form-control"  placeholder="">
+                                </div>
+                                </div>
+                            </div>
+                            <div class="row top-buffer-2">
+                               <div class="form-group has-success ">
+                                 <label  class="col-md-5 control-label "><span class="tab-space-monitor">User name:</span></label>
+                                <div class="col-md-3">
+                                <input type="text" class="form-control"  placeholder="">
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row top-buffer-2">
+                               <div class="form-group has-success ">
+                                 <label  class="col-md-5 control-label "><span class="tab-space-monitor">Password:</span></label>
+                                <div class="col-md-3">
+                                <input type="text" class="form-control"  placeholder="">
+                                </div>
+                            </div>
+
+                            </div>
+                            <div class="row top-buffer-2">
+                               <div class="form-group has-success ">
+                                 <label  class="col-md-5 control-label "><span class="tab-space-monitor">Post data:</span></label>
+                                <div class="col-md-5">
+                                <textarea  class="form-control" rows="5" placeholder=""></textarea>
+                                </div>
+                            </div>
+
+                            </div>
+                            <div class="row top-buffer-2">
+                               <div class="form-group has-success ">
+                                 <label  class="col-md-5 control-label "><span class="tab-space-monitor">Request headers:</span></label>
+                                <div class="col-md-2">
+                                <input type="text" class="form-control"  value="User-Agent" readonly>
+                                </div>
+                                <div class="col-md-3">
+                                <input type="text" class="form-control"  placeholder="" >
+                                </div>
+
+                            </div>
+
+                            </div>
+
+                           </div>
+
+                        </div>
+                     </div>
+
+
+          </div>
+
+
+<div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-info">Save changes</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+
+   <script>
+      jQuery(document).ready(function() {
+         UIIonSliders.init();
+      });
+   </script>

@@ -1,0 +1,373 @@
+{% extends "../main.html" %}
+
+        {% block ext_head %}
+<!--<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>-->
+   <link href="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/passwd/passwd.css" rel="stylesheet" type="text/css"/>
+   <link rel="stylesheet" type="text/css" href="/static/metronic/assets/plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable.css"/>
+   <link rel="stylesheet" type="text/css" href="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/address/address.css"/>
+        {% end %}
+        {% block nav %}
+        {% include  "../nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start active">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+
+
+            <li >
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li  class="active">
+                     <a href="javascript:;">
+                     <i class="icon-table"></i>
+                     xTable
+                     <span class="arrow"></span>
+                     </a>
+                     <ul class="sub-menu">
+                        <li ><a href="xtable">  xList</a></li>
+                        <!--<li ><a href="xProfile">  xProfile</a></li>-->
+                        <!--<li ><a href="update"> xUpdate </a></li>-->
+                         <li ><a href="history"> History Operate </a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="">
+               <a href="javascript:;">
+               <i class="icon-wrench"></i>
+               <span class="title">web 工具</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li >
+                     <a href="/nmap">
+                     nmap scan</a>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  userinfo <small>userinfo</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="#">userinfo</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+         <div class="row">
+                     <table id="user" class="table table-bordered table-striped">
+                        <tbody>
+                           <tr>
+                              <td style="width:10%">帐号</td>
+                              <td style="width:20%"><a href="#" id="username" ></a></td>
+                              <td style="width:35%"><a href="#" ></a></td>
+                              <td style="width:35%"><a href="#" ></a></td>
+                           </tr>
+                            <tr>
+                              <td>姓名</td>
+                              <td><a href="#" id="name"></a>{{i.name}}</td>
+                              <td><a href="#" ></a></td>
+                              <td><a href="#" ></a></td>
+                           </tr>
+
+                           <tr>
+                              <td>密码</td>
+                              <td><a href="#" id="passwd"></a></td>
+                              <td><a href="#" ></a></td>
+                              <td><a href="#" ></a></td>
+                           </tr>
+                          <tr>
+                              <td>Email</td>
+                              <td><a href="#" id="mail"></a></td>
+                          <td><a class="btn btn-success btn-xs green-stripe " id="emailTest">邮件测试</a></td>
+                              <td><a href="#" ></a></td>
+
+                           </tr>
+                          <tr>
+                              <td>电话</td>
+                              <td><a href="#" id="phone"></a></td>
+                          <td><a class="btn btn-info btn-xs green-stripe " id="smsTest">短信测试</a></td>
+                          <td><a class="btn btn-success btn-xs green-stripe " id="phoneTest">电话测试</a></td>
+                           </tr>
+                        </tbody>
+                     </table>
+
+                      </div>
+                       <div class="row top-buffer text-center ">
+                    <div id="show_status" class="clearfix">
+                        </div>
+                          </div>
+
+
+</div>
+
+      </div>
+      <!-- END PAGE -->
+   </div>
+
+  {% end %}
+   {% block ext_js %}
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>-->
+
+  <script type="text/javascript" src="/static/metronic/assets/plugins/select2/select2.min.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script> 
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/moment.min.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/address/address.js"></script>
+  <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/passwd/passwd.js"></script>
+
+   <script type="text/javascript" src="/static/metronic/assets/plugins/bootstrap-editable/inputs-ext/wysihtml5/wysihtml5.js"></script>       
+<script>
+function isEmail(value){
+                if (value != "") {
+                var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                isok= reg.test(value );
+                if (!isok) {
+                    alert("邮箱格式不正确！");
+                    document.getElementByIdx("mail").focus();
+                    return false;
+                }else{return true;}
+            }
+        }
+function checkMobile(s) {
+    var regu = /^[1][0-9][0-9]{9}$/;
+    var re = new RegExp(regu);
+    isok=re.test(s);
+        if(!isok){alert("电话格式错误！");
+        document.getElementByIdx("mail").focus();
+        return false;
+        }else{return true;}
+    }
+function showStatus(obj,loading){
+//    $("#show_status").html('');
+    if (loading) {
+         var start_status = '<img src="/static/metronic/assets/img/ajax-loading.gif" />' +
+                '<h3><span class="tab-space text-success" >Content</span></h3>'.replace('Content', obj);
+        $("#show_status").html(start_status);
+
+    } else {
+     var code='<h3><span class="tab-space text-success" >obj</span></h3>';
+        $("#show_status").html(code.replace('obj',obj));
+    }
+}
+    </script>
+<script>
+$('#emailTest').click(function(){
+    showStatus('Sending  mail to you,  Waiting........',true);
+  $.getJSON("/apiTest?stype=account&slevel=emailTest&email={{i.mail}}",
+    function(data){
+        if (data.result == true){
+            showStatus('邮件发送成功，\n请查看邮箱是否受到邮件！');
+            window.setTimeout("showStatus('')",5000);
+        }else{
+            showStatus('邮件发送失败!');
+            window.setTimeout("showStatus('')",20000);
+            return false
+        }
+  })
+});
+
+$('#phoneTest').click(function(){
+
+ showStatus('Calling  your  phone , \n May need to wait for 2 minutes........',true);
+  $.getJSON("/apiTest?stype=account&slevel=phoneTest&phone={{i.phone}}",
+    function(data){
+        if (data.result == true){
+            showStatus('call you success！！:) ，<br>等待2分钟左右会有一个日本号码call you！');
+             window.setTimeout("showStatus('')",10000);
+        }else{
+            showStatus('call you fail! (: <br>请确认号码是否正常，<br>确认您的号码是否经过认证（联系管理员）');
+             window.setTimeout("showStatus('')",20000);
+            return false
+        }
+  })
+});
+$('#smsTest').click(function(){
+
+ showStatus(' sending SMS  to  you  , \n May need to wait for 2 minutes........',true);
+  $.getJSON("/apiTest?stype=account&slevel=smsTest&phone={{i.phone}}",
+    function(data){
+        if (data.result == true){
+            showStatus('send SMS success！！:) ，<br>由于是美国运营商发送，接收短信延迟很严重，可能要几个小时后才能收到！')
+             window.setTimeout("showStatus('')",20000);
+        }else{
+            showStatus('sned SMS fail! (: <br>请确认号码是否正常，<br>确认您的号码是否经过认证（联系管理员）')
+             window.setTimeout("showStatus('')",20000);
+            return false
+        }
+  })
+});
+
+    </script>
+<script>
+    $.fn.editable.defaults.mode = 'inline';
+    $(document).ready(function() {
+
+$('#username').editable({
+    type: 'text',
+    url: '/api?stype=account&slevel=changeUsername',
+    pk: 1,
+    value: '{{i.username}}',
+    title: 'Enter username',
+    ajaxOptions: {
+        dataType: 'json'
+    },
+    success: function(response, newValue) {
+        if(!response) {
+            return "Unknown error!";
+        }
+
+        if(response.success === false) {
+             return response.msg;
+            }
+         }
+    });
+
+$('#mail').editable({
+    type: 'text',
+    url: '/api?stype=account&slevel=Email',
+    pk: 1,
+    value: '{{i.mail}}',
+    title: 'Enter Email',
+    ajaxOptions: {
+        dataType: 'json'
+    },
+    success: function(response, newValue) {
+        if(!response) {
+            return "Unknown error!";
+        }
+
+        if(response.success === false) {
+             return response.msg;
+            }
+         },
+            validate: function (value) {
+                if (value == '') return 'mail is required!';
+                if (isEmail(value) != true){
+                    return false;
+                }
+            }
+    });
+
+$('#phone').editable({
+    type: 'text',
+    url: '/api?stype=account&slevel=phone',
+    pk: 1,
+    value: '{{i.phone}}',
+    title: 'Enter phone',
+    ajaxOptions: {
+        dataType: 'json'
+    },
+    success: function(response, newValue) {
+        if(!response) {
+            return "Unknown error!";
+        }
+
+        if(response.success === false) {
+             return response.msg;
+            }
+         },
+            validate: function (value) {
+                if (value == '') return 'phone is required!';
+                if (checkMobile(value) != true){
+                    return false;
+                }
+            }
+    });
+
+
+
+$('#passwd').editable({
+            url: '/api?stype=account&slevel=changePasswd',
+            type: 'passwd',
+            pk: 1,
+            value: {
+                oldPasswd: "",
+                newPasswd: "",
+                retryPasswd: ""
+            },
+            ajaxOptions: {
+                dataType: 'json'
+            },
+    success: function(response, newValue) {
+        if(!response) {
+            return "Unknown error!";
+        }
+
+        if(response.success === false) {
+//             return response.msg;
+               return '执行 错误！';
+            }
+         },
+            validate: function (value) {
+                if (value.oldPasswd == '') return 'oldPasswd is required!';
+                if (value.newPasswd == '') return 'newPasswd is required!';
+                if (value.retryPasswd == '') return 'retryPasswd is required!';
+                if (value.newPasswd != value.retryPasswd ) return 'newPasswd != retryPasswd';
+
+            }
+
+
+
+        });
+
+
+
+    });
+    </script>
+  {% end %}

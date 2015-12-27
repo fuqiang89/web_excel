@@ -1,0 +1,313 @@
+{% extends "main.html" %}
+
+        {% block ext_head %}
+        {% end %}
+        {% block nav %}
+        {% include  "nav.html" %}
+        {% end %}
+
+
+    {% block container %}
+   <div class="page-container">
+      <!-- BEGIN SIDEBAR -->
+      <div class="page-sidebar navbar-collapse collapse">
+         <!-- BEGIN SIDEBAR MENU -->
+         <ul class="page-sidebar-menu">
+
+            <li>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <div class="clearfix"></div>
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="start">
+               <a href="/">
+               <i class="icon-home"></i>
+               <span class="title">Dashboard</span>
+               <span class="selected"></span>
+               </a>
+            </li>
+            <li class="active">
+               <a href="javascript:;">
+               <i class="icon-th"></i>
+               <span class="title">服务器管理</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li  class="active">
+                     <a href="javascript:;">
+                     <i class="icon-table"></i>
+                     xTable
+                     <span class="arrow"></span>
+                     </a>
+                     <ul class="sub-menu">
+                        <li ><a href="xtable"> xList</a></li>
+                        <!--<li ><a href="xProfile"> xProfile</a></li>-->
+                        <!--<li class="active"><a href="update"> xUpdate </a></li>-->
+                         <li ><a href="history"> History Operate </a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+            <li class="">
+               <a href="javascript:;">
+               <i class="icon-wrench"></i>
+               <span class="title">web 工具</span>
+               <span class="arrow "></span>
+               </a>
+               <ul class="sub-menu">
+                  <li >
+                     <a href="nmap">
+                     nmap scan</a>
+                  </li>
+               </ul>
+            </li>
+
+            <li class="last">
+               <a href="charts.html">
+               <i class="icon-bar-chart"></i>
+               <span class="title">Visual Charts</span>
+               </a>
+            </li>
+         </ul>
+
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div class="page-content">
+         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+         <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- /.modal-dialog -->
+         </div>
+         <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+         <!-- BEGIN PAGE HEADER-->
+         <div class="row">
+            <div class="col-md-12">
+               <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+               <h3 class="page-title">
+                  X-Table <small>服务器列表</small>
+               </h3>
+               <ul class="page-breadcrumb breadcrumb">
+                  <li>
+                     <i class="icon-home"></i>
+                     <a href="/">Home</a>
+                     <i class="icon-angle-right"></i>
+                  </li>
+                  <li><a href="xtable">xTable</a></li>
+                   <i class="icon-angle-right"></i>
+                   <li><a href="xpdate">xUpdate</a></li>
+               </ul>
+               <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-12">
+               <div class="portlet">
+                  <div class="portlet-title">
+                      {% if i.recs %}
+                     <div class="caption "><i class="icon-cogs "></i>修改记录</div>
+                      {% else %}
+                      <div class="caption "><i class="icon-cogs "></i>新增记录</div>
+                      {% end %}
+
+            <div class="tools">
+            </div>
+                  </div>
+                   <div class="clearfix"></div>
+                  <div class="portlet-body">
+                     <div class="row">
+                        <div class="col-md-3">
+                           <div class="form-group">
+                              <label class="control-label " for="srv_num"><strong>MasterIP(srv_127.0.0.1):</strong></label>
+                              <input id="srv_num" rel="v" name="srv_num" type="text" class="form-control" value="" placeholder="MasterIP" />
+                           </div>
+                           <!--<div class="form-group">-->
+                              <!--<label class="control-label " for="re_admin"><strong>接口人(re_admin):</strong></label>-->
+                              <!--<input id="re_admin" rel="v" name="re_admin" type="text" class="form-control" value="" placeholder="xx|xx" />-->
+                           <!--</div>-->
+                           <div class="form-group">
+                             <label class="control-label " ><strong>管理员:</strong></label>
+                              <br>
+                             <select class="selectpicker   show-tick "    name="admin" id="admin"  data-width="auto"   >
+                                {%  for admin in i.useAdmin.useAdmin  %}
+                                  <option>{{admin}}</option>
+                                  {% end %}
+                          </select>
+                           </div>
+                           <div class="form-group">
+                             <label class="control-label " ><strong>硬件类型:</strong></label>
+                              <br>
+                             <select class="selectpicker_ht   show-tick "    name="HardwareTypes" id="HardwareTypes"  data-width="auto"   >
+                                {%  for ht in i.HardwareTypes.HardwareTypes  %}
+                                  <option>{{ht}}</option>
+                                  {% end %}
+                          </select>
+                           </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                              <label class="control-label " for="rank_one"><strong>一级项目:</strong></label>
+                              <input id="rank_one" rel="v" name="rank_one" type="text" class="form-control" value="" placeholder="编号" />
+                           </div>
+
+                           <div class="form-group">
+                              <label class="control-label " for="Srv_used"><strong>用途{}{}{}:</strong></label>
+                              <textarea class="form-control"  rel="v"  id="Srv_used" rows="11" placeholder="Enter a message ..."></textarea>
+                           </div>
+                        </div>
+                        <div class="col-md-3">
+                           <div class="form-group">
+                              <label class="control-label " for="inter_ip"><strong>外网IP:</strong></label>
+                              <textarea class="form-control" rel="v" id="inter_ip" rows="6" placeholder="Enter inter ip"></textarea>
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label " for="inter_ip"><strong>内网IP:</strong></label>
+                              <textarea class="form-control" rel="v" id="local_ip" rows="6" placeholder="Enter local ip"></textarea>
+                           </div>
+
+                        </div>
+                        <div class="col-md-3">
+                           <div class="form-group">
+                              <label class="control-label alert-success" for="note"><strong>备注:</strong></label>
+                              <textarea class="form-control" rel="v" id="note" rows="15" placeholder="Enter a message ..."></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                    {% if i.recs and i.recs.id %}
+
+                      <a href="#myModal" role="button" class="btn btn-success pull-right" data-toggle="modal">Submit</a>
+                      <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                 <h4 class="modal-title">（下架&更新）说明</h4>
+                              </div>
+                              <div class="modal-body">
+                           <div class="form-group">
+                              <label class="control-label alert-success" for="xExplain"><strong>说明(explain):</strong></label>
+                              <textarea class="form-control" rel="v" id="xExplain" rows="5" placeholder="Enter a message ..."></textarea>
+                           </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+                                 <button type="button" class="btn btn-info"  onclick="dosave()" >确认修改</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                    {% else %}
+                  <button type="button" class="btn btn-success pull-right"  onclick="dosave()" >确认新增</button>
+
+                    {% end %}
+                        </div>
+                     </div>
+
+                     </div>
+               </div>
+            </div>
+         </div>
+
+         </div>
+
+  <input class="form-control" type="hidden"  rel="v" name="id" id="id"   value=""/>
+    </div>
+      <!-- END PAGE -->
+
+
+  {% end %}
+   {% block ext_js %}
+          <script src="/static/select/js/bootstrap-select.min.js" type="text/javascript"></script>
+    <script src="/static/select/js/i18n/defaults-zh_CN.min.js" type="text/javascript"></script>
+    <link href="/static/select/css/bootstrap-select.min.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript">
+          $(document).ready(function(e) {
+              $('.selectpicker').selectpicker();
+               $('.selectpicker_ht').selectpicker();
+          });
+      </script>
+
+
+    <script>
+    function isMasterIp(str){
+
+    var reg=/^srv_(([01]?[\d]{1,2})|(2[0-4][\d])|(25[0-5]))(\.(([01]?[\d]{1,2})|(2[0-4][\d])|(25[0-5]))){3}$/
+    if(reg.test(str)){
+       return true;
+    }
+    else{
+        alert("masterIp 格式错误 \n example: srv_127.0.0.1");
+        return false;
+    }
+    }
+    function dosave(){
+        var rv={};
+        $("[rel='v']").each(function(){
+            rv[$(this).attr("id")]=$(this).val();
+        });
+        if(rv.srv_num.length==0){
+         alert("masterIp is require");
+         return false;
+            }
+        if (isMasterIp(rv.srv_num)==false){
+            return false;
+        }
+        if(rv.rank_one.length==0){
+         alert("一级项目 is require");
+         return false;
+            }
+        if(rv.Srv_used.length==0){
+         alert("用途  is require");
+         return false;
+            }
+        rv.admin=$('.selectpicker option:selected').text();
+        rv.HardwareTypes=$('.selectpicker_ht option:selected').text();
+        rv.status="ok";
+        rv.username="{{i.username}}"
+
+        {% if i.recs and i.recs.id %}
+        rv.act='update';
+        if(rv.xExplain.length==0){
+         alert("说明  is require");
+         return false;
+            }
+        {% else %}
+        rv.act='add';
+        {% end %}
+
+        $.post("/update",rv,function(data,status){
+
+                if(data.result == 'True' ){
+                location.href="/history"
+                }
+                else{
+                    alert(data.result)
+                }
+        })
+    }
+
+
+    $(document).ready(function(){
+            {% if i.recs %}
+            {% for fd in i.fields.fields %}
+                {% for val in i.recs %}
+                    {% if fd == val %}
+                $("#{{fd}}").val("{{i.recs[val]}}");
+                        {% end %}
+                    {% end %}
+                {% end %}
+
+            $('.selectpicker').selectpicker('val', '{{i.recs.admin}}');
+            $('.selectpicker_ht').selectpicker('val', '{{i.recs.HardwareTypes}}');
+//             document.getElementById('Srv_used').innerText='{{i.recs.Srv_used}}';
+            {% end %}
+
+    });
+    </script>
+  {% end %}

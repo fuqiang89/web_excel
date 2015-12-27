@@ -1,0 +1,25 @@
+---
+  mysql:
+    address: 172.16.10.101
+    password: srv_table_fuqiang123
+    port: 3306
+    user: srv_table_user
+    database: rsyncdb
+
+  target:
+    malai:
+      ip: 172.16.10.100
+      parameter: '-vrR'
+      password_file: /etc/rsync_client.pass
+      user: b2bcenter_ftp_admin
+      delete: True   # 开启删除要确保parameter 有r 或者d 参数。
+      tag:
+        soft: /data/ftp/upload.get5.com/soft
+        soft_2: /data/ftp/upload.get5.com/soft_2
+
+    zhongdong:
+      ip: 172.16.10.101
+      parameter: '-avzP --password-file=/etc/rsync.pass'
+      user: b2bcenter_ftp_admin
+      tag:
+        /data/ftp/upload.get5.com/soft: soft
